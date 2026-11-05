@@ -116,3 +116,4 @@ html,body{overflow-x:clip}
 .home-partners_item:hover .home-partners_logo{opacity:1}
 @media screen and (max-width:991px){.spec_item:nth-child(3){border-left-style:none;padding-left:0}.spec_item:nth-child(n+3){border-top:1px solid var(--_theme---border--primary)}}
 @media screen and (max-width:767px){.home-partners_logo{height:3.2rem}}
+@media screen and (max-width:767px){.table_cell{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;min-width:0}}
