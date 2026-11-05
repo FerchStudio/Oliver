@@ -8,11 +8,34 @@ html.lang = 'de';
 /* Webflow renders <button> from the HTML builder as links with type="button": restore real buttons */
 $$('a[type="button"]').forEach(a => { const b = document.createElement('button'); [...a.attributes].forEach(at => { if (at.name !== 'href') b.setAttribute(at.name, at.value); }); b.type = 'button'; b.classList.remove('w-button'); b.innerHTML = a.innerHTML; a.replaceWith(b); });
 
-/* PC CADDIE embeds are shown right away; the placeholder only remains without JavaScript */
+/* privacy: no tracking cookies. External content (PC CADDIE booking, map tiles) loads only after consent, remembered in localStorage */
+const KEY = 'gcb-consent';
+const getC = () => { try { return localStorage.getItem(KEY); } catch (_) { return null; } };
+const setC = v => { try { localStorage.setItem(KEY, v); } catch (_) {} };
+const extOK = () => getC() === 'all';
+const extQueue = [];
+const whenExt = fn => extOK() ? fn() : extQueue.push(fn);
+const grantExt = () => { setC('all'); while (extQueue.length) extQueue.shift()(); hideConsent(); };
+const cb = $('[data-consent]');
+const showConsent = () => { if (!cb) return; cb.classList.add('is-open'); requestAnimationFrame(() => requestAnimationFrame(() => cb.classList.add('is-visible'))); };
+function hideConsent() { if (!cb) return; cb.classList.remove('is-visible'); setTimeout(() => cb.classList.remove('is-open'), 500); }
+if (cb) {
+  $$('[data-consent-accept]', cb).forEach(x => x.addEventListener('click', grantExt));
+  $$('[data-consent-decline]', cb).forEach(x => x.addEventListener('click', () => { setC('necessary'); hideConsent(); }));
+  if (!getC()) setTimeout(showConsent, 1200);
+}
+document.addEventListener('click', e => { const o = e.target.closest && e.target.closest('[data-consent-open]'); if (o) { e.preventDefault(); showConsent(); } });
+
+/* PC CADDIE embeds: shown right away once external content is allowed; until then a placeholder with a one-click unlock */
 const loadEmbed = c => { if (c.dataset.loaded) return; c.dataset.loaded = '1'; const h = +c.dataset.embedHeight || 900;
   const f = document.createElement('iframe'); f.className = 'embed_frame'; f.src = c.dataset.embed; f.title = 'PC CADDIE | ' + (c.dataset.embedTitle || 'Buchung'); f.style.height = h + 'px';
   c.replaceChildren(f); setTimeout(() => window.ScrollTrigger && ScrollTrigger.refresh(), 800); };
-$$('[data-embed^="http"]').forEach(loadEmbed);
+$$('[data-embed^="http"]').forEach(c => {
+  if (!extOK()) { const ph = $('.embed_placeholder', c); const t = $('.embed_text', c);
+    if (t) t.textContent = 'Der Buchungskalender kommt von PC CADDIE, einem externen Anbieter. Mit einem Klick zeigen wir ihn direkt hier an. Eure Wahl merken wir uns.';
+    const g = ph && $('.button-group', ph);
+    if (g) { const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'button is-small'; btn.textContent = 'Kalender hier anzeigen'; btn.addEventListener('click', grantExt); g.prepend(btn); } }
+  whenExt(() => loadEmbed(c)); });
 
 /* Map (MapLibre + OpenFreeMap, no API key), tinted to the brand palette, loaded when it comes near the viewport */
 const mapEl = $('[data-map]');
@@ -56,7 +79,67 @@ if (mapEl) {
     addEventListener('resize', () => { clearTimeout(mapEl._t); mapEl._t = setTimeout(fit, 250); });
   };
   const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); init().catch(() => mapEl.classList.add('is-failed')); } }, { rootMargin: '400px' });
-  io.observe(mapEl);
+  if (extOK()) io.observe(mapEl);
+  else { mapEl.classList.add('is-gated'); const g = document.createElement('div'); g.className = 'map_gate';
+    g.innerHTML = '<p class="map_gate-text">Die Karte lädt Kacheln von OpenFreeMap, einem externen Anbieter.</p><button type="button" class="button is-small is-secondary">Karte anzeigen</button>';
+    $('button', g).addEventListener('click', grantExt); mapEl.append(g);
+    whenExt(() => { g.remove(); mapEl.classList.remove('is-gated'); io.observe(mapEl); }); }
+}
+
+/* sticky booking bar (phones): appears after the first screen, steps aside for the footer and on the booking page */
+const sc = $('[data-sticky-cta]');
+if (sc && !/^\/startzeiten/.test(location.pathname)) {
+  const ft = $('.footer_component'); let footIn = false;
+  if (ft) new IntersectionObserver(es => { footIn = es[0].isIntersecting; upd(); }).observe(ft);
+  function upd() { const on = scrollY > innerHeight * .6 && !footIn && !html.classList.contains('menu-open'); sc.classList.toggle('is-visible', on); html.classList.toggle('has-sticky-cta', on); }
+  addEventListener('scroll', upd, { passive: true }); upd();
+} else if (sc) sc.remove();
+
+/* live status: today's date and open/closed per row, in club time (Europe/Berlin) */
+const st = $('[data-status-today]');
+if (st) {
+  const now = new Date(), tz = 'Europe/Berlin';
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('de-DE', { timeZone: tz, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(now).map(p => [p.type, p.value]));
+  const mins = +parts.hour * 60 + +parts.minute, m = t => { const [h, mi] = t.split(':'); return +h * 60 + +mi; };
+  st.textContent = 'Heute | ' + new Intl.DateTimeFormat('de-DE', { timeZone: tz, weekday: 'long', day: 'numeric', month: 'long' }).format(now);
+  let rec = null;
+  $$('[data-status-row]').forEach(r => { const tEl = $('.home-status_time', r); const t = tEl ? tEl.textContent : ''; let label = '', cls = '';
+    const range = t.match(/(\d{2}:\d{2}) bis (\d{2}:\d{2})/), from = t.match(/^ab (\d{2}:\d{2})/);
+    if (range) { const o = m(range[1]), c = m(range[2]);
+      if (mins >= o && mins < c) { label = 'jetzt geöffnet'; cls = 'is-open'; } else if (mins < o) { label = 'öffnet ' + range[1]; cls = 'is-soon'; } else { label = 'heute geschlossen'; cls = 'is-closed'; }
+      if (/rezeption/i.test(r.textContent)) rec = { label, cls, close: range[2], open: range[1] }; }
+    else if (from && mins < m(from[1])) { label = 'öffnet ' + from[1]; cls = 'is-soon'; }
+    if (!label) return; const b = document.createElement('span'); b.className = 'home-status_badge ' + cls; b.textContent = label; (tEl || r).append(b); });
+  const live = $('[data-status-live]');
+  if (live && rec) live.textContent = rec.cls === 'is-open' ? 'Rezeption geöffnet bis ' + rec.close + ' Uhr' : rec.cls === 'is-soon' ? 'Rezeption öffnet um ' + rec.open + ' Uhr' : 'Rezeption öffnet morgen um ' + rec.open + ' Uhr';
+  const dot = $('[data-status-dot]'); if (dot && rec) dot.classList.add(rec.cls);
+}
+
+/* 404: a tiny putting game. A power meter swings, a click stops it, the ball rolls; near the cup it drops */
+const pg = $('[data-putt]');
+if (pg) {
+  const ball = $('[data-putt-ball]', pg), sprite = $('.error_ball-sprite', pg), hole = $('[data-putt-hole]', pg), meter = $('[data-putt-meter]', pg), go = $('[data-putt-go]', pg), out = $('[data-putt-score]', pg);
+  const spin = deg => { const f = ((Math.round(deg / 15) % 24) + 24) % 24; sprite.style.backgroundPosition = `${(f / 23) * 100}% 0`; };
+  let phase = 'aim', p = 0, dir = 1, x = 0, strokes = 0, raf;
+  const target = () => hole.offsetLeft - ball.offsetWidth / 2, max = () => pg.clientWidth - ball.offsetWidth - 48;
+  const swing = () => { p += dir * .018; if (p >= 1 || p <= 0) { dir *= -1; p = Math.max(0, Math.min(1, p)); } meter.style.transform = `scaleX(${p})`; raf = requestAnimationFrame(swing); };
+  const roll = (to, done) => { const from = x, d = to - from, t0 = performance.now(), dur = 700 + Math.abs(d) * 2.2;
+    const step = now => { const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3); x = from + d * e; ball.style.transform = `translateX(${x}px)`; spin(x * 4); k < 1 ? requestAnimationFrame(step) : done(); }; requestAnimationFrame(step); };
+  const reset = () => { x = 0; strokes = 0; ball.style.transition = ''; ball.style.opacity = 1; ball.style.transform = 'translateX(0) scale(1)'; go.textContent = 'Putten'; out.textContent = 'Klicken, wenn die Kraft passt'; phase = 'aim'; raf = requestAnimationFrame(swing); };
+  go.addEventListener('click', () => {
+    if (phase === 'holed') return reset();
+    if (phase !== 'aim') return;
+    phase = 'rolling'; cancelAnimationFrame(raf); strokes++;
+    const remaining = target() - x, to = Math.max(0, Math.min(max(), x + Math.sign(remaining || 1) * p * pg.clientWidth * .95));
+    roll(to, () => {
+      const miss = Math.abs(target() - x);
+      if (miss < ball.offsetWidth * .45) { roll(target(), () => { ball.style.transition = 'transform .35s ease-in, opacity .35s'; ball.style.transform = `translateX(${x}px) translateY(1.2rem) scale(.4)`; ball.style.opacity = 0;
+        const names = ['Hole-in-One!', 'Birdie. Saubere Arbeit.', 'Par. Solide.', 'Bogey. Zählt trotzdem.'];
+        out.textContent = names[Math.min(strokes - 1, 3)] + ' (' + strokes + (strokes > 1 ? ' Schläge)' : ' Schlag)'); go.textContent = 'Noch mal'; phase = 'holed'; }); }
+      else { out.textContent = (x > target() ? 'Zu lang' : 'Zu kurz') + ' | Schlag ' + strokes; phase = 'aim'; raf = requestAnimationFrame(swing); }
+    });
+  });
+  raf = requestAnimationFrame(swing);
 }
 
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -123,7 +206,7 @@ await yieldTask();
 /* menu overlay */
 let menuTl = null;
 const setMenu = open => {
-  menuOpen = open; toggle.setAttribute('aria-expanded', open); toggle.classList.toggle('is-open', open);
+  menuOpen = open; html.classList.toggle('menu-open', open); sc && sc.classList.toggle('is-visible', !open && scrollY > innerHeight * .6); toggle.setAttribute('aria-expanded', open); toggle.classList.toggle('is-open', open);
   if (label) label.textContent = open ? 'Schließen' : 'Menü'; toggle.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü');
   if (open) { nav.classList.add('is-transparent'); nav.classList.remove('is-hidden'); lenis && lenis.stop(); }
   else { lenis && lenis.start(); menuOpen = false; onScroll(scrollY); }

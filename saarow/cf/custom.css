@@ -141,3 +141,22 @@ html,body{overflow-x:clip}
 @media screen and (max-width:767px){.map_canvas.maplibregl-map{position:relative}}
 /* gallery: the "Ansehen" circle replaces the system cursor */
 @media (hover:hover) and (pointer:fine){[data-gallery-item],[data-gallery-item] *,[data-gallery-center],[data-gallery-center] *,[data-day-image],[data-day-image] *{cursor:none}}
+/* consent notice + sticky booking bar (states set by site.js) */
+.consent_component.is-open{display:block}
+.consent_component.is-visible{opacity:1;transform:none}
+@media (max-width:991px){.sticky-cta_component{display:grid}.sticky-cta_component.is-visible{transform:none}
+  .consent_component{left:.75rem;right:.75rem;bottom:.75rem;width:auto;max-width:none;transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1),bottom .5s cubic-bezier(.22,1,.36,1)}
+  html.has-sticky-cta .consent_component{bottom:5.25rem}
+  html.has-sticky-cta .footer_component{padding-bottom:5rem}}
+.sticky-cta_primary:focus-visible,.sticky-cta_secondary:focus-visible{outline:2px solid var(--brand--sand);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.sticky-cta_component,.consent_component{transition:none}}
+/* live status badges */
+.home-status_badge{display:block;width:max-content;margin:.45rem 0 0 auto;padding:.15em .6em;border-radius:999px;font-size:.75rem;line-height:1.4;vertical-align:middle;white-space:nowrap;border:1px solid var(--brand--line)}
+.home-status_badge.is-open{background:var(--brand--forest);border-color:var(--brand--forest);color:var(--brand--warm-white)}
+.home-status_badge.is-soon{color:var(--brand--charcoal)}
+.home-status_badge.is-closed{color:var(--brand--charcoal-soft)}
+.home-status_dot.is-closed,.home-status_dot.is-soon{background-color:var(--brand--sand)}.home-status_dot.is-closed:after,.home-status_dot.is-soon:after{animation:none}
+/* map gate before consent */
+.map_canvas.is-gated{display:flex;align-items:center;justify-content:center;background:var(--brand--limestone)}
+.map_gate{display:flex;flex-direction:column;align-items:center;gap:1rem;max-width:20rem;padding:1.5rem;text-align:center}
+.map_gate-text{font-size:.875rem;color:var(--brand--charcoal-soft)}
