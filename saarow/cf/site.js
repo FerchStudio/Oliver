@@ -41,7 +41,7 @@ if (mapEl) {
     const map = new maplibregl.Map({ container: mapEl, style: st, center: [14.022, 52.248], zoom: 13.3, attributionControl: { compact: true }, cooperativeGestures: true, dragRotate: false, pitchWithRotate: false,
       locale: { 'CooperativeGesturesHandler.WindowsHelpText': 'Strg + Scrollen zum Zoomen', 'CooperativeGesturesHandler.MacHelpText': '⌘ + Scrollen zum Zoomen', 'CooperativeGesturesHandler.MobileHelpText': 'Mit zwei Fingern bewegen', 'NavigationControl.ZoomIn': 'Hineinzoomen', 'NavigationControl.ZoomOut': 'Herauszoomen' } });
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
-    const fit = () => { const b = new maplibregl.LngLatBounds(); COURSES.features.forEach(f => f.geometry.coordinates[0].forEach(c => b.extend(c)))
+    const fit = () => { const b = new maplibregl.LngLatBounds(); COURSES.features.forEach(f => f.geometry.coordinates[0].forEach(c => b.extend(c))); b.extend([14.02908, 52.2380]);
       const w = mapEl.clientWidth, d = w > 900; map.fitBounds(b, { padding: { top: 50, bottom: d ? 110 : 50, left: d ? Math.min(440, w * .38) : 30, right: d ? 60 : 30 }, duration: 0 }); };
     map.on('load', () => {
       map.addSource('courses', { type: 'geojson', data: COURSES });
