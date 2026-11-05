@@ -91,7 +91,9 @@ const sc = $('[data-sticky-cta]');
 if (sc && !/^\/startzeiten/.test(location.pathname)) {
   const ft = $('.footer_component'); let footIn = false;
   if (ft) new IntersectionObserver(es => { footIn = es[0].isIntersecting; upd(); }).observe(ft);
-  function upd() { const on = scrollY > innerHeight * .6 && !footIn && !html.classList.contains('menu-open'); sc.classList.toggle('is-visible', on); html.classList.toggle('has-sticky-cta', on); }
+  /* steps aside while a pinned or content-heavy section fills the screen, so it never covers its text */
+  const busy = () => $$('[data-courses],[data-day],[data-membership],[data-gallery]').some(el => { const r = (el.closest('.pin-spacer') || el).getBoundingClientRect(); return r.top < innerHeight * .9 && r.bottom > innerHeight * .1; });
+  function upd() { const on = scrollY > innerHeight * .6 && !footIn && !html.classList.contains('menu-open') && !busy(); sc.classList.toggle('is-visible', on); html.classList.toggle('has-sticky-cta', on); }
   addEventListener('scroll', upd, { passive: true }); upd();
   addEventListener('load', () => setTimeout(() => html.classList.toggle('has-wf-badge', !!$('.w-webflow-badge')), 300));
 } else if (sc) sc.remove();
@@ -192,6 +194,7 @@ if (location.hash.length > 1) addEventListener('load', () => { let t; try { t = 
 if (!$('[data-nav]')) return; /* utility pages (404) have no navbar */
 /* navbar: transparent over hero, solid after, hides on scroll down */
 const nav = $('[data-nav]'), toggle = $('[data-menu-toggle]'), menu = $('[data-menu]');
+menu && menu.setAttribute('data-lenis-prevent', ''); const lbx = $('[data-lightbox]'); lbx && lbx.setAttribute('data-lenis-prevent', '');
 const label = toggle && toggle.querySelector('.navbar_menu-label');
 let lastY = 0, menuOpen = false;
 const onScroll = y => {
