@@ -93,6 +93,7 @@ if (sc && !/^\/startzeiten/.test(location.pathname)) {
   if (ft) new IntersectionObserver(es => { footIn = es[0].isIntersecting; upd(); }).observe(ft);
   function upd() { const on = scrollY > innerHeight * .6 && !footIn && !html.classList.contains('menu-open'); sc.classList.toggle('is-visible', on); html.classList.toggle('has-sticky-cta', on); }
   addEventListener('scroll', upd, { passive: true }); upd();
+  addEventListener('load', () => setTimeout(() => html.classList.toggle('has-wf-badge', !!$('.w-webflow-badge')), 300));
 } else if (sc) sc.remove();
 
 /* live status: today's date and open/closed per row, in club time (Europe/Berlin) */
@@ -142,6 +143,7 @@ if (pg) {
   raf = requestAnimationFrame(swing);
 }
 
+if (!$('[data-nav]')) return; /* utility pages (404) have no navbar: stop after the light modules */
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* a11y: accessible names that match the visible text */
 $$('.navbar_logo-link').forEach(a => a.removeAttribute('aria-label'));
