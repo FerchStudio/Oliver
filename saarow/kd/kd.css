@@ -81,7 +81,7 @@
 .kd-type-k{font-size:.8rem;color:var(--fx-mute);display:flex;justify-content:space-between;gap:1rem}
 .kd-type-name{font-size:clamp(1.6rem,2.6vw,2.2rem);letter-spacing:-.02em;line-height:1.1}
 .kd-type-name.is-serif{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;letter-spacing:0}
-.kd-type-name.is-sans{font-family:Arial,Helvetica,sans-serif}
+.kd-type-name.is-sans{font-family:Argon,Arial,Helvetica,sans-serif}
 .kd-weights{display:flex;gap:1rem;font-family:'Cormorant Garamond',Georgia,serif;font-size:1.5rem}
 .kd-type-p{margin:0;font-size:.92rem;line-height:1.5;color:var(--fx-mute)}
 .kd-swatches{display:grid;grid-template-columns:repeat(7,1fr);gap:.75rem;margin-bottom:clamp(3rem,6vw,5rem)}
