@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="limestone" class="gc-loading">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Grove Club | Find your own pace</title>
+<meta name="description" content="The Grove Club: a design concept for a private golf and country club near Hamburg. Eighteen holes, a clubhouse, a golf academy and a community worth returning to.">
+<meta name="theme-color" content="#171A27">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=zodiak@300,400,500,300i,400i&f[]=switzer@300,400,500&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/commit-mono@5/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
+<style>
+/* ============ Tokens ============ */
+:root{
+  --f-display:"Zodiak","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --f-body:"Switzer","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"Commit Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --pad:clamp(1.25rem,4.2vw,4.5rem);
+  --max:96rem;
+  --r:.25rem;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-io:cubic-bezier(.65,.05,0,1);
+  --nav-h:5rem;
+}
+/* Version A: Executive Navy | Limestone | Legacy Green */
+[data-theme="limestone"]{
+  --paper:#E9E7E1; --paper-2:#DFDCD4; --paper-3:#D3CFC5;
+  --ink:#171A27; --ink-soft:rgba(23,26,39,.68); --ink-faint:rgba(23,26,39,.42);
+  --deep:#171A27; --on-deep:#E9E7E1; --on-deep-soft:rgba(233,231,225,.66);
+  --field:#0E402D; --on-field:#E9E7E1; --on-field-soft:rgba(233,231,225,.7);
+  --hi:#E9E7E1;            /* highlight on dark surfaces */
+  --accent:#0E402D;        /* accent on light surfaces */
+  --tint:#B7C3B5;          /* quiet sage, derived */
+  --water:#7E93A0;
+  --line:rgba(23,26,39,.16); --line-d:rgba(233,231,225,.18);
+  --ok:#0E402D; --err:#8A2E24;
+  --ph-sky:#CBCFC7; --ph-mid:#8E9B8C; --ph-ground:#0E402D; --ph-warm:#B9AE9B; --ph-dark:#171A27;
+}
+/* Version B: Heath greens (Green | Dark Green | Mint | Radiant | Neon | Purple) */
+[data-theme="heath"]{
+  --paper:#EBFFF5; --paper-2:#DDF5E9; --paper-3:#CBE9DA;
+  --ink:#183132; --ink-soft:rgba(24,49,50,.7); --ink-faint:rgba(24,49,50,.45);
+  --deep:#183132; --on-deep:#EBFFF5; --on-deep-soft:rgba(235,255,245,.66);
+  --field:#004D43; --on-field:#EBFFF5; --on-field-soft:rgba(235,255,245,.72);
+  --hi:#D0FF71;
+  --accent:#004D43;
+  --tint:#27EAA6;
+  --water:#8F93FF;
+  --line:rgba(24,49,50,.16); --line-d:rgba(235,255,245,.18);
+  --ok:#004D43; --err:#A2321F;
+  --ph-sky:#CDEFE0; --ph-mid:#5FA88D; --ph-ground:#004D43; --ph-warm:#A9C9B4; --ph-dark:#183132;
+}
+
+/* ============ Base ============ */
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-weight:300;font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4,p,figure,blockquote,dl,dd,ul,ol{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+img,svg,video{display:block;max-width:100%}
+::selection{background:var(--field);color:var(--on-field)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:2px}
+.is-dark :focus-visible,.is-field :focus-visible{outline-color:var(--hi)}
+.gc-sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.gc-skip{position:fixed;left:1rem;top:-5rem;z-index:300;background:var(--deep);color:var(--on-deep);padding:.8rem 1.1rem;font-family:var(--f-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;transition:top .3s var(--ease)}
+.gc-skip:focus{top:1rem}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+
+/* ============ Type ============ */
+.gc-mono{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;line-height:1.35;font-weight:400}
+.gc-display{font-family:var(--f-display);font-weight:300;letter-spacing:-.025em;line-height:.95}
+.gc-h2{font-family:var(--f-display);font-weight:300;font-size:clamp(2.6rem,6.2vw,6.4rem);line-height:.98;letter-spacing:-.028em}
+.gc-h3{font-family:var(--f-display);font-weight:400;font-size:clamp(1.6rem,2.4vw,2.3rem);line-height:1.08;letter-spacing:-.018em}
+.gc-lede{font-size:clamp(1.15rem,1.5vw,1.4rem);line-height:1.5;font-weight:300;letter-spacing:-.005em}
+.gc-body-soft{color:var(--ink-soft)}
+.gc-italic{font-style:italic}
+.gc-line-mask{overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+[data-split]>div,.gc-hero_title>div{padding-bottom:.14em;margin-bottom:-.14em}
+
+/* ============ Layout ============ */
+.gc-wrap{max-width:var(--max);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+.gc-section{position:relative;padding:clamp(6rem,13vw,11rem) 0}
+.is-dark{background:var(--deep);color:var(--on-deep)}
+.is-field{background:var(--field);color:var(--on-field)}
+.is-paper2{background:var(--paper-2)}
+.gc-eyebrow{display:flex;align-items:center;gap:.9rem;margin-bottom:2rem}
+.gc-eyebrow i{display:block;width:2.25rem;height:1px;background:currentColor;opacity:.5}
+.gc-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(1rem,2vw,2rem)}
+
+/* ============ Image plates (placeholder until real images exist) ============ */
+.gc-plate{position:relative;overflow:hidden;background:var(--ph-sky);isolation:isolate}
+.gc-plate::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--ph,linear-gradient(180deg,var(--ph-sky) 0%,var(--ph-mid) 56%,var(--ph-ground) 56.4%,var(--ph-ground) 100%))}
+.gc-plate::after{content:"";position:absolute;inset:0;z-index:-1;opacity:.22;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.gc-plate.ph-land{--ph:linear-gradient(180deg,var(--ph-sky) 0%,color-mix(in srgb,var(--ph-sky) 70%,var(--ph-mid)) 52%,var(--ph-mid) 58%,var(--ph-ground) 72%,var(--ph-ground) 100%)}
+.gc-plate.ph-warm{--ph:linear-gradient(160deg,var(--ph-warm) 0%,color-mix(in srgb,var(--ph-warm) 55%,var(--ph-dark)) 62%,var(--ph-dark) 100%)}
+.gc-plate.ph-detail{--ph:radial-gradient(70% 60% at 50% 55%,var(--ph-mid) 0%,var(--ph-ground) 70%,var(--ph-dark) 100%)}
+.gc-plate.ph-dusk{--ph:linear-gradient(180deg,color-mix(in srgb,var(--ph-warm) 60%,var(--ph-sky)) 0%,var(--ph-warm) 45%,color-mix(in srgb,var(--ph-ground) 70%,var(--ph-dark)) 62%,var(--ph-dark) 100%)}
+.gc-plate img,.gc-plate video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gc-plate_media{position:absolute;inset:0}
+.gc-plate_id{position:absolute;left:1rem;bottom:1rem;z-index:2;display:flex;gap:.6rem;align-items:center;padding:.35rem .55rem;border-radius:2px;background:rgba(0,0,0,.18);color:#fff;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);font-family:var(--f-mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;pointer-events:none}
+.gc-plate.has-img .gc-plate_id{display:none}
+
+/* ============ Buttons & links ============ */
+.gc-btn{--b-bg:var(--deep);--b-fg:var(--on-deep);--b-fill:var(--field);--b-fill-fg:var(--on-field);position:relative;display:inline-flex;align-items:center;gap:.85rem;height:3.4rem;padding:0 1.6rem;border-radius:3rem;background:var(--b-bg);color:var(--b-fg);font-weight:400;font-size:.98rem;letter-spacing:-.003em;overflow:hidden;isolation:isolate;white-space:nowrap;transition:color .5s var(--ease),box-shadow .4s var(--ease),transform .25s var(--ease)}
+.gc-btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--b-fill);border-radius:inherit;transform:translateY(101%);transition:transform .6s var(--ease-io)}
+.gc-btn:hover::before,.gc-btn:focus-visible::before{transform:translateY(0)}
+.gc-btn:hover,.gc-btn:focus-visible{color:var(--b-fill-fg)}
+.gc-btn:active{transform:scale(.97)}
+.gc-btn_arrow{width:1.05rem;height:1.05rem;flex:none;overflow:hidden;position:relative}
+.gc-btn_arrow svg{position:absolute;inset:0;width:100%;height:100%;transition:transform .55s var(--ease-io)}
+.gc-btn_arrow svg+svg{transform:translateX(-140%)}
+.gc-btn:hover .gc-btn_arrow svg:first-child,.gc-btn:focus-visible .gc-btn_arrow svg:first-child{transform:translateX(140%)}
+.gc-btn:hover .gc-btn_arrow svg+svg,.gc-btn:focus-visible .gc-btn_arrow svg+svg{transform:translateX(0)}
+.gc-btn.is-light{--b-bg:var(--paper);--b-fg:var(--ink);--b-fill:var(--hi);--b-fill-fg:var(--deep)}
+[data-theme="limestone"] .gc-btn.is-light{--b-fill:var(--field);--b-fill-fg:var(--on-field)}
+.gc-btn.is-ghost{--b-bg:transparent;--b-fg:currentColor;box-shadow:inset 0 0 0 1px currentColor}
+.gc-btn.is-ghost:hover,.gc-btn.is-ghost:focus-visible{box-shadow:inset 0 0 0 1px var(--b-fill)}
+.is-dark .gc-btn.is-ghost,.is-field .gc-btn.is-ghost{--b-fill:var(--on-deep);--b-fill-fg:var(--deep)}
+.gc-link{position:relative;display:inline-flex;align-items:center;gap:.5rem;padding-bottom:.2rem}
+.gc-link::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor;transform:scaleX(.18);transform-origin:left;transition:transform .6s var(--ease-io)}
+.gc-link:hover::after,.gc-link:focus-visible::after{transform:scaleX(1)}
+.gc-link:active{opacity:.7}
+
+/* ============ Loader ============ */
+.gc-loader{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:var(--deep);color:var(--on-deep)}
+.gc-loader_mark{width:4.5rem;height:4.5rem}
+.gc-loader_mark circle,.gc-loader_mark path{fill:none;stroke:currentColor;stroke-width:1.2}
+.gc-loader_word{position:absolute;left:50%;bottom:clamp(2rem,6vh,4rem);transform:translateX(-50%);opacity:.6}
+html:not(.gc-loading) .gc-loader{display:none}
+
+/* ============ Navigation ============ */
+.gc-nav{position:fixed;inset:0 0 auto 0;z-index:100;height:var(--nav-h);color:var(--on-deep);transition:color .5s var(--ease),transform .6s var(--ease)}
+.gc-nav_bg{position:absolute;inset:0;background:color-mix(in srgb,var(--paper) 86%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);opacity:0;transition:opacity .5s var(--ease);border-bottom:1px solid var(--line)}
+.gc-nav.is-solid{color:var(--ink)}
+.gc-nav.is-solid .gc-nav_bg{opacity:1}
+.gc-nav.is-hidden{transform:translateY(-105%)}
+.gc-nav_inner{position:relative;height:100%;display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.gc-logo{white-space:nowrap;display:inline-flex;align-items:center;gap:.7rem;font-family:var(--f-display);font-size:1.28rem;letter-spacing:-.01em;font-weight:400;line-height:1}
+.gc-logo svg{width:1.9rem;height:1.9rem;flex:none}
+.gc-logo svg *{fill:none;stroke:currentColor;stroke-width:1.3}
+.gc-logo_sub{display:block;font-family:var(--f-mono);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;opacity:.6;margin-top:.3rem}
+.gc-nav_links{display:flex;gap:clamp(1.2rem,2.2vw,2.4rem);font-size:.92rem}
+.gc-nav_links a{position:relative;padding:.4rem 0;opacity:.82;transition:opacity .3s}
+.gc-nav_links a::after{content:"";position:absolute;left:0;right:0;bottom:.1rem;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .55s var(--ease-io)}
+.gc-nav_links a:hover,.gc-nav_links a:focus-visible,.gc-nav_links a[aria-current="true"]{opacity:1}
+.gc-nav_links a:hover::after,.gc-nav_links a:focus-visible::after,.gc-nav_links a[aria-current="true"]::after{transform:scaleX(1);transform-origin:left}
+.gc-nav_cta{display:flex;align-items:center;gap:1rem}
+.gc-nav .gc-btn{height:2.75rem;padding:0 1.2rem;font-size:.9rem;--b-bg:var(--on-deep);--b-fg:var(--deep);--b-fill:var(--field);--b-fill-fg:var(--on-field)}
+.gc-nav.is-solid .gc-btn{--b-bg:var(--deep);--b-fg:var(--on-deep)}
+.gc-menu-btn{display:none;width:2.75rem;height:2.75rem;border-radius:50%;box-shadow:inset 0 0 0 1px currentColor;place-items:center;transition:background .3s,color .3s}
+.gc-menu-btn:hover{background:currentColor}
+.gc-menu-btn:hover span{background:var(--paper)}
+.gc-menu-btn span{display:block;width:1rem;height:1px;background:currentColor;transition:transform .45s var(--ease),background .3s}
+.gc-menu-btn span+span{margin-top:5px}
+.gc-menu-btn[aria-expanded="true"] span:first-child{transform:translateY(3px) rotate(45deg)}
+.gc-menu-btn[aria-expanded="true"] span+span{transform:translateY(-3px) rotate(-45deg)}
+.gc-menu{position:fixed;inset:0;z-index:99;background:var(--deep);color:var(--on-deep);padding:calc(var(--nav-h) + 2rem) var(--pad) 2rem;display:flex;flex-direction:column;justify-content:space-between;visibility:hidden;clip-path:inset(0 0 100% 0)}
+.gc-menu ul{display:flex;flex-direction:column;gap:.2rem}
+.gc-menu li a{display:flex;align-items:baseline;gap:1rem;font-family:var(--f-display);font-weight:300;font-size:clamp(2.2rem,9vw,3.4rem);line-height:1.15;letter-spacing:-.02em}
+.gc-menu li a .gc-mono{opacity:.5}
+.gc-menu li a:hover,.gc-menu li a:focus-visible{color:var(--hi)}
+.gc-menu_foot{display:flex;justify-content:space-between;align-items:end;gap:1rem;opacity:.7}
+
+/* ============ Concept badge ============ */
+.gc-concept{position:fixed;left:1rem;bottom:1rem;z-index:90;display:flex;align-items:center;gap:.55rem;padding:.5rem .75rem;border-radius:2rem;background:var(--paper);color:var(--ink);box-shadow:0 0 0 1px var(--line),0 .5rem 2rem -1rem rgba(0,0,0,.35);font-family:var(--f-mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase}
+.gc-concept i{width:.45rem;height:.45rem;border-radius:50%;background:var(--accent)}
+[data-theme="heath"] .gc-concept i{background:var(--water)}
+
+/* ============ 1 Hero ============ */
+.gc-hero{position:relative;height:100svh;min-height:38rem;color:var(--on-deep);overflow:hidden;background:var(--deep)}
+.gc-hero_media{position:absolute;inset:0}
+.gc-hero_media .gc-plate{position:absolute;inset:-6% 0 0 0}
+.gc-hero_shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 48%,rgba(0,0,0,.5) 100%);pointer-events:none}
+.gc-hero_inner{position:relative;height:100%;display:grid;grid-template-rows:1fr auto;padding-top:var(--nav-h);padding-bottom:clamp(4rem,8vh,5.5rem)}
+.gc-hero_title{align-self:end;font-family:var(--f-display);font-weight:300;font-size:clamp(3.6rem,11.2vw,12.5rem);line-height:.9;letter-spacing:-.035em;padding-bottom:clamp(1.5rem,4vh,3rem)}
+.gc-hero_title em{font-style:italic;font-weight:300}
+.gc-hero_meta{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:1.5rem;border-top:1px solid var(--line-d);padding-top:1.25rem}
+.gc-hero_meta p{max-width:24rem;color:var(--on-deep-soft);font-size:1rem}
+.gc-scrollcue{display:inline-flex;flex-direction:column;align-items:center;gap:.7rem;opacity:.8;transition:opacity .3s}
+.gc-scrollcue:hover,.gc-scrollcue:focus-visible{opacity:1}
+.gc-scrollcue_line{width:1px;height:2.6rem;background:var(--line-d);position:relative;overflow:hidden}
+.gc-scrollcue_line::after{content:"";position:absolute;left:0;top:-40%;width:100%;height:40%;background:currentColor;animation:cue 2.4s var(--ease-io) infinite}
+@keyframes cue{0%{top:-40%}60%,100%{top:100%}}
+.gc-hero_loc{justify-self:end;text-align:right}
+
+/* ============ 2 Intro / philosophy ============ */
+.gc-intro_top{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(1rem,2vw,2rem);align-items:start}
+.gc-intro_label{grid-column:1 / span 3}
+.gc-intro_title{grid-column:4 / span 9}
+.gc-intro_body{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(1rem,2vw,2rem);margin-top:clamp(4rem,8vw,7rem);align-items:end}
+.gc-intro_img{grid-column:1 / span 5;aspect-ratio:4/5}
+.gc-intro_text{grid-column:7 / span 5;display:flex;flex-direction:column;gap:1.4rem}
+.gc-intro_text p{color:var(--ink-soft)}
+.gc-pillars{display:grid;grid-template-columns:repeat(3,1fr);margin-top:2.5rem;border-top:1px solid var(--line)}
+.gc-pillars li{padding:1.25rem 1rem 0 0;display:flex;flex-direction:column;gap:.35rem}
+.gc-pillars b{font-family:var(--f-display);font-weight:400;font-size:1.35rem;letter-spacing:-.01em}
+.gc-pillars span{font-size:.9rem;color:var(--ink-soft);line-height:1.45}
+.gc-philo{padding:clamp(6rem,12vw,10rem) 0}
+.gc-philo_quote{font-family:var(--f-display);font-weight:300;font-size:clamp(2.3rem,5.4vw,5.6rem);line-height:1.02;letter-spacing:-.028em;max-width:17ch}
+.gc-philo_quote em{font-style:italic}
+.gc-philo_row{display:flex;justify-content:space-between;gap:2rem;align-items:end;margin-top:3rem;flex-wrap:wrap}
+.gc-philo_row p{max-width:30rem;color:var(--on-deep-soft)}
+
+/* ============ 3 Course ============ */
+.gc-course_head{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(1rem,2vw,2rem);align-items:end;margin-bottom:clamp(3rem,6vw,5rem)}
+.gc-course_head .gc-h2{grid-column:1 / span 8}
+.gc-course_head p{grid-column:9 / span 4;color:var(--on-field-soft)}
+.gc-chapters{position:relative}
+.gc-chapters_scroll{height:100vh;display:flex;align-items:center}
+.gc-chapters_inner{width:100%;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(1rem,2vw,2rem);align-items:center}
+.gc-chapters_visual{grid-column:1 / span 7;position:relative;aspect-ratio:4/3;max-height:74vh}
+.gc-chapters_img{position:absolute;inset:0;clip-path:inset(50% round var(--r))}
+.gc-chapters_img:first-child{clip-path:inset(0% round var(--r))}
+.gc-chapters_img .gc-plate{position:absolute;inset:0}
+.gc-chapters_text{grid-column:9 / span 4;position:relative;min-height:22rem}
+.gc-chapter{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:1.2rem;visibility:hidden}
+.gc-chapter:first-child{visibility:visible}
+.gc-chapter_num{display:flex;align-items:center;gap:1rem;color:var(--hi)}
+.gc-chapter_num b{font-family:var(--f-display);font-weight:300;font-size:4.5rem;line-height:.8;letter-spacing:-.04em;color:var(--on-field)}
+.gc-chapter p{color:var(--on-field-soft)}
+.gc-chapter_facts{display:flex;gap:1.5rem;padding-top:1rem;border-top:1px solid var(--line-d)}
+.gc-chapters_progress{position:absolute;left:var(--pad);right:var(--pad);bottom:clamp(1.5rem,4vh,2.5rem);height:1px;background:var(--line-d)}
+.gc-chapters_progress i{position:absolute;inset:0;background:var(--hi);transform:scaleX(0);transform-origin:left}
+
+/* Hole explorer */
+.gc-holes{margin-top:clamp(5rem,10vw,8rem);padding-top:clamp(3rem,6vw,4rem);border-top:1px solid var(--line-d)}
+.gc-holes_head{display:flex;justify-content:space-between;align-items:end;gap:2rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.gc-holes_head .gc-h3{max-width:22ch}
+.gc-holes_tabs{display:grid;grid-template-columns:repeat(18,minmax(0,1fr));gap:.35rem;margin-bottom:2.5rem}
+.gc-holes_tabs button{text-align:center;position:relative;height:3rem;border-radius:var(--r);box-shadow:inset 0 0 0 1px var(--line-d);font-family:var(--f-mono);font-size:.78rem;color:var(--on-field-soft);transition:background .35s var(--ease),color .35s var(--ease),box-shadow .35s var(--ease)}
+.gc-holes_tabs button:hover{box-shadow:inset 0 0 0 1px var(--on-field);color:var(--on-field)}
+.gc-holes_tabs button[aria-selected="true"]{background:var(--hi);color:var(--deep);box-shadow:none}
+[data-theme="limestone"] .gc-holes_tabs button[aria-selected="true"]{background:var(--on-field);color:var(--field)}
+.gc-holes_tabs button:active{transform:scale(.95)}
+.gc-holes_tabs .is-turn{margin-right:.6rem}
+.gc-holes_panel{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(1rem,2vw,2rem);align-items:center;min-height:26rem}
+.gc-hole_svg{grid-column:1 / span 5;aspect-ratio:1;max-height:30rem;width:100%;background:color-mix(in srgb,var(--field) 82%,#000);border-radius:var(--r)}
+.gc-hole_info{grid-column:7 / span 6;display:flex;flex-direction:column;gap:1.4rem}
+.gc-hole_top{display:flex;align-items:end;gap:1.5rem}
+.gc-hole_no{font-family:var(--f-display);font-weight:300;font-size:clamp(5rem,10vw,9rem);line-height:.78;letter-spacing:-.05em}
+.gc-hole_name{font-family:var(--f-display);font-size:clamp(1.6rem,2.6vw,2.4rem);font-style:italic;font-weight:300;line-height:1.05;padding-bottom:.4rem}
+.gc-hole_stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line-d);border-bottom:1px solid var(--line-d)}
+.gc-hole_stats div{padding:1rem 0;display:flex;flex-direction:column;gap:.3rem}
+.gc-hole_stats div+div{padding-left:1.25rem;border-left:1px solid var(--line-d)}
+.gc-hole_stats dd{font-family:var(--f-display);font-size:1.9rem;font-weight:300;letter-spacing:-.02em;line-height:1}
+.gc-hole_stats dt{color:var(--on-field-soft)}
+.gc-hole_note{color:var(--on-field-soft);max-width:34rem;min-height:3.2em}
+.gc-hole_nav{display:flex;gap:.6rem}
+.gc-round{width:3rem;height:3rem;border-radius:50%;display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--line-d);transition:background .35s var(--ease),color .35s var(--ease),box-shadow .35s}
+.gc-round svg{width:1rem;height:1rem}
+.gc-round:hover,.gc-round:focus-visible{background:var(--on-field);color:var(--field);box-shadow:none}
+.gc-round:active{transform:scale(.93)}
+.gc-round:disabled{opacity:.3;pointer-events:none}
+.gc-hole_svg .h-rough{fill:color-mix(in srgb,var(--field) 70%,#000)}
+.gc-hole_svg .h-fair{fill:color-mix(in srgb,var(--tint) 34%,var(--field));stroke:none}
+.gc-hole_svg .h-green{fill:color-mix(in srgb,var(--tint) 60%,var(--field))}
+.gc-hole_svg .h-tee{fill:var(--on-field)}
+.gc-hole_svg .h-bunker{fill:var(--paper);opacity:.85}
+.gc-hole_svg .h-water{fill:var(--water);opacity:.75}
+.gc-hole_svg .h-line{fill:none;stroke:var(--hi);stroke-width:1.4;stroke-dasharray:4 5}
+.gc-hole_svg .h-flag{stroke:var(--on-field);stroke-width:1.4}
+.gc-hole_svg .h-flagc{fill:var(--hi)}
+.gc-hole_svg .h-tree{fill:color-mix(in srgb,var(--field) 55%,#000)}
+.gc-hole_svg text{font-family:var(--f-mono);font-size:9px;letter-spacing:.08em;fill:var(--on-field-soft);text-transform:uppercase}
+
+/* ============ 4 Membership ============ */
+.gc-mem_head{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(1rem,2vw,2rem);align-items:end;margin-bottom:clamp(3rem,6vw,5rem)}
+.gc-mem_head .gc-h2{grid-column:1 / span 7}
+.gc-mem_head p{grid-column:9 / span 4;color:var(--ink-soft)}
+.gc-mem{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(1rem,2vw,2rem);align-items:start}
+.gc-mem_list{grid-column:1 / span 6;display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.gc-mem_opt{position:relative;display:grid;grid-template-columns:3.2rem 1fr auto;gap:1rem;align-items:center;padding:1.6rem .25rem;border-bottom:1px solid var(--line);width:100%;transition:padding .5s var(--ease),color .3s}
+.gc-mem_opt::before{content:"";position:absolute;inset:0;background:var(--paper-2);transform:scaleY(0);transform-origin:bottom;transition:transform .55s var(--ease-io);z-index:-1}
+.gc-mem_opt:hover::before{transform:scaleY(1)}
+.gc-mem_opt:hover{padding-left:1rem}
+.gc-mem_opt[aria-pressed="true"]{padding-left:1rem}
+.gc-mem_opt[aria-pressed="true"]::before{transform:scaleY(1);background:var(--deep)}
+.gc-mem_opt[aria-pressed="true"]{color:var(--on-deep)}
+.gc-mem_opt{isolation:isolate}
+.gc-mem_opt .gc-mono{opacity:.55}
+.gc-mem_opt b{font-family:var(--f-display);font-weight:400;font-size:clamp(1.5rem,2.4vw,2.2rem);letter-spacing:-.018em;line-height:1.05}
+.gc-mem_opt small{display:block;font-size:.9rem;opacity:.7;margin-top:.35rem;font-weight:300}
+.gc-mem_dot{width:2.3rem;height:2.3rem;border-radius:50%;box-shadow:inset 0 0 0 1px currentColor;display:grid;place-items:center;opacity:.6;transition:opacity .3s,background .3s,transform .5s var(--ease)}
+.gc-mem_dot svg{width:.9rem;height:.9rem}
+.gc-mem_opt:hover .gc-mem_dot{opacity:1;transform:rotate(-45deg)}
+.gc-mem_opt[aria-pressed="true"] .gc-mem_dot{opacity:1;background:var(--hi);color:var(--deep);box-shadow:none;transform:none}
+[data-theme="limestone"] .gc-mem_opt[aria-pressed="true"] .gc-mem_dot{background:var(--on-deep)}
+.gc-mem_detail{grid-column:8 / span 5;position:sticky;top:calc(var(--nav-h) + 2rem);display:flex;flex-direction:column;gap:1.5rem}
+.gc-mem_img{aspect-ratio:3/2;border-radius:var(--r)}
+.gc-mem_card{display:flex;flex-direction:column;gap:1.2rem}
+.gc-mem_card h3{font-family:var(--f-display);font-weight:300;font-size:clamp(2rem,3vw,2.8rem);letter-spacing:-.02em;line-height:1}
+.gc-mem_card p{color:var(--ink-soft)}
+.gc-checks{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.gc-checks li{display:grid;grid-template-columns:1.4rem 1fr;gap:.75rem;padding:.8rem 0;border-bottom:1px solid var(--line);font-size:.97rem}
+.gc-checks svg{width:1rem;height:1rem;margin-top:.3rem;color:var(--accent)}
+.gc-mem_note{color:var(--ink-faint)}
+
+/* ============ 5 Clubhouse ============ */
+.gc-club{overflow:hidden}
+.gc-club_head{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(1rem,2vw,2rem)}
+.gc-club_head .gc-h2{grid-column:1 / span 9}
+.gc-club_hero{margin-top:clamp(3rem,6vw,5rem);aspect-ratio:21/9;border-radius:var(--r)}
+.gc-club_row{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(1rem,2vw,2rem);margin-top:clamp(3rem,7vw,6rem);align-items:start}
+.gc-club_copy{grid-column:1 / span 4;display:flex;flex-direction:column;gap:1.4rem;padding-top:2rem}
+.gc-club_copy p{color:var(--on-deep-soft)}
+.gc-club_a{grid-column:6 / span 3;aspect-ratio:4/5;border-radius:var(--r);margin-top:6rem}
+.gc-club_b{grid-column:9 / span 4;aspect-ratio:4/5;border-radius:var(--r)}
+.gc-club_spaces{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2vw,2rem);margin-top:clamp(4rem,8vw,6rem);border-top:1px solid var(--line-d)}
+.gc-club_spaces li{padding-top:1.5rem;display:flex;flex-direction:column;gap:.6rem}
+.gc-club_spaces h3{font-family:var(--f-display);font-weight:400;font-size:1.6rem;letter-spacing:-.015em}
+.gc-club_spaces p{color:var(--on-deep-soft);font-size:.97rem}
+
+/* ============ 6 Academy ============ */
+.gc-acad_head{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(1rem,2vw,2rem);align-items:end;margin-bottom:clamp(3rem,6vw,5rem)}
+.gc-acad_head .gc-h2{grid-column:1 / span 7}
+.gc-acad_head p{grid-column:9 / span 4;color:var(--ink-soft)}
+.gc-acad_list{border-top:1px solid var(--line);position:relative}
+.gc-acad_row{display:grid;grid-template-columns:5rem minmax(0,1.2fr) minmax(0,1fr) auto;gap:1.5rem;align-items:center;padding:2rem .25rem;border-bottom:1px solid var(--line);transition:padding .55s var(--ease),color .3s}
+.gc-acad_row:hover,.gc-acad_row:focus-within{padding-left:1.25rem}
+.gc-acad_row h3{font-family:var(--f-display);font-weight:300;font-size:clamp(1.8rem,3.4vw,3.2rem);letter-spacing:-.025em;line-height:1}
+.gc-acad_row p{color:var(--ink-soft);font-size:.97rem}
+.gc-acad_row .gc-mono{opacity:.55}
+.gc-acad_tag{justify-self:end}
+.gc-acad_thumb{display:none}
+.gc-acad_preview{position:fixed;left:0;top:0;width:clamp(14rem,20vw,19rem);aspect-ratio:4/5;z-index:50;pointer-events:none;border-radius:var(--r);overflow:hidden;opacity:0;transform:scale(.85)}
+.gc-acad_preview .gc-plate{position:absolute;inset:0;opacity:0;transition:opacity .4s var(--ease)}
+.gc-acad_preview .gc-plate.is-on{opacity:1}
+
+/* ============ 7 Events ============ */
+.gc-events_head{display:flex;justify-content:space-between;align-items:end;gap:2rem;flex-wrap:wrap;margin-bottom:clamp(3rem,6vw,5rem)}
+.gc-events_head .gc-h2{max-width:14ch}
+.gc-events_head p{max-width:26rem;color:var(--ink-soft)}
+.gc-events{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(1rem,2vw,2rem);row-gap:2rem}
+.gc-events_img{grid-column:1 / span 5;aspect-ratio:4/5;border-radius:var(--r);position:sticky;top:calc(var(--nav-h) + 2rem)}
+.gc-seasons{grid-column:7 / span 6;display:flex;flex-direction:column}
+.gc-season{border-top:1px solid var(--line);padding:1.8rem 0 2.2rem}
+.gc-season:last-child{border-bottom:1px solid var(--line)}
+.gc-season_top{display:flex;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+.gc-season h3{font-family:var(--f-display);font-weight:400;font-size:clamp(1.6rem,2.4vw,2.2rem);letter-spacing:-.02em;line-height:1.05;margin-bottom:.6rem}
+.gc-season p{color:var(--ink-soft);max-width:34rem}
+.gc-season_tags{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:1.1rem}
+.gc-season_tags span{padding:.35rem .7rem;border-radius:2rem;box-shadow:inset 0 0 0 1px var(--line);font-size:.82rem;transition:background .3s,color .3s}
+.gc-season:hover .gc-season_tags span{box-shadow:inset 0 0 0 1px var(--ink-faint)}
+
+/* ============ 8 Gallery ============ */
+.gc-gal{overflow:hidden}
+.gc-gal_head{display:flex;justify-content:space-between;align-items:end;gap:2rem;flex-wrap:wrap;margin-bottom:3rem}
+.gc-gal_head p{max-width:24rem;color:var(--on-deep-soft)}
+.gc-gal_track{display:flex;gap:clamp(1rem,1.6vw,1.6rem);padding:0 var(--pad);width:max-content;align-items:flex-end}
+.gc-gal_item{position:relative;flex:none;border-radius:var(--r);overflow:hidden;cursor:zoom-in;outline-offset:6px}
+.gc-gal_item .gc-plate{position:absolute;inset:0;transition:transform 1.1s var(--ease)}
+.gc-gal_item:hover .gc-plate,.gc-gal_item:focus-visible .gc-plate{transform:scale(1.045)}
+.gc-gal_item:active .gc-plate{transform:scale(1.02)}
+.gc-gal_item{height:min(56vh,34rem)}
+.gc-gal_item.is-p{aspect-ratio:4/5}
+.gc-gal_item.is-l{aspect-ratio:3/2}
+.gc-gal_item.is-s{aspect-ratio:1;height:min(40vh,24rem)}
+.gc-gal{padding-top:clamp(5rem,9vw,8rem);padding-bottom:clamp(3rem,5vw,4.5rem)}
+.gc-gal_cap{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:1rem;padding:1rem;color:#fff;background:linear-gradient(0deg,rgba(0,0,0,.45),transparent);transform:translateY(100%);transition:transform .55s var(--ease)}
+.gc-gal_item:hover .gc-gal_cap,.gc-gal_item:focus-visible .gc-gal_cap{transform:none}
+.gc-gal_foot{display:flex;justify-content:space-between;align-items:center;gap:2rem;margin-top:2.5rem}
+.gc-gal_bar{flex:1;height:1px;background:var(--line-d);position:relative}
+.gc-gal_bar i{position:absolute;inset:0;background:var(--hi);transform:scaleX(0);transform-origin:left}
+.gc-lightbox{border:0;padding:0;margin:0;width:100vw;height:100vh;max-width:none;max-height:none;background:var(--deep);color:var(--on-deep)}
+.gc-lightbox::backdrop{background:transparent}
+.gc-lightbox_inner{position:absolute;inset:0;display:grid;grid-template-rows:auto 1fr auto;padding:1.25rem var(--pad) 1.75rem}
+.gc-lightbox_top,.gc-lightbox_bot{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.gc-lightbox_stage{position:relative;margin:1.25rem 0;display:grid;place-items:center;min-height:0}
+.gc-lightbox_stage .gc-plate{position:relative;border-radius:var(--r)}
+.gc-lightbox .gc-round{box-shadow:inset 0 0 0 1px var(--line-d)}
+.gc-lightbox .gc-round:hover,.gc-lightbox .gc-round:focus-visible{background:var(--on-deep);color:var(--deep)}
+
+/* ============ 9 Application ============ */
+.gc-apply{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(1rem,2vw,2rem);align-items:start}
+.gc-apply_intro{grid-column:1 / span 5;position:sticky;top:calc(var(--nav-h) + 2rem);display:flex;flex-direction:column;gap:1.6rem}
+.gc-apply_intro p{color:var(--ink-soft);max-width:28rem}
+.gc-steps{display:flex;flex-direction:column;border-top:1px solid var(--line);margin-top:.5rem}
+.gc-steps li{display:grid;grid-template-columns:2.5rem 1fr;gap:.75rem;padding:1rem 0;border-bottom:1px solid var(--line);font-size:.97rem}
+.gc-steps .gc-mono{padding-top:.25rem;opacity:.55}
+.gc-form-wrap{grid-column:7 / span 6}
+.gc-form{display:flex;flex-direction:column;gap:1.6rem}
+.gc-form_row{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem}
+.gc-field{display:flex;flex-direction:column;gap:.55rem;position:relative}
+.gc-field label,.gc-fieldset legend{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.gc-field label b,.gc-fieldset legend b{color:var(--accent);font-weight:400}
+.gc-input{width:100%;height:3.4rem;padding:0 1rem;border:0;border-radius:var(--r);background:var(--paper);box-shadow:inset 0 0 0 1px var(--line);font:inherit;font-weight:300;color:var(--ink);transition:box-shadow .3s var(--ease),background .3s}
+textarea.gc-input{height:auto;min-height:8rem;padding:.9rem 1rem;resize:vertical;line-height:1.5}
+select.gc-input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23777' stroke-width='1.3'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;background-size:.7rem;padding-right:2.5rem}
+.gc-input::placeholder{color:var(--ink-faint)}
+.gc-input:hover{box-shadow:inset 0 0 0 1px var(--ink-faint)}
+.gc-input:focus{outline:none;box-shadow:inset 0 0 0 1.5px var(--accent),0 0 0 4px color-mix(in srgb,var(--accent) 14%,transparent)}
+.gc-field.is-invalid .gc-input{box-shadow:inset 0 0 0 1.5px var(--err)}
+.gc-field.is-valid .gc-input{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ok) 55%,transparent)}
+.gc-err{display:none;align-items:center;gap:.4rem;font-size:.85rem;color:var(--err)}
+.gc-field.is-invalid .gc-err,.gc-fieldset.is-invalid .gc-err{display:flex}
+.gc-hint{font-size:.82rem;color:var(--ink-faint)}
+.gc-fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:.75rem}
+.gc-choices{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.gc-choice{position:relative}
+.gc-choice input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.gc-choice span{display:flex;align-items:center;gap:.7rem;min-height:3.2rem;padding:.6rem 1rem;border-radius:var(--r);box-shadow:inset 0 0 0 1px var(--line);font-size:.95rem;transition:box-shadow .3s,background .3s,color .3s}
+.gc-choice span::before{content:"";width:.9rem;height:.9rem;border-radius:50%;box-shadow:inset 0 0 0 1px var(--ink-faint);flex:none;transition:box-shadow .3s,background .3s}
+.gc-choice input:hover+span{box-shadow:inset 0 0 0 1px var(--ink-faint)}
+.gc-choice input:focus-visible+span{outline:2px solid var(--accent);outline-offset:3px}
+.gc-choice input:checked+span{background:var(--deep);color:var(--on-deep);box-shadow:none}
+.gc-choice input:checked+span::before{box-shadow:inset 0 0 0 .28rem var(--paper);background:var(--hi)}
+[data-theme="limestone"] .gc-choice input:checked+span::before{background:var(--deep)}
+.gc-fieldset.is-invalid .gc-choice span{box-shadow:inset 0 0 0 1px var(--err)}
+.gc-check{display:grid;grid-template-columns:1.3rem 1fr;gap:.8rem;align-items:start;font-size:.92rem;color:var(--ink-soft);position:relative}
+.gc-check input{appearance:none;width:1.3rem;height:1.3rem;margin:.15rem 0 0;border-radius:3px;box-shadow:inset 0 0 0 1px var(--ink-faint);background:var(--paper);cursor:pointer;display:grid;place-items:center;transition:background .25s,box-shadow .25s}
+.gc-check input:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.gc-check input:checked{background:var(--deep);box-shadow:none}
+.gc-check input:checked::after{content:"";width:.65rem;height:.35rem;border-left:1.5px solid var(--on-deep);border-bottom:1.5px solid var(--on-deep);transform:translateY(-1px) rotate(-45deg)}
+.gc-check input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.gc-check.is-invalid input{box-shadow:inset 0 0 0 1.5px var(--err)}
+.gc-check .gc-err{grid-column:2}
+.gc-check.is-invalid .gc-err{display:flex}
+.gc-form_foot{display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;padding-top:.5rem}
+.gc-form_foot .gc-hint{max-width:22rem}
+.gc-btn.is-busy{pointer-events:none}
+.gc-btn_spin{width:1rem;height:1rem;border-radius:50%;border:1.5px solid currentColor;border-right-color:transparent;display:none;animation:spin .8s linear infinite}
+.gc-btn.is-busy .gc-btn_spin{display:block}
+.gc-btn.is-busy .gc-btn_arrow{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gc-summary{padding:1.1rem 1.25rem;border-radius:var(--r);background:color-mix(in srgb,var(--err) 8%,var(--paper));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--err) 40%,transparent);font-size:.93rem}
+.gc-summary ul{margin-top:.5rem;display:flex;flex-direction:column;gap:.25rem}
+.gc-summary a{text-decoration:underline;text-underline-offset:3px}
+.gc-done{display:flex;flex-direction:column;gap:1.4rem;padding:clamp(1.5rem,3vw,2.5rem);border-radius:var(--r);background:var(--deep);color:var(--on-deep)}
+.gc-done h3{font-family:var(--f-display);font-weight:300;font-size:clamp(2rem,3vw,2.8rem);line-height:1;letter-spacing:-.02em}
+.gc-done p{color:var(--on-deep-soft)}
+.gc-done dl{display:grid;grid-template-columns:auto 1fr;gap:.5rem 1.5rem;border-top:1px solid var(--line-d);padding-top:1.2rem;font-size:.95rem}
+.gc-done dt{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;opacity:.6;padding-top:.25rem}
+.gc-done .gc-btn.is-ghost{align-self:flex-start}
+
+/* ============ 10 Footer ============ */
+.gc-cta{position:relative;overflow:hidden;color:var(--on-deep);background:var(--deep)}
+.gc-cta_media{position:absolute;inset:0}
+.gc-cta_media .gc-plate{position:absolute;inset:-10% 0}
+.gc-cta_media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.15),rgba(0,0,0,.45))}
+.gc-cta_inner{position:relative;min-height:88vh;display:flex;flex-direction:column;justify-content:space-between;padding-top:clamp(6rem,10vw,9rem);padding-bottom:clamp(3rem,6vw,5rem)}
+.gc-cta_title{font-family:var(--f-display);font-weight:300;font-size:clamp(3.2rem,9vw,10rem);line-height:.92;letter-spacing:-.035em;max-width:12ch}
+.gc-cta_title em{font-style:italic}
+.gc-cta_row{display:flex;justify-content:space-between;align-items:end;gap:2rem;flex-wrap:wrap}
+.gc-cta_row p{max-width:26rem;color:var(--on-deep-soft)}
+.gc-foot{background:var(--deep);color:var(--on-deep);padding:clamp(4rem,7vw,6rem) 0 2rem}
+.gc-foot_grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(1rem,2vw,2rem);row-gap:3rem}
+.gc-foot_brand{grid-column:1 / span 4;display:flex;flex-direction:column;gap:1.4rem}
+.gc-foot_brand p{color:var(--on-deep-soft);max-width:22rem;font-size:.97rem}
+.gc-foot_col{grid-column:span 2;display:flex;flex-direction:column;gap:.9rem}
+.gc-foot_col:nth-of-type(2){grid-column:6 / span 2}
+.gc-foot_col .gc-mono{opacity:.55;margin-bottom:.3rem}
+.gc-foot_col a::after{transform:scaleX(0)}
+.gc-foot_col a:hover::after,.gc-foot_col a:focus-visible::after{transform:scaleX(1)}
+.gc-foot_col a{align-self:flex-start;font-size:.97rem;opacity:.85;transition:opacity .3s}
+.gc-foot_col a:hover,.gc-foot_col a:focus-visible{opacity:1}
+.gc-foot_col address{font-style:normal;font-size:.97rem;color:var(--on-deep-soft);line-height:1.6}
+.gc-foot_word{margin-top:clamp(4rem,8vw,7rem);font-family:var(--f-display);font-weight:300;font-size:clamp(3rem,14vw,16rem);line-height:.8;letter-spacing:-.05em;white-space:nowrap;overflow:hidden;color:color-mix(in srgb,var(--on-deep) 92%,transparent)}
+.gc-foot_word span{display:inline-block}
+.gc-foot_bot{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;margin-top:2rem;padding-top:1.25rem;border-top:1px solid var(--line-d);color:var(--on-deep-soft)}
+.gc-foot_bot a{transition:color .3s}
+.gc-foot_bot a:hover,.gc-foot_bot a:focus-visible{color:var(--on-deep)}
+.gc-top{display:inline-flex;align-items:center;gap:.5rem}
+
+/* ============ Responsive ============ */
+@media (max-width:991px){
+  .gc-nav_links{display:none}
+  .gc-menu-btn{display:grid}
+  .gc-intro_label,.gc-intro_title{grid-column:1 / -1}
+  .gc-intro_title{margin-top:1rem}
+  .gc-intro_img{grid-column:1 / span 6}
+  .gc-intro_text{grid-column:7 / span 6}
+  .gc-course_head .gc-h2,.gc-course_head p,.gc-mem_head .gc-h2,.gc-mem_head p,.gc-acad_head .gc-h2,.gc-acad_head p{grid-column:1 / -1}
+  .gc-course_head p,.gc-mem_head p,.gc-acad_head p{margin-top:1.5rem}
+  .gc-chapters_visual{grid-column:1 / span 6}
+  .gc-chapters_text{grid-column:7 / span 6}
+  .gc-holes_tabs{grid-template-columns:repeat(9,minmax(0,1fr))}
+  .gc-holes_tabs .is-turn{margin-right:0}
+  .gc-hole_svg{grid-column:1 / span 5}
+  .gc-mem_list{grid-column:1 / -1}
+  .gc-mem_detail{grid-column:1 / -1;position:relative;top:auto;margin-top:3rem}
+  .gc-club_copy{grid-column:1 / -1}
+  .gc-club_a{grid-column:1 / span 6;margin-top:3rem}
+  .gc-club_b{grid-column:7 / span 6;margin-top:6rem}
+  .gc-acad_row{grid-template-columns:3.5rem 1fr auto}
+  .gc-acad_row p{grid-column:2 / span 2}
+  .gc-events_img{grid-column:1 / -1;position:relative;top:auto;aspect-ratio:16/10}
+  .gc-seasons{grid-column:1 / -1}
+  .gc-apply_intro,.gc-form-wrap{grid-column:1 / -1}
+  .gc-apply_intro{position:relative;top:auto;margin-bottom:3rem}
+  .gc-foot_brand{grid-column:1 / -1}
+  .gc-foot_col,.gc-foot_col:nth-of-type(2){grid-column:span 4}
+}
+@media (max-width:767px){
+  :root{--nav-h:4.25rem}
+  body{font-size:1rem}
+  .gc-hero_meta{grid-template-columns:1fr auto}
+  .gc-hero_meta p{grid-column:1 / -1}
+  .gc-hero_loc{grid-row:2}
+  .gc-intro_img,.gc-intro_text{grid-column:1 / -1}
+  .gc-intro_text{margin-top:2.5rem}
+  .gc-pillars{grid-template-columns:1fr}
+  .gc-pillars li{padding:1rem 0;border-bottom:1px solid var(--line)}
+  .gc-chapters_scroll{height:auto;display:block}
+  .gc-chapters_inner{display:flex;flex-direction:column;gap:3.5rem}
+  .gc-chapters_visual{display:none}
+  .gc-chapters_text{min-height:0;display:flex;flex-direction:column;gap:3.5rem;width:100%}
+  .gc-chapter{position:relative;inset:auto;visibility:visible}
+  .gc-chapter_m{display:block!important;aspect-ratio:4/3;border-radius:var(--r);margin-bottom:.5rem}
+  .gc-chapters_progress{display:none}
+  .gc-holes_tabs{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .gc-hole_svg,.gc-hole_info{grid-column:1 / -1}
+  .gc-hole_info{margin-top:2rem}
+  .gc-mem_opt{grid-template-columns:2.4rem 1fr auto;padding:1.3rem .25rem}
+  .gc-club_hero{aspect-ratio:4/3}
+  .gc-club_a,.gc-club_b{grid-column:1 / -1;margin-top:2rem}
+  .gc-club_spaces{grid-template-columns:1fr}
+  .gc-acad_row{grid-template-columns:1fr auto;gap:.8rem;padding:1.6rem 0}
+  .gc-acad_row:hover,.gc-acad_row:focus-within{padding-left:0}
+  .gc-acad_row>.gc-mono:first-child{grid-column:1 / -1}
+  .gc-acad_row p{grid-column:1 / -1}
+  .gc-acad_thumb{display:block;grid-column:1 / -1;aspect-ratio:16/10;border-radius:var(--r);order:-1}
+  .gc-gal_track{width:auto;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:1rem;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .gc-gal_track::-webkit-scrollbar{display:none}
+  .gc-gal_item{scroll-snap-align:center}
+  .gc-gal_item{height:auto}.gc-gal_item.is-l{width:84vw}.gc-gal_item.is-p,.gc-gal_item.is-s{width:68vw}
+  .gc-gal_cap{transform:none}
+  .gc-form_row,.gc-choices{grid-template-columns:1fr}
+  .gc-foot_col,.gc-foot_col:nth-of-type(2){grid-column:span 6}
+  .gc-concept{left:.75rem;bottom:.75rem}
+  .gc-concept_long,.gc-logo_sub{display:none}
+  .gc-logo{font-size:1.12rem}
+  .gc-foot_col:nth-of-type(4){grid-column:1 / -1}
+  .gc-nav .gc-btn{padding:0 1rem}
+}
+.gc-chapter_m{display:none}
+
+/* ============ Reduced motion ============ */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .gc-scrollcue_line::after{display:none}
+}
+html.gc-rm .gc-chapters_scroll{height:auto;display:block}
+html.gc-rm .gc-chapters_visual,html.gc-rm .gc-chapters_progress{display:none}
+html.gc-rm .gc-chapters_text{grid-column:1 / -1;min-height:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:3rem}
+html.gc-rm .gc-chapter{position:relative;inset:auto;visibility:visible;justify-content:flex-start}
+html.gc-rm .gc-chapter_m{display:block;aspect-ratio:4/3;border-radius:var(--r);margin-bottom:.5rem}
+</style>
+</head>
+<body>
+<a class="gc-skip" href="#main">Skip to content</a>
+
+<div class="gc-loader" aria-hidden="true">
+  <svg class="gc-loader_mark" viewBox="0 0 48 48"><circle cx="24" cy="21" r="12"/><path d="M6 36 H42"/></svg>
+  <span class="gc-loader_word gc-mono">The Grove Club</span>
+</div>
+
+<!-- NAV -->
+<header class="gc-nav" data-nav>
+  <div class="gc-nav_bg"></div>
+  <div class="gc-wrap gc-nav_inner">
+    <a class="gc-logo" href="#top" aria-label="The Grove Club, back to top">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="21" r="12"/><path d="M6 36 H42"/></svg>
+      <span>The Grove Club<span class="gc-logo_sub">Near Hamburg</span></span>
+    </a>
+    <nav aria-label="Main">
+      <ul class="gc-nav_links">
+        <li><a href="#course" data-navlink>The Course</a></li>
+        <li><a href="#membership" data-navlink>Membership</a></li>
+        <li><a href="#clubhouse" data-navlink>Clubhouse</a></li>
+        <li><a href="#academy" data-navlink>Academy</a></li>
+        <li><a href="#community" data-navlink>Community</a></li>
+      </ul>
+    </nav>
+    <div class="gc-nav_cta">
+      <a class="gc-btn" href="#apply"><span>Enquire</span><span class="gc-btn_arrow" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 8h11M9 4l4 4-4 4"/></svg><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></a>
+      <button class="gc-menu-btn" type="button" aria-expanded="false" aria-controls="gc-menu" data-menu-btn><span class="gc-sr">Menu</span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="gc-menu" id="gc-menu" data-menu aria-label="Menu" role="dialog" aria-modal="true">
+  <ul>
+    <li><a href="#course"><span class="gc-mono">03</span>The Course</a></li>
+    <li><a href="#membership"><span class="gc-mono">04</span>Membership</a></li>
+    <li><a href="#clubhouse"><span class="gc-mono">05</span>Clubhouse</a></li>
+    <li><a href="#academy"><span class="gc-mono">06</span>Academy</a></li>
+    <li><a href="#community"><span class="gc-mono">07</span>Community</a></li>
+    <li><a href="#apply"><span class="gc-mono">09</span>Enquire</a></li>
+  </ul>
+  <div class="gc-menu_foot gc-mono"><span>Near Hamburg, Germany</span><span>Find your own pace</span></div>
+</div>
+
+<main id="main">
+
+<!-- 1 HERO -->
+<section class="gc-hero" id="top" aria-label="Introduction">
+  <div class="gc-hero_media" data-hero-media>
+    <figure class="gc-plate ph-land" data-ph="G01 | Course at first light" style="--ph-mid:color-mix(in srgb,var(--ph-sky) 50%,var(--ph-ground))">
+      <video class="gc-plate_media" data-hero-video muted playsinline loop preload="none" poster="img/g01.webp" aria-hidden="true"><source src="img/g01.mp4" type="video/mp4"></video>
+      <img src="img/g01.webp" alt="" fetchpriority="high">
+    </figure>
+  </div>
+  <div class="gc-hero_shade"></div>
+  <div class="gc-wrap gc-hero_inner">
+    <h1 class="gc-hero_title" data-hero-title>Find your<br><em>own</em> pace.</h1>
+    <div class="gc-hero_meta" data-hero-meta>
+      <p>A private golf and country club near Hamburg. Eighteen holes, a clubhouse worth staying for, and time that belongs to you.</p>
+      <a class="gc-scrollcue gc-mono" href="#intro"><span class="gc-scrollcue_line" aria-hidden="true"></span><span>Scroll</span></a>
+      <p class="gc-hero_loc gc-mono">53.5° N | 10.0° E<br>Hamburg region</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 INTRO + PHILOSOPHY -->
+<section class="gc-section" id="intro" aria-labelledby="intro-title">
+  <div class="gc-wrap">
+    <div class="gc-intro_top">
+      <p class="gc-intro_label gc-mono" data-reveal-group><span class="gc-eyebrow"><i></i>(01) The Club</span></p>
+      <h2 class="gc-intro_title gc-h2" id="intro-title" data-split>A place to play.<br><em class="gc-italic">A place to stay.</em></h2>
+    </div>
+    <div class="gc-intro_body">
+      <figure class="gc-intro_img gc-plate ph-detail" data-ph="G02 | Flag on the green, late light" data-reveal-img><img src="img/g02.webp" alt="A flag on a green in late afternoon light, birches behind." loading="lazy"></figure>
+      <div class="gc-intro_text" data-reveal-group data-stagger="90">
+        <p class="gc-lede" style="color:var(--ink)">The Grove Club is a private golf and country club on the edge of Hamburg, set among birches, heath and open sky.</p>
+        <p>We built it around a simple idea: golf is more than a score. It is a morning outside, a shot you did not think you had, a long lunch with people you like. The game brings you here. Everything else makes you come back.</p>
+        <p>Members play an eighteen-hole course, learn at the academy, and use the clubhouse as their own. Guests are always welcome to see for themselves.</p>
+        <ul class="gc-pillars">
+          <li><b>18 holes</b><span>A walking course through heath and pine.</span></li>
+          <li><b>Clubhouse</b><span>Restaurant, terrace and lounge.</span></li>
+          <li><b>Academy</b><span>From first swing to lower handicaps.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gc-philo is-dark" aria-label="Philosophy">
+  <div class="gc-wrap">
+    <p class="gc-mono gc-eyebrow" style="color:var(--on-deep-soft)"><i></i>(02) Philosophy</p>
+    <blockquote class="gc-philo_quote" data-scrub-words>Some days are best measured in holes, <em>not hours.</em></blockquote>
+    <div class="gc-philo_row" data-reveal-group>
+      <p>No dress rehearsal and no unnecessary rules. We keep what makes golf good, the care for the course, the respect for each other, the quiet of the early tee time, and leave out the rest.</p>
+      <a class="gc-link gc-mono" href="#course">Walk the course <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 3 COURSE -->
+<section class="gc-section is-field" id="course" aria-labelledby="course-title" style="padding-bottom:clamp(5rem,10vw,8rem)">
+  <div class="gc-wrap">
+    <p class="gc-mono gc-eyebrow" style="color:var(--on-field-soft)"><i></i>(03) The Course</p>
+    <div class="gc-course_head">
+      <h2 class="gc-h2" id="course-title" data-split>Eighteen holes.<br><em class="gc-italic">No need to rush.</em></h2>
+      <p data-reveal-group>A par-72 walking course laid into the land rather than carved out of it. Wide where it can be, tight where it should be, and never in a hurry to get you back.</p>
+    </div>
+  </div>
+
+  <div class="gc-chapters" data-chapters>
+    <div class="gc-chapters_scroll">
+      <div class="gc-wrap gc-chapters_inner">
+        <div class="gc-chapters_visual">
+          <div class="gc-chapters_img" data-chapter-visual><figure class="gc-plate ph-land" data-ph="G03 | Hole 1, birch-lined fairway"><img src="img/g03.webp" alt="Morning on the first fairway, lined with birches." loading="lazy"></figure></div>
+          <div class="gc-chapters_img" data-chapter-visual><figure class="gc-plate ph-land" data-ph="G04 | Hole 6, heath pond" style="--ph-mid:var(--water)"><img src="img/g04.webp" alt="A short par three across a heath pond." loading="lazy"></figure></div>
+          <div class="gc-chapters_img" data-chapter-visual><figure class="gc-plate ph-detail" data-ph="G05 | Hole 12, through the pines"><img src="img/g05.webp" alt="A fairway running between tall pines." loading="lazy"></figure></div>
+          <div class="gc-chapters_img" data-chapter-visual><figure class="gc-plate ph-dusk" data-ph="G06 | Hole 18, home to the clubhouse"><img src="img/g06.webp" alt="The final green with the clubhouse behind it at dusk." loading="lazy"></figure></div>
+        </div>
+        <div class="gc-chapters_text">
+          <article class="gc-chapter" data-chapter>
+            <figure class="gc-chapter_m gc-plate ph-land" data-ph="G03 | Hole 1"><img src="img/g03.webp" alt="" loading="lazy"></figure>
+            <div class="gc-chapter_num"><b data-chapter-text>01</b><span class="gc-mono">First Light</span></div>
+            <h3 class="gc-h3" data-chapter-text>A gentle opening</h3>
+            <p data-chapter-text>Wide and slightly downhill between birches. Enough room to find your swing before the course asks anything of you.</p>
+            <div class="gc-chapter_facts gc-mono" data-chapter-text><span>Par 4</span><span>352 m</span></div>
+          </article>
+          <article class="gc-chapter" data-chapter>
+            <figure class="gc-chapter_m gc-plate ph-land" data-ph="G04 | Hole 6" style="--ph-mid:var(--water)"><img src="img/g04.webp" alt="" loading="lazy"></figure>
+            <div class="gc-chapter_num"><b data-chapter-text>06</b><span class="gc-mono">The Pond</span></div>
+            <h3 class="gc-h3" data-chapter-text>Across the water</h3>
+            <p data-chapter-text>A short carry over a heath pond. The wind off the open field decides the club more often than the yardage does.</p>
+            <div class="gc-chapter_facts gc-mono" data-chapter-text><span>Par 3</span><span>172 m</span></div>
+          </article>
+          <article class="gc-chapter" data-chapter>
+            <figure class="gc-chapter_m gc-plate ph-detail" data-ph="G05 | Hole 12"><img src="img/g05.webp" alt="" loading="lazy"></figure>
+            <div class="gc-chapter_num"><b data-chapter-text>12</b><span class="gc-mono">Into the Pines</span></div>
+            <h3 class="gc-h3" data-chapter-text>Quiet in the trees</h3>
+            <p data-chapter-text>The longest stretch of the back nine runs through tall pines. Three good shots and a little patience reach the green.</p>
+            <div class="gc-chapter_facts gc-mono" data-chapter-text><span>Par 5</span><span>489 m</span></div>
+          </article>
+          <article class="gc-chapter" data-chapter>
+            <figure class="gc-chapter_m gc-plate ph-dusk" data-ph="G06 | Hole 18"><img src="img/g06.webp" alt="" loading="lazy"></figure>
+            <div class="gc-chapter_num"><b data-chapter-text>18</b><span class="gc-mono">Home</span></div>
+            <h3 class="gc-h3" data-chapter-text>The way home</h3>
+            <p data-chapter-text>The clubhouse comes into view on the approach. Most rounds end here. The better conversations usually start here.</p>
+            <div class="gc-chapter_facts gc-mono" data-chapter-text><span>Par 4</span><span>398 m</span></div>
+          </article>
+        </div>
+      </div>
+      <div class="gc-chapters_progress" aria-hidden="true"><i data-chapters-progress></i></div>
+    </div>
+  </div>
+
+  <div class="gc-wrap">
+    <div class="gc-holes" data-holes>
+      <div class="gc-holes_head">
+        <h3 class="gc-h3">Every hole, at a glance.</h3>
+        <p class="gc-mono" style="color:var(--on-field-soft)">Concept data | Lengths from the yellow tees</p>
+      </div>
+      <div class="gc-holes_tabs" role="tablist" aria-label="Choose a hole" data-hole-tabs></div>
+      <div class="gc-holes_panel" role="tabpanel" id="hole-panel" tabindex="0" aria-live="polite" data-hole-panel>
+        <svg class="gc-hole_svg" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Hole layout" data-hole-svg></svg>
+        <div class="gc-hole_info">
+          <div class="gc-hole_top"><span class="gc-hole_no" data-hole-no>01</span><span class="gc-hole_name" data-hole-name>First Light</span></div>
+          <dl class="gc-hole_stats">
+            <div><dt class="gc-mono">Par</dt><dd data-hole-par>4</dd></div>
+            <div><dt class="gc-mono">Length</dt><dd data-hole-len>352 m</dd></div>
+            <div><dt class="gc-mono">Stroke index</dt><dd data-hole-si>9</dd></div>
+          </dl>
+          <p class="gc-hole_note" data-hole-note></p>
+          <div class="gc-hole_nav">
+            <button class="gc-round" type="button" data-hole-prev aria-label="Previous hole"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M10 3 5 8l5 5"/></svg></button>
+            <button class="gc-round" type="button" data-hole-next aria-label="Next hole"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="m6 3 5 5-5 5"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 MEMBERSHIP -->
+<section class="gc-section" id="membership" aria-labelledby="mem-title">
+  <div class="gc-wrap">
+    <p class="gc-mono gc-eyebrow"><i></i>(04) Membership</p>
+    <div class="gc-mem_head">
+      <h2 class="gc-h2" id="mem-title" data-split>Make room for more <em class="gc-italic">than the game.</em></h2>
+      <p data-reveal-group>Four ways to belong, each with full use of the clubhouse. Choose the one that fits your week today. You can change as life does.</p>
+    </div>
+    <div class="gc-mem" data-mem>
+      <div class="gc-mem_list" role="group" aria-label="Membership concepts">
+        <button class="gc-mem_opt" type="button" aria-pressed="true" data-mem-opt="full"><span class="gc-mono">01</span><span><b>Full Membership</b><small>Seven days, every facility</small></span><span class="gc-mem_dot" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></button>
+        <button class="gc-mem_opt" type="button" aria-pressed="false" data-mem-opt="weekday"><span class="gc-mono">02</span><span><b>Weekday</b><small>Monday to Friday on the course</small></span><span class="gc-mem_dot" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></button>
+        <button class="gc-mem_opt" type="button" aria-pressed="false" data-mem-opt="young"><span class="gc-mono">03</span><span><b>Young Grove</b><small>For members under 30</small></span><span class="gc-mem_dot" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></button>
+        <button class="gc-mem_opt" type="button" aria-pressed="false" data-mem-opt="first"><span class="gc-mono">04</span><span><b>First Year</b><small>New to golf, guided from day one</small></span><span class="gc-mem_dot" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></button>
+      </div>
+      <div class="gc-mem_detail" aria-live="polite">
+        <figure class="gc-mem_img gc-plate ph-land" data-ph="G07 | Two members walking the fairway" data-reveal-img><img src="img/g07.webp" alt="Two members walking down a fairway, seen from behind." loading="lazy"></figure>
+        <div class="gc-mem_card" data-mem-card>
+          <h3 data-mem-title>Full Membership</h3>
+          <p data-mem-text></p>
+          <ul class="gc-checks" data-mem-list></ul>
+          <div class="gc-cta-row" style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+            <a class="gc-btn" href="#apply" data-mem-apply><span>Enquire about this</span><span class="gc-btn_arrow" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 8h11M9 4l4 4-4 4"/></svg><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></a>
+            <span class="gc-mono gc-mem_note">Fees shared on request</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 CLUBHOUSE -->
+<section class="gc-section is-dark gc-club" id="clubhouse" aria-labelledby="club-title">
+  <div class="gc-wrap">
+    <p class="gc-mono gc-eyebrow" style="color:var(--on-deep-soft)"><i></i>(05) The Clubhouse</p>
+    <div class="gc-club_head"><h2 class="gc-h2" id="club-title" data-split>The best part might come <em class="gc-italic">after the last putt.</em></h2></div>
+    <figure class="gc-club_hero gc-plate ph-dusk" data-ph="G08 | Clubhouse exterior, timber and brick" data-reveal-img data-parallax-img><img src="img/g08.webp" alt="The low timber and brick clubhouse beside the eighteenth green." loading="lazy"></figure>
+    <div class="gc-club_row">
+      <div class="gc-club_copy" data-reveal-group>
+        <p class="gc-lede" style="color:var(--on-deep)">A low building of brick, oak and glass that sits quietly beside the eighteenth green.</p>
+        <p>Inside, the restaurant cooks with what the region does well: vegetables from the Vierlande, fish from the coast, game in autumn. The terrace faces west, which matters more than you might think at six in the evening.</p>
+        <p>There is no dress code beyond being considerate, and no hurry to leave.</p>
+      </div>
+      <figure class="gc-club_a gc-plate ph-warm" data-ph="G09 | Restaurant interior" data-reveal-img data-parallax-img><img src="img/g09.webp" alt="The restaurant with oak tables and large windows onto the course." loading="lazy"></figure>
+      <figure class="gc-club_b gc-plate ph-dusk" data-ph="G10 | West terrace at dusk" data-reveal-img data-parallax-img><img src="img/g10.webp" alt="The terrace at dusk, two glasses on a table, the course beyond." loading="lazy"></figure>
+    </div>
+    <ul class="gc-club_spaces" data-reveal-group>
+      <li><span class="gc-mono" style="color:var(--on-deep-soft)">Restaurant</span><h3>Seasonal and regional</h3><p>Lunch after the round, dinner without one. Open to members and their guests.</p></li>
+      <li><span class="gc-mono" style="color:var(--on-deep-soft)">Terrace</span><h3>Facing the sunset</h3><p>The longest table at the club, and the most popular one from May to September.</p></li>
+      <li><span class="gc-mono" style="color:var(--on-deep-soft)">Lounge</span><h3>For the in-between</h3><p>A fire in winter, newspapers in the morning, a quiet corner when you need one.</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 6 ACADEMY -->
+<section class="gc-section" id="academy" aria-labelledby="acad-title">
+  <div class="gc-wrap">
+    <p class="gc-mono gc-eyebrow"><i></i>(06) Golf Academy</p>
+    <div class="gc-acad_head">
+      <h2 class="gc-h2" id="acad-title" data-split>Learn the game. <em class="gc-italic">Keep learning it.</em></h2>
+      <p data-reveal-group>Our coaches teach complete beginners and single-figure players with the same patience. The practice ground and short-game area are open to every member.</p>
+    </div>
+    <div class="gc-acad_list" data-acad>
+      <article class="gc-acad_row" data-acad-row="0" tabindex="0">
+        <span class="gc-mono">01</span>
+        <figure class="gc-acad_thumb gc-plate ph-land" data-ph="G11"><img src="img/g11.webp" alt="" loading="lazy"></figure>
+        <h3>First Swing</h3><p>Four small-group sessions from grip to first round. Clubs provided.</p><span class="gc-mono gc-acad_tag">Beginners</span>
+      </article>
+      <article class="gc-acad_row" data-acad-row="1" tabindex="0">
+        <span class="gc-mono">02</span>
+        <figure class="gc-acad_thumb gc-plate ph-detail" data-ph="G12"><img src="img/g12.webp" alt="" loading="lazy"></figure>
+        <h3>Private Coaching</h3><p>One coach, your swing, a plan that fits your season.</p><span class="gc-mono gc-acad_tag">All levels</span>
+      </article>
+      <article class="gc-acad_row" data-acad-row="2" tabindex="0">
+        <span class="gc-mono">03</span>
+        <figure class="gc-acad_thumb gc-plate ph-detail" data-ph="G13"><img src="img/g13.webp" alt="" loading="lazy"></figure>
+        <h3>Short Game Studio</h3><p>Chipping, pitching and putting, where most strokes are saved.</p><span class="gc-mono gc-acad_tag">Members</span>
+      </article>
+      <article class="gc-acad_row" data-acad-row="3" tabindex="0">
+        <span class="gc-mono">04</span>
+        <figure class="gc-acad_thumb gc-plate ph-land" data-ph="G14"><img src="img/g14.webp" alt="" loading="lazy"></figure>
+        <h3>Juniors</h3><p>Weekend groups for ages eight to sixteen. Fun first, technique follows.</p><span class="gc-mono gc-acad_tag">Ages 8 to 16</span>
+      </article>
+    </div>
+  </div>
+  <div class="gc-acad_preview" aria-hidden="true" data-acad-preview>
+    <figure class="gc-plate ph-land" data-ph="G11 | Coach and player on the range"><img src="img/g11.webp" alt="" loading="lazy"></figure>
+    <figure class="gc-plate ph-detail" data-ph="G12 | One-to-one lesson"><img src="img/g12.webp" alt="" loading="lazy"></figure>
+    <figure class="gc-plate ph-detail" data-ph="G13 | Wedge and balls on the chipping green"><img src="img/g13.webp" alt="" loading="lazy"></figure>
+    <figure class="gc-plate ph-land" data-ph="G14 | Junior group on the practice green"><img src="img/g14.webp" alt="" loading="lazy"></figure>
+  </div>
+</section>
+
+<!-- 7 EVENTS & COMMUNITY -->
+<section class="gc-section is-paper2" id="community" aria-labelledby="comm-title">
+  <div class="gc-wrap">
+    <p class="gc-mono gc-eyebrow"><i></i>(07) Events and Community</p>
+    <div class="gc-events_head">
+      <h2 class="gc-h2" id="comm-title" data-split>A year at <em class="gc-italic">the Grove.</em></h2>
+      <p data-reveal-group>Competitions for those who like them, long tables for everyone. An example of how a season could look.</p>
+    </div>
+    <div class="gc-events">
+      <figure class="gc-events_img gc-plate ph-dusk" data-ph="G15 | Long table on the lawn" data-reveal-img><img src="img/g15.webp" alt="A long table set on the lawn beside the clubhouse in early evening." loading="lazy"></figure>
+      <div class="gc-seasons" data-reveal-group data-stagger="120">
+        <article class="gc-season"><div class="gc-season_top gc-mono"><span>Spring</span><span>March to May</span></div><h3>Opening of the season</h3><p>The first shotgun start of the year, followed by lunch for every member who played and every one who just came to say hello.</p><div class="gc-season_tags"><span>Opening Day</span><span>Spring Foursomes</span></div></article>
+        <article class="gc-season"><div class="gc-season_top gc-mono"><span>Summer</span><span>June to August</span></div><h3>Twilight nines</h3><p>Nine holes on Thursday evenings, teams drawn at random, dinner on the terrace. The best way to meet members you have not met yet.</p><div class="gc-season_tags"><span>Thursday Twilight</span><span>Club Championship</span><span>Summer Long Table</span></div></article>
+        <article class="gc-season"><div class="gc-season_top gc-mono"><span>Autumn</span><span>September to November</span></div><h3>Colour on the course</h3><p>Matchplay finals, a game supper in the restaurant and the season's last early tee times through the turning birches.</p><div class="gc-season_tags"><span>Matchplay Finals</span><span>Game Supper</span></div></article>
+        <article class="gc-season"><div class="gc-season_top gc-mono"><span>Winter</span><span>December to February</span></div><h3>By the fire</h3><p>Winter rules on the course, talks and tastings in the lounge, and indoor coaching for anyone who wants a head start on spring.</p><div class="gc-season_tags"><span>Fireside Talks</span><span>Winter Academy</span></div></article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 GALLERY -->
+<section class="gc-section is-dark gc-gal" id="gallery" aria-labelledby="gal-title" data-gal>
+  <div class="gc-wrap gc-gal_head">
+    <div><p class="gc-mono gc-eyebrow" style="color:var(--on-deep-soft)"><i></i>(08) Gallery</p><h2 class="gc-h2" id="gal-title" data-split>Small things, <em class="gc-italic">well kept.</em></h2></div>
+    <p data-reveal-group>Details from the course and the clubhouse. Select an image to view it larger.</p>
+  </div>
+  <div class="gc-gal_pin" data-gal-pin>
+    <ul class="gc-gal_track" data-gal-track>
+      <li><button class="gc-gal_item is-l" type="button" data-gal-item><figure class="gc-plate ph-land" data-ph="G16 | Morning dew on the green"><img src="img/g16.webp" alt="Morning dew on a green with a single ball and its line." loading="lazy"></figure><span class="gc-gal_cap gc-mono"><span>Dew line</span><span>01</span></span></button></li>
+      <li><button class="gc-gal_item is-p" type="button" data-gal-item><figure class="gc-plate ph-detail" data-ph="G17 | Freshly raked bunker"><img src="img/g17.webp" alt="A freshly raked bunker with the rake laid along its edge." loading="lazy"></figure><span class="gc-gal_cap gc-mono"><span>Raked</span><span>02</span></span></button></li>
+      <li><button class="gc-gal_item is-s" type="button" data-gal-item><figure class="gc-plate ph-warm" data-ph="G18 | Scorecard and pencil"><img src="img/g18.webp" alt="A paper scorecard and a short pencil on an oak table." loading="lazy"></figure><span class="gc-gal_cap gc-mono"><span>After the round</span><span>03</span></span></button></li>
+      <li><button class="gc-gal_item is-p" type="button" data-gal-item><figure class="gc-plate ph-land" data-ph="G19 | Heather and birch at the edge of the rough"><img src="img/g19.webp" alt="Purple heather and a birch trunk at the edge of the rough." loading="lazy"></figure><span class="gc-gal_cap gc-mono"><span>Heath</span><span>04</span></span></button></li>
+      <li><button class="gc-gal_item is-l" type="button" data-gal-item><figure class="gc-plate ph-warm" data-ph="G20 | Locker room, oak and linen"><img src="img/g20.webp" alt="A calm locker room with oak lockers and a linen towel on a bench." loading="lazy"></figure><span class="gc-gal_cap gc-mono"><span>Changing room</span><span>05</span></span></button></li>
+      <li><button class="gc-gal_item is-s" type="button" data-gal-item><figure class="gc-plate ph-dusk" data-ph="G21 | Rain on the clubhouse window"><img src="img/g21.webp" alt="Rain on the clubhouse window with the course blurred behind." loading="lazy"></figure><span class="gc-gal_cap gc-mono"><span>Weather window</span><span>06</span></span></button></li>
+      <li><button class="gc-gal_item is-p" type="button" data-gal-item><figure class="gc-plate ph-detail" data-ph="G22 | Flagstick in the cup, close"><img src="img/g22.webp" alt="Close view of a flagstick resting in the cup." loading="lazy"></figure><span class="gc-gal_cap gc-mono"><span>In the cup</span><span>07</span></span></button></li>
+    </ul>
+  </div>
+  <div class="gc-wrap gc-gal_foot gc-mono"><span>Drag, scroll or swipe</span><span class="gc-gal_bar" aria-hidden="true"><i data-gal-bar></i></span><span>07 images</span></div>
+  <dialog class="gc-lightbox" data-lightbox aria-label="Image viewer">
+    <div class="gc-lightbox_inner">
+      <div class="gc-lightbox_top gc-mono"><span data-lb-count>01 / 07</span><button class="gc-round" type="button" data-lb-close aria-label="Close viewer"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 3l10 10M13 3 3 13"/></svg></button></div>
+      <div class="gc-lightbox_stage" data-lb-stage></div>
+      <div class="gc-lightbox_bot"><span class="gc-mono" data-lb-cap></span><div style="display:flex;gap:.6rem"><button class="gc-round" type="button" data-lb-prev aria-label="Previous image"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M10 3 5 8l5 5"/></svg></button><button class="gc-round" type="button" data-lb-next aria-label="Next image"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="m6 3 5 5-5 5"/></svg></button></div></div>
+    </div>
+  </dialog>
+</section>
+
+<!-- 9 APPLICATION -->
+<section class="gc-section" id="apply" aria-labelledby="apply-title">
+  <div class="gc-wrap gc-apply">
+    <div class="gc-apply_intro">
+      <p class="gc-mono gc-eyebrow"><i></i>(09) Membership enquiry</p>
+      <h2 class="gc-h2" id="apply-title" data-split>Start with <em class="gc-italic">a conversation.</em></h2>
+      <p>Tell us a little about yourself and how you would like to use the club. There is no obligation and no waiting list to join.</p>
+      <ol class="gc-steps">
+        <li><span class="gc-mono">01</span><span>You send this enquiry.</span></li>
+        <li><span class="gc-mono">02</span><span>We call you to talk it through.</span></li>
+        <li><span class="gc-mono">03</span><span>You visit, play a round with a member and decide in your own time.</span></li>
+      </ol>
+    </div>
+    <div class="gc-form-wrap" data-form-wrap>
+      <form class="gc-form" novalidate data-form aria-describedby="form-note">
+        <div class="gc-summary" role="alert" tabindex="-1" hidden data-form-summary></div>
+        <div class="gc-form_row">
+          <div class="gc-field"><label for="f-first">First name <b aria-hidden="true">*</b></label><input class="gc-input" id="f-first" name="first" autocomplete="given-name" required aria-describedby="e-first"><span class="gc-err" id="e-first">Please enter your first name.</span></div>
+          <div class="gc-field"><label for="f-last">Last name <b aria-hidden="true">*</b></label><input class="gc-input" id="f-last" name="last" autocomplete="family-name" required aria-describedby="e-last"><span class="gc-err" id="e-last">Please enter your last name.</span></div>
+        </div>
+        <div class="gc-form_row">
+          <div class="gc-field"><label for="f-email">Email <b aria-hidden="true">*</b></label><input class="gc-input" id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="e-email"><span class="gc-err" id="e-email">Please enter a valid email address, for example name@domain.de.</span></div>
+          <div class="gc-field"><label for="f-phone">Phone <span style="text-transform:none;letter-spacing:0">(optional)</span></label><input class="gc-input" id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="e-phone h-phone"><span class="gc-hint" id="h-phone">If you prefer a call.</span><span class="gc-err" id="e-phone">Please check the number. Use digits, spaces, + or -.</span></div>
+        </div>
+        <fieldset class="gc-fieldset" data-group="membership" aria-describedby="e-mem">
+          <legend>Membership of interest <b aria-hidden="true">*</b></legend>
+          <div class="gc-choices">
+            <label class="gc-choice"><input type="radio" id="f-mem" name="membership" value="Full Membership" required><span>Full Membership</span></label>
+            <label class="gc-choice"><input type="radio" name="membership" value="Weekday"><span>Weekday</span></label>
+            <label class="gc-choice"><input type="radio" name="membership" value="Young Grove"><span>Young Grove</span></label>
+            <label class="gc-choice"><input type="radio" name="membership" value="First Year"><span>First Year</span></label>
+          </div>
+          <span class="gc-err" id="e-mem">Please choose a membership.</span>
+        </fieldset>
+        <div class="gc-form_row">
+          <div class="gc-field"><label for="f-hcp">Handicap <span style="text-transform:none;letter-spacing:0">(optional)</span></label><input class="gc-input" id="f-hcp" name="hcp" inputmode="decimal" placeholder="e.g. 18.4" aria-describedby="h-hcp e-hcp"><span class="gc-hint" id="h-hcp">Leave empty if you do not have one yet.</span><span class="gc-err" id="e-hcp">Enter a value between +10 and 54.</span></div>
+          <div class="gc-field"><label for="f-contact">Best way to reach you</label><select class="gc-input" id="f-contact" name="contact"><option>Email</option><option>Phone</option><option>Either</option></select></div>
+        </div>
+        <div class="gc-field"><label for="f-msg">Anything you would like us to know <span style="text-transform:none;letter-spacing:0">(optional)</span></label><textarea class="gc-input" id="f-msg" name="msg" maxlength="800" aria-describedby="h-msg"></textarea><span class="gc-hint" id="h-msg"><span data-count>0</span> / 800 characters</span></div>
+        <label class="gc-check" data-check><input type="checkbox" id="f-consent" name="consent" required aria-describedby="e-consent"><span>I agree that The Grove Club may use my details to reply to this enquiry. <a class="gc-link" href="#" style="padding-bottom:0">Privacy notice</a></span><span class="gc-err" id="e-consent">Please confirm so we can reply to you.</span></label>
+        <div class="gc-form_foot">
+          <p class="gc-hint" id="form-note">Design concept: this form checks your entries but does not send them anywhere yet.</p>
+          <button class="gc-btn" type="submit" data-submit><span>Send enquiry</span><span class="gc-btn_spin" aria-hidden="true"></span><span class="gc-btn_arrow" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 8h11M9 4l4 4-4 4"/></svg><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></button>
+        </div>
+      </form>
+      <div class="gc-done" hidden tabindex="-1" data-done>
+        <span class="gc-mono" style="opacity:.6">Concept preview</span>
+        <h3>Thank you, <span data-done-name></span>.</h3>
+        <p>Your entries are complete. Because this site is a design concept, nothing has been sent and no one will contact you. In the finished site, this is where the enquiry would reach the club.</p>
+        <dl data-done-list></dl>
+        <button class="gc-btn is-ghost" type="button" data-done-reset><span>Edit entries</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- 10 CTA + FOOTER -->
+<section class="gc-cta" aria-labelledby="cta-title">
+  <div class="gc-cta_media" data-cta-media><figure class="gc-plate ph-dusk" data-ph="G23 | Evening on the fairway"><img src="img/g23.webp" alt="" loading="lazy"></figure></div>
+  <div class="gc-wrap gc-cta_inner">
+    <p class="gc-mono gc-eyebrow" style="color:var(--on-deep-soft)"><i></i>(10) Visit</p>
+    <div>
+      <h2 class="gc-cta_title" id="cta-title" data-split>Your place <em>at the Grove.</em></h2>
+      <div class="gc-cta_row" style="margin-top:2.5rem" data-reveal-group>
+        <p>Come for a round, a coffee or a look around. We will show you the course and introduce you to a few members.</p>
+        <a class="gc-btn is-light" href="#apply"><span>Arrange a visit</span><span class="gc-btn_arrow" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 8h11M9 4l4 4-4 4"/></svg><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></a>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="gc-foot">
+  <div class="gc-wrap">
+    <div class="gc-foot_grid">
+      <div class="gc-foot_brand">
+        <a class="gc-logo" href="#top"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="21" r="12"/><path d="M6 36 H42"/></svg><span>The Grove Club</span></a>
+        <p>A private golf and country club near Hamburg. Find your own pace.</p>
+      </div>
+      <div class="gc-foot_col"><span class="gc-mono">Explore</span><a class="gc-link" href="#course">The Course</a><a class="gc-link" href="#membership">Membership</a><a class="gc-link" href="#clubhouse">Clubhouse</a><a class="gc-link" href="#academy">Academy</a></div>
+      <div class="gc-foot_col"><span class="gc-mono">Visit</span><address>Near Hamburg, Germany<br>Address on request</address></div>
+      <div class="gc-foot_col"><span class="gc-mono">Contact</span><a class="gc-link" href="mailto:hello@thegroveclub.example">hello@thegroveclub.example</a><a class="gc-link" href="#apply">Membership enquiry</a></div>
+      <div class="gc-foot_col"><span class="gc-mono">Legal</span><a class="gc-link" href="#">Imprint</a><a class="gc-link" href="#">Privacy</a></div>
+    </div>
+    <div class="gc-foot_word" aria-hidden="true" data-foot-word><span>The</span> <span>Grove</span> <span><em>Club</em></span></div>
+    <div class="gc-foot_bot gc-mono">
+      <span>Design concept by Ferch Studio | Fictional club, no real facilities or bookings</span>
+      <a class="gc-top" href="#top">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+
+<div class="gc-concept" role="note"><i aria-hidden="true"></i><span>Concept</span><span class="gc-concept_long">| Version A | Navy, Limestone, Legacy Green</span></div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/CustomEase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script>
+(() => {
+'use strict';
+const $ = (s, c = document) => c.querySelector(s);
+const $$ = (s, c = document) => [...c.querySelectorAll(s)];
+const root = document.documentElement;
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const HAS_GSAP = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
+if (RM) root.classList.add('gc-rm');
+
+/* ---------- Image plates: show real image if present, keep labelled placeholder otherwise ---------- */
+$$('.gc-plate').forEach(p => {
+  const img = $('img', p), id = p.dataset.ph;
+  if (id) p.insertAdjacentHTML('beforeend', `<figcaption class="gc-plate_id">${id}</figcaption>`);
+  if (!img) return;
+  const ok = () => p.classList.add('has-img');
+  const fail = () => img.remove();
+  if (img.complete) { img.naturalWidth ? ok() : fail(); }
+  else { img.addEventListener('load', ok, { once: true }); img.addEventListener('error', fail, { once: true }); }
+});
+/* Hero video: only if a file exists and motion is welcome */
+const hv = $('[data-hero-video]');
+if (hv) {
+  if (RM || (navigator.connection && navigator.connection.saveData)) hv.remove();
+  else {
+    hv.querySelector('source').addEventListener('error', () => hv.remove());
+    hv.preload = 'metadata'; hv.load();
+    hv.addEventListener('canplay', () => { hv.play().catch(() => {}); }, { once: true });
+    document.addEventListener('visibilitychange', () => { if (!hv.isConnected) return; document.hidden ? hv.pause() : hv.play().catch(() => {}); });
+  }
+}
+
+/* ---------- Without GSAP: everything stays visible and usable ---------- */
+if (!HAS_GSAP) { root.classList.remove('gc-loading'); root.classList.add('gc-rm'); initUI(null); return; }
+
+gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase);
+CustomEase.create('calm', '0.25, 0.1, 0, 1');
+CustomEase.create('move', '0.65, 0.05, 0, 1');
+
+/* ---------- Lenis smooth scroll ---------- */
+let lenis = null;
+if (!RM && typeof Lenis !== 'undefined') {
+  lenis = new Lenis({ lerp: .1, wheelMultiplier: .9, autoRaf: false });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(t => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+}
+const scrollToEl = (el) => {
+  if (!el) return;
+  if (lenis) lenis.scrollTo(el, { offset: 0, duration: 1.4, easing: t => 1 - Math.pow(1 - t, 4) });
+  else el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth' });
+};
+$$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+  const id = a.getAttribute('href'); if (id.length < 2) { e.preventDefault(); return; }
+  const t = $(id); if (!t) return;
+  e.preventDefault(); scrollToEl(t);
+  history.replaceState(null, '', id);
+  if (id !== '#top') { t.setAttribute('tabindex', '-1'); setTimeout(() => t.focus({ preventScroll: true }), RM ? 0 : 900); }
+}));
+
+initUI(lenis);
+
+/* ---------- Loader + hero intro ---------- */
+const heroTitle = $('[data-hero-title]');
+function heroIntro() {
+  const split = SplitText.create(heroTitle, { type: 'lines', mask: 'lines', linesClass: 'gc-hline' });
+  const tl = gsap.timeline({ defaults: { ease: 'move' } });
+  if (!RM) {
+    tl.fromTo('.gc-loader_mark circle', { strokeDasharray: 76, strokeDashoffset: 76 }, { strokeDashoffset: 0, duration: .9, ease: 'calm' }, 0)
+      .fromTo('.gc-loader_mark path', { scaleX: 0, transformOrigin: '50% 50%' }, { scaleX: 1, duration: .7, ease: 'calm' }, .25)
+      .to('.gc-loader', { clipPath: 'inset(0 0 100% 0)', duration: 1, ease: 'move' }, 1.05)
+      .call(() => root.classList.remove('gc-loading'))
+      .fromTo('[data-hero-media] .gc-plate', { scale: 1.14 }, { scale: 1, duration: 2.4, ease: 'calm' }, 1.05)
+      .from(split.lines, { yPercent: 105, duration: 1.2, stagger: .09 }, 1.35)
+      .from('[data-hero-meta] > *', { y: 18, autoAlpha: 0, duration: .9, stagger: .08, ease: 'calm' }, 1.7)
+      .from('.gc-nav_inner > *', { y: -12, autoAlpha: 0, duration: .8, stagger: .06, ease: 'calm' }, 1.6);
+  } else root.classList.remove('gc-loading');
+}
+
+const mm = gsap.matchMedia();
+
+/* ---------- Text reveals (SplitText lines, masked) ---------- */
+function splitReveals() {
+  $$('[data-split]').forEach(el => {
+    SplitText.create(el, {
+      type: 'lines', mask: 'lines', autoSplit: true,
+      onSplit(self) {
+        return gsap.from(self.lines, { yPercent: 108, duration: 1.15, ease: 'move', stagger: .08,
+          scrollTrigger: { trigger: el, start: 'top 84%', once: true } });
+      }
+    });
+  });
+}
+/* ---------- Philosophy words scrub ---------- */
+function wordScrub() {
+  $$('[data-scrub-words]').forEach(el => {
+    const s = SplitText.create(el, { type: 'words' });
+    gsap.fromTo(s.words, { opacity: .16 }, { opacity: 1, ease: 'none', stagger: .08,
+      scrollTrigger: { trigger: el, start: 'top 80%', end: 'bottom 45%', scrub: true } });
+  });
+}
+/* ---------- Osmo pattern: content reveal on scroll (data-reveal-group) ---------- */
+function revealGroups() {
+  $$('[data-reveal-group]').forEach(g => {
+    const stagger = (parseFloat(g.dataset.stagger) || 100) / 1000;
+    const kids = [...g.children].filter(n => n.nodeType === 1);
+    const items = kids.length ? kids : [g];
+    gsap.set(items, { y: '2em', autoAlpha: 0 });
+    ScrollTrigger.create({ trigger: g, start: 'top 82%', once: true,
+      onEnter: () => gsap.to(items, { y: 0, autoAlpha: 1, duration: .9, ease: 'move', stagger, clearProps: 'transform' }) });
+  });
+}
+/* ---------- Image reveal: clip-path + inner scale ---------- */
+function imageReveals() {
+  $$('[data-reveal-img]').forEach(f => {
+    const inner = $('img', f) || null;
+    const tl = gsap.timeline({ scrollTrigger: { trigger: f, start: 'top 86%', once: true } });
+    tl.fromTo(f, { clipPath: 'inset(12% 8% 12% 8% round 0.25rem)' }, { clipPath: 'inset(0% 0% 0% 0% round 0.25rem)', duration: 1.4, ease: 'move' }, 0);
+    const end = f.hasAttribute('data-parallax-img') ? 1.12 : 1;
+    if (inner) tl.fromTo(inner, { scale: end + .18 }, { scale: end, duration: 1.8, ease: 'calm' }, 0);
+  });
+}
+/* ---------- Osmo pattern: global parallax (subtle) ---------- */
+function parallax() {
+  $$('[data-parallax-img]').forEach(f => {
+    const img = $('img', f); if (!img) return;
+    gsap.fromTo(img, { yPercent: -5 }, { yPercent: 5, ease: 'none', scrollTrigger: { trigger: f, start: 'top bottom', end: 'bottom top', scrub: true } });
+  });
+  gsap.to('[data-hero-media]', { yPercent: 14, ease: 'none', scrollTrigger: { trigger: '.gc-hero', start: 'top top', end: 'bottom top', scrub: true } });
+  gsap.to('[data-hero-title]', { yPercent: -18, autoAlpha: .2, ease: 'none', scrollTrigger: { trigger: '.gc-hero', start: 'top top', end: 'bottom top', scrub: true } });
+  gsap.fromTo('[data-cta-media] .gc-plate', { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: '.gc-cta', start: 'top bottom', end: 'bottom top', scrub: true } });
+  const fw = $$('[data-foot-word] span');
+  gsap.from(fw, { yPercent: 100, duration: 1.2, ease: 'move', stagger: .08, scrollTrigger: { trigger: '[data-foot-word]', start: 'top 95%', once: true } });
+}
+/* ---------- Osmo pattern: sticky features (course chapters) ---------- */
+function chapters() {
+  const wrap = $('[data-chapters]'); if (!wrap) return;
+  const visuals = $$('[data-chapter-visual]', wrap), items = $$('[data-chapter]', wrap), bar = $('[data-chapters-progress]', wrap);
+  const n = Math.min(visuals.length, items.length), steps = Math.max(1, n - 1);
+  const dur = .85, ease = 'power4.inOut', texts = el => $$('[data-chapter-text]', el);
+  let current = 0;
+  gsap.set(visuals[0], { clipPath: 'inset(0% round 0.25rem)' });
+  gsap.set(items[0], { autoAlpha: 1 });
+  const go = (from, to) => {
+    if (from === to) return;
+    const tl = gsap.timeline({ defaults: { overwrite: 'auto' } });
+    if (from < to) tl.to(visuals[to], { clipPath: 'inset(0% round 0.25rem)', duration: dur, ease }, 0);
+    else tl.to(visuals[from], { clipPath: 'inset(50% round 0.25rem)', duration: dur, ease }, 0);
+    gsap.to(texts(items[from]), { autoAlpha: 0, y: -24, ease: 'power3.out', duration: .4, onComplete: () => gsap.set(items[from], { autoAlpha: 0 }) });
+    gsap.set(items[to], { autoAlpha: 1 });
+    gsap.fromTo(texts(items[to]), { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, ease: 'power3.out', duration: dur, stagger: .07, delay: .1 });
+  };
+  return ScrollTrigger.create({ trigger: wrap, start: 'center center', end: () => `+=${75 * steps}%`, pin: true, scrub: true, invalidateOnRefresh: true,
+    onUpdate: self => {
+      const p = Math.min(self.progress, .92) / .92;
+      const i = Math.max(0, Math.min(steps, Math.round(p * steps)));
+      gsap.to(bar, { scaleX: p, ease: 'none', duration: .2, overwrite: true });
+      if (i !== current) { go(current, i); current = i; }
+    } });
+}
+/* ---------- Gallery: horizontal scroll (desktop) ---------- */
+function galleryScroll() {
+  const pin = $('[data-gal-pin]'), track = $('[data-gal-track]'), bar = $('[data-gal-bar]');
+  const dist = () => Math.max(0, track.scrollWidth - innerWidth);
+  gsap.to(track, { x: () => -dist(), ease: 'none',
+    scrollTrigger: { trigger: '[data-gal]', start: () => $('[data-gal]').offsetHeight > innerHeight ? 'bottom bottom' : 'center center', end: () => '+=' + dist(), pin: '[data-gal]', pinSpacing: true, scrub: .6, invalidateOnRefresh: true, anticipatePin: 1,
+      onUpdate: s => gsap.set(bar, { scaleX: s.progress }) } });
+}
+
+/* ---------- Nav scroll states ---------- */
+function navScroll() {
+  const nav = $('[data-nav]');
+  ScrollTrigger.create({ start: () => innerHeight * .82, end: 'max',
+    onToggle: s => nav.classList.toggle('is-solid', s.isActive),
+    onUpdate: s => { if (!document.body.classList.contains('gc-menu-open')) nav.classList.toggle('is-hidden', s.direction === 1 && s.scroll() > innerHeight * 1.2); } });
+  const links = $$('[data-navlink]');
+  links.forEach(a => {
+    const sec = $(a.getAttribute('href')); if (!sec) return;
+    ScrollTrigger.create({ trigger: sec, start: 'top 45%', end: 'bottom 45%',
+      onToggle: s => { if (s.isActive) links.forEach(l => l.toggleAttribute('aria-current', l === a)); else a.removeAttribute('aria-current'); } });
+  });
+  // dark sections under the nav: keep nav readable
+}
+
+/* ---------- Footer wordmark fits its width ---------- */
+function fitWord() {
+  const el = $('[data-foot-word]'); if (!el) return;
+  el.style.fontSize = ''; const max = parseFloat(getComputedStyle(el).fontSize);
+  el.style.whiteSpace = 'nowrap';
+  const ratio = el.clientWidth / el.scrollWidth;
+  el.style.fontSize = Math.min(340, Math.floor(max * ratio * .985)) + 'px';
+}
+/* ---------- Boot ---------- */
+const boot = () => {
+  fitWord(); addEventListener('resize', () => { clearTimeout(fitWord.t); fitWord.t = setTimeout(fitWord, 150); });
+  heroIntro();
+  navScroll();
+  if (RM) { gsap.set('[data-reveal-group] > *', { clearProps: 'all' }); return; }
+  splitReveals(); wordScrub(); revealGroups(); imageReveals(); parallax();
+  mm.add('(min-width: 768px)', () => { chapters(); galleryScroll(); });
+  ScrollTrigger.refresh();
+};
+(document.fonts && document.fonts.ready ? Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1500))]) : Promise.resolve()).then(boot);
+addEventListener('load', () => ScrollTrigger.refresh());
+
+/* =====================================================================
+   UI (works with or without GSAP)
+   ===================================================================== */
+function initUI(lenis) {
+  const G = typeof gsap !== 'undefined' && !RM;
+
+  /* Mobile menu with focus trap */
+  const btn = $('[data-menu-btn]'), menu = $('[data-menu]');
+  let lastFocus = null;
+  const focusables = () => [btn, ...$$('a', menu)];
+  const openMenu = (open) => {
+    btn.setAttribute('aria-expanded', open);
+    document.body.classList.toggle('gc-menu-open', open);
+    $('[data-nav]').classList.remove('is-hidden');
+    if (open) {
+      lastFocus = document.activeElement; lenis && lenis.stop();
+      menu.style.visibility = 'visible';
+      if (G) { gsap.to(menu, { clipPath: 'inset(0 0 0% 0)', duration: .8, ease: 'move' }); gsap.fromTo($$('li', menu), { y: 30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .7, stagger: .05, delay: .2, ease: 'move' }); }
+      else menu.style.clipPath = 'none';
+      $('[data-nav]').style.color = 'var(--on-deep)';
+      setTimeout(() => $('a', menu).focus(), G ? 300 : 0);
+    } else {
+      lenis && lenis.start();
+      const done = () => { menu.style.visibility = 'hidden'; $('[data-nav]').style.color = ''; };
+      if (G) gsap.to(menu, { clipPath: 'inset(0 0 100% 0)', duration: .6, ease: 'move', onComplete: done }); else { menu.style.clipPath = ''; done(); }
+      lastFocus && lastFocus.focus && lastFocus === btn && btn.focus();
+    }
+  };
+  btn.addEventListener('click', () => openMenu(btn.getAttribute('aria-expanded') !== 'true'));
+  $$('a', menu).forEach(a => a.addEventListener('click', () => openMenu(false)));
+  document.addEventListener('keydown', e => {
+    if (btn.getAttribute('aria-expanded') !== 'true') return;
+    if (e.key === 'Escape') { openMenu(false); btn.focus(); }
+    if (e.key === 'Tab') { const f = focusables(), i = f.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); } }
+  });
+  matchMedia('(min-width: 992px)').addEventListener('change', e => { if (e.matches && btn.getAttribute('aria-expanded') === 'true') openMenu(false); });
+
+  /* ---------- Hole explorer ---------- */
+  const HOLES = [
+    [1,'First Light',4,352,9,'Wide and slightly downhill between birches. A friendly start.',{d:0,b:2}],
+    [2,'Long Meadow',5,478,3,'Follows an old field boundary. Three solid shots reach the green.',{d:1,b:3}],
+    [3,'Heather',3,156,15,'Heather left, a shallow green tilted towards you.',{d:0,b:2,s:1}],
+    [4,'The Ridge',4,384,1,'Uphill over a moraine ridge. The view opens at the top.',{d:-1,b:1}],
+    [5,'Hollow',4,341,11,'Short, but the green sits in a hollow guarded by two bunkers.',{d:0,b:2}],
+    [6,'The Pond',3,172,13,'A carry over a heath pond. Take the wind seriously.',{d:0,b:1,w:1,s:1}],
+    [7,'Birch Lane',4,365,7,'Dogleg right along a line of birches.',{d:1,b:2}],
+    [8,'Long Way Round',5,502,5,'The longest hole. Patience pays more than power.',{d:-1,b:3}],
+    [9,'The Turn',4,368,17,'Plays back towards the clubhouse. A coffee is never far away.',{d:0,b:2}],
+    [10,'Pines',4,395,4,'A tighter start to the back nine, framed by pines.',{d:-1,b:2}],
+    [11,'Little One',3,141,18,'The shortest hole on the course. Not the easiest.',{d:0,b:3,s:1}],
+    [12,'Into the Pines',5,489,2,'Through tall pines. Three good shots and a little patience.',{d:1,b:2}],
+    [13,'Crossing',4,337,14,'A ditch crosses the fairway. Lay up or carry it.',{d:0,b:1,w:1}],
+    [14,'Windbreak',4,372,8,'Exposed to the west. Club up on breezy days.',{d:-1,b:2}],
+    [15,'Clearing',3,183,12,'An open green in a clearing of the woods.',{d:0,b:2,s:1}],
+    [16,'Two Ways',5,466,6,'A split fairway. The bold line saves a shot.',{d:1,b:3,w:1}],
+    [17,'Low Road',4,329,16,'A short par four that rewards the right angle in.',{d:0,b:2}],
+    [18,'Home',4,398,10,'The clubhouse comes into view on the approach.',{d:-1,b:2}]
+  ];
+  const tabsEl = $('[data-hole-tabs]'), svg = $('[data-hole-svg]');
+  if (tabsEl && svg) {
+    tabsEl.innerHTML = HOLES.map((h, i) => `<button type="button" role="tab" id="hole-tab-${i}" aria-controls="hole-panel" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" class="${i === 8 ? 'is-turn' : ''}"><span class="gc-sr">Hole </span>${String(h[0]).padStart(2, '0')}</button>`).join('');
+    const tabs = $$('[role="tab"]', tabsEl);
+    const ns = 'http://www.w3.org/2000/svg';
+    const draw = (h) => {
+      const [n, , par, len, , , o] = h;
+      // Tee bottom, green top. Curve controls for dogleg.
+      const short = !!o.s, top = short ? 92 : 46 + (520 - len) / 12, bx = 150 + o.d * 58;
+      const tee = [150, 262], green = [150 + o.d * (short ? 6 : 30), top];
+      const mid = [bx, (tee[1] + green[1]) / 2 + 10];
+      const w = short ? 0 : (par === 5 ? 36 : 40);
+      let html = `<rect class="h-rough" width="300" height="300"/>`;
+      for (let k = 0; k < 18; k++) { const x = (k * 53 + n * 17) % 300, y = (k * 37 + n * 29) % 300; const dx = Math.abs(x - 150 - o.d * 30); if (dx > 70) html += `<circle class="h-tree" cx="${x}" cy="${y}" r="${7 + (k % 4) * 2}"/>`; }
+      if (o.w) html += `<ellipse class="h-water" cx="${short ? 150 : mid[0] - o.d * 10}" cy="${short ? 170 : mid[1] + 20}" rx="${short ? 54 : 30}" ry="${short ? 26 : 14}"/>`;
+      if (w) html += `<path class="h-fair" d="M ${tee[0] - 14} ${tee[1] - 22} Q ${mid[0] - w} ${mid[1]} ${green[0] - 22} ${green[1] + 30} L ${green[0] + 22} ${green[1] + 30} Q ${mid[0] + w} ${mid[1]} ${tee[0] + 14} ${tee[1] - 22} Z"/>`;
+      html += `<ellipse class="h-green" cx="${green[0]}" cy="${green[1]}" rx="${short ? 30 : 26}" ry="${short ? 22 : 19}"/>`;
+      for (let k = 0; k < o.b; k++) { const side = k % 2 ? 1 : -1; const bxk = green[0] + side * (30 + k * 3), byk = green[1] + 10 + k * 6; html += `<ellipse class="h-bunker" cx="${k === 2 ? mid[0] + side * (w || 20) : bxk}" cy="${k === 2 ? mid[1] - 10 : byk}" rx="9" ry="6"/>`; }
+      html += `<rect class="h-tee" x="${tee[0] - 8}" y="${tee[1] - 4}" width="16" height="8" rx="1"/>`;
+      html += `<path class="h-line" d="M ${tee[0]} ${tee[1] - 6} Q ${mid[0]} ${mid[1]} ${green[0]} ${green[1]}"/>`;
+      html += `<line class="h-flag" x1="${green[0]}" y1="${green[1]}" x2="${green[0]}" y2="${green[1] - 22}"/><path class="h-flagc" d="M ${green[0]} ${green[1] - 22} l 12 4 l -12 4 z"/>`;
+      html += `<text x="16" y="24">Hole ${String(n).padStart(2, '0')}</text><text x="16" y="286">Tee</text><text x="284" y="24" text-anchor="end">Par ${par}</text>`;
+      svg.innerHTML = html;
+      svg.setAttribute('aria-label', `Layout sketch of hole ${n}, par ${par}, ${len} metres`);
+      if (G) {
+        const line = $('.h-line', svg), L = line.getTotalLength();
+        gsap.fromTo(line, { strokeDasharray: `${L} ${L}`, strokeDashoffset: L }, { strokeDashoffset: 0, duration: 1.1, ease: 'calm', onComplete: () => line.style.strokeDasharray = '4 5' });
+        gsap.from($$('.h-fair,.h-green,.h-bunker,.h-water', svg), { opacity: 0, scale: .94, transformOrigin: '50% 50%', duration: .7, ease: 'calm', stagger: .03 });
+        gsap.from($$('.h-flag,.h-flagc', svg), { opacity: 0, y: 6, duration: .5, delay: .8, ease: 'calm' });
+      }
+    };
+    let cur = 0;
+    const panelEls = ['[data-hole-no]', '[data-hole-name]', '[data-hole-par]', '[data-hole-len]', '[data-hole-si]', '[data-hole-note]'].map(s => $(s));
+    const select = (i, focus) => {
+      i = (i + HOLES.length) % HOLES.length; const prev = cur; cur = i;
+      tabs.forEach((t, k) => { t.setAttribute('aria-selected', k === i); t.tabIndex = k === i ? 0 : -1; });
+      if (focus) tabs[i].focus();
+      $('[data-hole-panel]').setAttribute('aria-labelledby', `hole-tab-${i}`);
+      const h = HOLES[i];
+      const vals = [String(h[0]).padStart(2, '0'), h[1], h[2], h[3] + ' m', h[4], h[5]];
+      const write = () => panelEls.forEach((el, k) => el.textContent = vals[k]);
+      if (G && prev !== i) {
+        const dir = i > prev ? 1 : -1;
+        gsap.timeline().to(panelEls, { y: -12 * dir, autoAlpha: 0, duration: .22, ease: 'power2.in', stagger: .02 })
+          .add(write).fromTo(panelEls, { y: 14 * dir, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .55, ease: 'calm', stagger: .035 });
+      } else write();
+      draw(h);
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(i));
+      t.addEventListener('keydown', e => {
+        const map = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+        if (map[e.key]) { e.preventDefault(); select(cur + map[e.key], true); }
+        if (e.key === 'Home') { e.preventDefault(); select(0, true); }
+        if (e.key === 'End') { e.preventDefault(); select(HOLES.length - 1, true); }
+      });
+    });
+    $('[data-hole-prev]').addEventListener('click', () => select(cur - 1));
+    $('[data-hole-next]').addEventListener('click', () => select(cur + 1));
+    select(0);
+  }
+
+  /* ---------- Membership selector ---------- */
+  const MEM = {
+    full: ['Full Membership', 'For those who want the whole club, every day of the week. Play when it suits you and bring guests when you like.', ['Unlimited play, seven days a week', 'Priority tee times on weekends', 'Full use of the clubhouse, restaurant and terrace', 'Practice ground and short-game area', 'Guest rounds at member rates']],
+    weekday: ['Weekday', 'For people with full weekends and flexible weekdays. The course is quietest from Monday to Friday, and the clubhouse is yours all week.', ['Unlimited play, Monday to Friday', 'Weekend play as a guest of a member', 'Full use of the clubhouse every day', 'Practice ground and short-game area', 'Member events and competitions']],
+    young: ['Young Grove', 'For members under 30 who want the full club without the full fee structure. Same course, same clubhouse, a lot of good company.', ['Unlimited play, seven days a week', 'Young members’ evenings and team events', 'Full use of the clubhouse', 'Group coaching sessions through the year', 'Easy move to Full Membership at 30']],
+    first: ['First Year', 'For new golfers who want to learn properly and play with confidence by the end of the season. We guide you from the first lesson to your first handicap.', ['First Swing course at the academy', 'Play on the course once you are ready', 'Regular practice sessions with a coach', 'Playing partners for your first rounds', 'Full use of the clubhouse']]
+  };
+  const memOpts = $$('[data-mem-opt]');
+  const memTitle = $('[data-mem-title]'), memText = $('[data-mem-text]'), memList = $('[data-mem-list]'), memApply = $('[data-mem-apply]');
+  const tick = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
+  let memKey = 'full';
+  const fillMem = (k) => { const m = MEM[k]; memTitle.textContent = m[0]; memText.textContent = m[1]; memList.innerHTML = m[2].map(x => `<li>${tick}<span>${x}</span></li>`).join(''); memApply.dataset.mem = m[0]; };
+  fillMem(memKey);
+  memOpts.forEach(o => o.addEventListener('click', () => {
+    const k = o.dataset.memOpt; if (k === memKey) return; memKey = k;
+    memOpts.forEach(x => x.setAttribute('aria-pressed', x === o));
+    const els = [memTitle, memText, ...memList.children];
+    if (G) gsap.timeline().to([memTitle, memText, memList], { autoAlpha: 0, y: -10, duration: .22, ease: 'power2.in' })
+      .add(() => fillMem(k)).fromTo([memTitle, memText, ...memList.children], { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .6, ease: 'calm', stagger: .04 })
+      .set(memList, { autoAlpha: 1, y: 0 }, '<');
+    else fillMem(k);
+  }));
+  memApply.addEventListener('click', () => { const r = $(`input[name="membership"][value="${memApply.dataset.mem}"]`); if (r) { r.checked = true; validateGroup(); } });
+
+  /* ---------- Academy hover preview (pointer devices) ---------- */
+  const prev = $('[data-acad-preview]'), rows = $$('[data-acad-row]');
+  if (prev && matchMedia('(hover: hover) and (pointer: fine)').matches && G) {
+    const plates = $$('.gc-plate', prev);
+    const xTo = gsap.quickTo(prev, 'x', { duration: .6, ease: 'power3' }), yTo = gsap.quickTo(prev, 'y', { duration: .6, ease: 'power3' });
+    const show = (i) => { plates.forEach((p, k) => p.classList.toggle('is-on', k === i)); gsap.to(prev, { autoAlpha: 1, scale: 1, rotate: (i % 2 ? 2 : -2), duration: .6, ease: 'calm' }); };
+    const hide = () => gsap.to(prev, { autoAlpha: 0, scale: .85, duration: .4, ease: 'power2.out' });
+    $('[data-acad]').addEventListener('pointermove', e => { const w = prev.offsetWidth, h = prev.offsetHeight; xTo(Math.min(innerWidth - w - 16, e.clientX + 28)); yTo(Math.max(16, Math.min(innerHeight - h - 16, e.clientY - h / 2))); });
+    rows.forEach((r, i) => { r.addEventListener('pointerenter', () => show(i)); });
+    $('[data-acad]').addEventListener('pointerleave', hide);
+  }
+
+  /* ---------- Gallery: drag to scroll on mobile track + lightbox ---------- */
+  const items = $$('[data-gal-item]'), lb = $('[data-lightbox]');
+  if (lb && items.length) {
+    const stage = $('[data-lb-stage]', lb), cap = $('[data-lb-cap]', lb), cnt = $('[data-lb-count]', lb);
+    let idx = 0, opener = null;
+    const render = (i, dir = 0) => {
+      idx = (i + items.length) % items.length;
+      const src = $('.gc-plate', items[idx]).cloneNode(true);
+      const ar = items[idx].offsetWidth / items[idx].offsetHeight || 1.5;
+      const sw = stage.clientWidth, sh = stage.clientHeight || innerHeight * .7;
+      const w = Math.min(sw, sh * ar);
+      src.style.width = w + 'px'; src.style.height = (w / ar) + 'px';
+      const img = $('img', src); if (img) img.alt = $('img', items[idx]).alt;
+      stage.replaceChildren(src);
+      cap.textContent = $('.gc-gal_cap span', items[idx]).textContent;
+      cnt.textContent = `${String(idx + 1).padStart(2, '0')} / ${String(items.length).padStart(2, '0')}`;
+      if (G) gsap.fromTo(src, { autoAlpha: 0, x: dir * 40, scale: .98 }, { autoAlpha: 1, x: 0, scale: 1, duration: .6, ease: 'calm' });
+    };
+    const open = (i) => { opener = items[i]; render(i); lb.showModal(); lenis && lenis.stop(); $('[data-lb-close]', lb).focus(); };
+    const close = () => { lb.close(); };
+    lb.addEventListener('close', () => { lenis && lenis.start(); opener && opener.focus(); });
+    items.forEach((it, i) => it.addEventListener('click', () => open(i)));
+    $('[data-lb-close]', lb).addEventListener('click', close);
+    $('[data-lb-prev]', lb).addEventListener('click', () => render(idx - 1, -1));
+    $('[data-lb-next]', lb).addEventListener('click', () => render(idx + 1, 1));
+    lb.addEventListener('keydown', e => { if (e.key === 'ArrowRight') render(idx + 1, 1); if (e.key === 'ArrowLeft') render(idx - 1, -1); });
+    lb.addEventListener('click', e => { if (e.target === lb || e.target.classList.contains('gc-lightbox_stage')) close(); });
+    let sx = null; lb.addEventListener('pointerdown', e => sx = e.clientX); lb.addEventListener('pointerup', e => { if (sx === null) return; const d = e.clientX - sx; if (Math.abs(d) > 50) render(idx + (d < 0 ? 1 : -1), d < 0 ? 1 : -1); sx = null; });
+    // mobile: progress bar follows native scroll
+    const track = $('[data-gal-track]'), gbar = $('[data-gal-bar]');
+    track.addEventListener('scroll', () => { const m = track.scrollWidth - track.clientWidth; if (m > 0) gbar.style.transform = `scaleX(${track.scrollLeft / m})`; }, { passive: true });
+  }
+
+  /* ---------- Membership enquiry form ---------- */
+  const form = $('[data-form]');
+  const summary = $('[data-form-summary]'), done = $('[data-done]');
+  const rules = {
+    first: v => v.trim().length >= 1,
+    last: v => v.trim().length >= 1,
+    email: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()),
+    phone: v => !v.trim() || (/^[+\d][\d\s\-/()]{5,}$/.test(v.trim()) && v.replace(/\D/g, '').length >= 6),
+    hcp: v => { if (!v.trim()) return true; const s = v.trim().replace(',', '.'); if (!/^\+?\d{1,2}(\.\d)?$/.test(s)) return false; const n = parseFloat(s); return s.startsWith('+') ? n <= 10 : n <= 54; }
+  };
+  const fieldOf = el => el.closest('.gc-field');
+  const validateField = (el, show = true) => {
+    const ok = rules[el.name] ? rules[el.name](el.value) : true;
+    const f = fieldOf(el); if (!f) return ok;
+    if (show) { f.classList.toggle('is-invalid', !ok); f.classList.toggle('is-valid', ok && !!el.value.trim()); el.setAttribute('aria-invalid', !ok); }
+    return ok;
+  };
+  const group = $('[data-group="membership"]');
+  function validateGroup(show = true) { const ok = !!$('input[name="membership"]:checked', form); if (show) { group.classList.toggle('is-invalid', !ok); $$('input', group).forEach(i => i.setAttribute('aria-invalid', !ok)); } return ok; }
+  const consentWrap = $('[data-check]'), consent = $('input[name="consent"]');
+  const validateConsent = (show = true) => { const ok = consent.checked; if (show) { consentWrap.classList.toggle('is-invalid', !ok); consent.setAttribute('aria-invalid', !ok); } return ok; };
+  $$('input.gc-input, textarea.gc-input', form).forEach(el => {
+    el.addEventListener('blur', () => { if (el.value.trim() || el.required) validateField(el, !!el.value.trim() || fieldOf(el).classList.contains('is-invalid')); });
+    el.addEventListener('input', () => { if (fieldOf(el).classList.contains('is-invalid')) validateField(el); });
+  });
+  $$('input[name="membership"]', form).forEach(r => r.addEventListener('change', () => validateGroup()));
+  consent.addEventListener('change', () => validateConsent());
+  const msg = $('#f-msg'), count = $('[data-count]'); msg.addEventListener('input', () => count.textContent = msg.value.length);
+  const labels = { first: 'First name', last: 'Last name', email: 'Email', phone: 'Phone', hcp: 'Handicap' };
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const errs = [];
+    $$('input.gc-input', form).forEach(el => { if (!validateField(el)) errs.push([el.id, labels[el.name]]); });
+    if (!validateGroup()) errs.push(['f-mem', 'Membership of interest']);
+    if (!validateConsent()) errs.push(['f-consent', 'Consent to reply']);
+    if (errs.length) {
+      summary.hidden = false;
+      summary.innerHTML = `<strong>${errs.length === 1 ? 'One field needs' : errs.length + ' fields need'} your attention:</strong><ul>${errs.map(([id, l]) => `<li><a href="#${id}" data-jump="${id}">${l}</a></li>`).join('')}</ul>`;
+      $$('[data-jump]', summary).forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); const t = document.getElementById(a.dataset.jump); t.scrollIntoView({ block: 'center', behavior: RM ? 'auto' : 'smooth' }); t.focus({ preventScroll: true }); }));
+      summary.focus();
+      if (G) gsap.fromTo(summary, { y: -8, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .5, ease: 'calm' });
+      return;
+    }
+    summary.hidden = true;
+    const b = $('[data-submit]'); b.classList.add('is-busy'); b.setAttribute('aria-busy', 'true');
+    const data = new FormData(form);
+    setTimeout(() => {
+      b.classList.remove('is-busy'); b.removeAttribute('aria-busy');
+      $('[data-done-name]').textContent = data.get('first').trim();
+      const rows = [['Name', `${data.get('first').trim()} ${data.get('last').trim()}`], ['Email', data.get('email').trim()], ['Phone', data.get('phone').trim() || '–'], ['Membership', data.get('membership')], ['Handicap', data.get('hcp').trim() || 'None yet'], ['Contact by', data.get('contact')]];
+      const dl = $('[data-done-list]'); dl.replaceChildren(); rows.forEach(([k, v]) => { const dt = document.createElement('dt'); dt.textContent = k; const dd = document.createElement('dd'); dd.textContent = v; dl.append(dt, dd); });
+      form.hidden = true; done.hidden = false; done.focus();
+      if (G) gsap.from(done.children, { y: 16, autoAlpha: 0, duration: .7, stagger: .06, ease: 'calm' });
+      typeof ScrollTrigger !== 'undefined' && ScrollTrigger.refresh();
+    }, 900);
+  });
+  $('[data-done-reset]').addEventListener('click', () => { done.hidden = true; form.hidden = false; $('#f-first').focus(); typeof ScrollTrigger !== 'undefined' && ScrollTrigger.refresh(); });
+}
+})();
+</script>
+</body>
+</html>
