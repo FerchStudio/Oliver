@@ -164,3 +164,4 @@ html,body{overflow-x:clip}
   .concept_badge{transition:opacity .4s,transform .4s}html.has-sticky-cta .concept_badge{opacity:0;transform:translateY(1rem);pointer-events:none}}
 .consent_component{bottom:4.25rem}
 @media (max-width:991px){.consent_component{bottom:3.75rem}html.has-sticky-cta .consent_component{bottom:5.25rem}html.has-wf-badge.has-sticky-cta .consent_component{bottom:8.1rem}.error_top{flex-wrap:wrap}}
+.bs-fill{color:transparent;-webkit-background-clip:text;background-clip:text;background-color:rgb(var(--fc,37 43 40) / var(--a,1))}

@@ -373,7 +373,8 @@ $$('[data-split-words]').forEach(h => {
   gsap.fromTo(words, { yPercent: 110 }, { yPercent: 0, ease: 'power2.out', stagger: .1, scrollTrigger: { trigger: h, start: 'top 92%', end: 'top 55%', scrub: S } });
   pills.forEach((p, k) => { gsap.fromTo(p, { clipPath: 'inset(0% 50% 0% 50% round 1em)' }, { clipPath: 'inset(0% 0% 0% 0% round 1em)', ease: 'power2.inOut', scrollTrigger: { trigger: h, start: 'top 80%', end: 'top 40%', scrub: S } }); gsap.fromTo($('img', p), { scale: 1.6 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: h, start: 'top 85%', end: 'bottom 30%', scrub: S } }); });
 });
-$$('[data-fill]').forEach(p => { const w = SplitText.create(p, { type: 'words' }).words; gsap.fromTo(w, { opacity: .15 }, { opacity: 1, stagger: .1, ease: 'none', scrollTrigger: { trigger: p, start: 'top 85%', end: 'bottom 55%', scrub: S } }); });
+/* text fill: words are painted through background-clip, so the dim state stays a visual effect */
+$$('[data-fill]').forEach(p => { const c = (getComputedStyle(p).color.match(/\d+(\.\d+)?/g) || [37, 43, 40]).slice(0, 3).join(' '); const w = SplitText.create(p, { type: 'words' }).words; w.forEach(x => { x.classList.add('bs-fill'); x.style.setProperty('--fc', c); }); gsap.fromTo(w, { '--a': .15 }, { '--a': 1, stagger: .1, ease: 'none', scrollTrigger: { trigger: p, start: 'top 85%', end: 'bottom 55%', scrub: S } }); });
 await yieldTask();
 /* staggered reveals: small elements animate in once, in batches, with a soft expo ease */
 const batch = (sel, from, opts = {}) => { const els = $$(sel).filter(e => !e.closest('[data-gallery-cta],[data-hero],[data-loader],[data-menu]')); if (!els.length) return; gsap.set(els, from); ScrollTrigger.batch(els, { start: opts.start || 'top 92%', once: true, onEnter: b => gsap.to(b, { opacity: 1, x: 0, y: 0, scale: 1, rotate: 0, duration: opts.d || 1.3, stagger: opts.st || .09, ease: 'expo.out', overwrite: true }) }); };
