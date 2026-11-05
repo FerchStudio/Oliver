@@ -7,6 +7,8 @@
 .kd-loader{display:block;z-index:500;pointer-events:none;position:fixed;inset:0;overflow:hidden}
 .kd-loader-screen{pointer-events:auto;color:#f3f3f1;background-color:#0b0b0c;justify-content:center;align-items:center;width:100%;height:100%;display:flex;position:absolute;top:0;left:0}
 .kd-loader-words{gap:1.4em;align-items:center;display:flex;opacity:0;font-size:1rem}
+.kd-loader-words{animation:kdLw 1s cubic-bezier(.87,0,.13,1) .1s both}.kd-loader{animation:kdLh .6s 9s forwards}
+@keyframes kdLw{from{opacity:0;transform:translateY(50%)}to{opacity:1;transform:none}}@keyframes kdLh{to{opacity:0;visibility:hidden}}
 .kd-loader-dot{background-color:#6366F1;border-radius:50%;width:.75em;height:.75em;flex:none;box-shadow:0 0 0 .5em rgba(99,102,241,.18)}
 .kd-loader-word{font-size:4.5em;font-weight:400;letter-spacing:-.04em;line-height:1;margin:0;white-space:nowrap}
 .kd-loader-meta{position:absolute;left:clamp(1rem,3vw,2.5rem);right:clamp(1rem,3vw,2.5rem);bottom:clamp(1rem,3vw,2rem);display:flex;justify-content:space-between;font-size:.85rem;color:rgba(243,243,241,.5)}
