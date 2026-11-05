@@ -88,3 +88,6 @@ body{background-color:var(--_theme---background--primary)}
 .home-newsletter_input::placeholder{color:rgba(37,43,40,.3)}
 .home-courses_row:focus-visible{outline:1px solid var(--brand--sand);outline-offset:4px}
 @media (prefers-reduced-motion:reduce){.home-status_dot:after{animation:none}}
+.home-newsletter_consent .w-checkbox-input{float:none;margin:0;width:1rem;height:1rem;flex:none;accent-color:var(--brand--forest)}
+.home-newsletter_consent .w-form-label{margin:0;font-size:.85rem;color:var(--_theme---text--secondary)}
+.home-newsletter_form .w-form-done,.home-newsletter_form .w-form-fail{display:none!important}
