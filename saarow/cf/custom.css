@@ -91,3 +91,11 @@ body{background-color:var(--_theme---background--primary)}
 .home-newsletter_consent .w-checkbox-input{float:none;margin:0;width:1rem;height:1rem;flex:none;accent-color:var(--brand--forest)}
 .home-newsletter_consent .w-form-label{margin:0;font-size:.85rem;color:var(--_theme---text--secondary)}
 .home-newsletter_form .w-form-done,.home-newsletter_form .w-form-fail{display:none!important}
+
+/* subpages */
+.link-list_item:hover .link-list_icon{background-color:var(--_theme---button-primary--background);color:var(--_theme---button-primary--text)}
+.link-list_icon svg,[data-arrow] svg{width:.9rem;height:.9rem}
+.page-hero_title{hyphens:auto;-webkit-hyphens:auto}
+.faq_item.is-open .faq_icon{background-color:var(--_theme---button-primary--background);color:var(--_theme---button-primary--text);transform:rotate(180deg)}
+.faq_item.is-open .faq_icon-line.is-vertical{transform:rotate(0deg)}
+.table_price,.page-hero_fact-value,.card_price,.steps_meta{font-variant-numeric:lining-nums tabular-nums}
