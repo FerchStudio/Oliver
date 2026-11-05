@@ -139,3 +139,5 @@ html,body{overflow-x:clip}
 @media (prefers-reduced-motion:reduce){.map_marker-pin{animation:none}}
 .map_canvas.maplibregl-map{position:absolute}
 @media screen and (max-width:767px){.map_canvas.maplibregl-map{position:relative}}
+/* gallery: the "Ansehen" circle replaces the system cursor */
+@media (hover:hover) and (pointer:fine){[data-gallery-item],[data-gallery-item] *,[data-gallery-center],[data-gallery-center] *,[data-day-image],[data-day-image] *{cursor:none}}
