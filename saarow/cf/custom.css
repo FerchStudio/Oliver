@@ -44,7 +44,7 @@ body{background-color:var(--_theme---background--primary)}
 
 /* JS state combos */
 .navbar_component.is-hidden{transform:translate(0,-101%)}
-.home-courses_panels.is-js{display:block;height:64vh}
+.home-courses_panels.is-js{display:block;height:56vh}
 .home-courses_panel.is-js{position:absolute;top:0;left:0;right:0;bottom:0;visibility:hidden}
 .home-courses_panel.is-js.is-active{visibility:visible}
 .home-courses_panel-image-wrapper.is-js{flex:1;height:auto;min-height:0}
