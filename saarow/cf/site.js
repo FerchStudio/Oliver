@@ -7,12 +7,56 @@ html.lang = 'de';
 /* Webflow renders <button> from the HTML builder as links with type="button": restore real buttons */
 $$('a[type="button"]').forEach(a => { const b = document.createElement('button'); [...a.attributes].forEach(at => { if (at.name !== 'href') b.setAttribute(at.name, at.value); }); b.type = 'button'; b.classList.remove('w-button'); b.innerHTML = a.innerHTML; a.replaceWith(b); });
 
-/* PC CADDIE embeds load only after an explicit click (privacy), the choice is kept for the visit */
+/* PC CADDIE embeds are shown right away; the placeholder only remains without JavaScript */
 const loadEmbed = c => { if (c.dataset.loaded) return; c.dataset.loaded = '1'; const h = +c.dataset.embedHeight || 900;
-  const f = document.createElement('iframe'); f.className = 'embed_frame'; f.src = c.dataset.embed; f.title = 'PC CADDIE | ' + (c.dataset.embedTitle || 'Buchung'); f.loading = 'lazy'; f.style.height = h + 'px';
+  const f = document.createElement('iframe'); f.className = 'embed_frame'; f.src = c.dataset.embed; f.title = 'PC CADDIE | ' + (c.dataset.embedTitle || 'Buchung'); f.style.height = h + 'px';
   c.replaceChildren(f); setTimeout(() => window.ScrollTrigger && ScrollTrigger.refresh(), 800); };
-$$('[data-embed-load]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); try { sessionStorage.setItem('pcc-ok', '1'); } catch (_) {} $$('[data-embed]').forEach(loadEmbed); }));
-try { if (sessionStorage.getItem('pcc-ok')) $$('[data-embed]').forEach(loadEmbed); } catch (_) {}
+$$('[data-embed]').forEach(loadEmbed);
+
+/* Map (MapLibre + OpenFreeMap, no API key), tinted to the brand palette, loaded when it comes near the viewport */
+const mapEl = $('[data-map]');
+if (mapEl) {
+  const COURSES = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[14.02503,52.24284],[14.02716,52.2426],[14.02665,52.23937],[14.02872,52.23883],[14.02884,52.23965],[14.02926,52.24006],[14.02989,52.23981],[14.03016,52.24066],[14.0311,52.24083],[14.03138,52.24038],[14.03212,52.24124],[14.03187,52.24136],[14.03286,52.24211],[14.03205,52.24369],[14.03247,52.24382],[14.03215,52.24456],[14.03233,52.24528],[14.0314,52.24578],[14.02867,52.24881],[14.0274,52.24831],[14.02702,52.24859],[14.02639,52.24778],[14.02503,52.24284]]]}},{"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[14.00937,52.25136],[14.01382,52.24867],[14.01682,52.24573],[14.01824,52.24584],[14.02168,52.24974],[14.0221,52.25139],[14.02109,52.25216],[14.02128,52.25228],[14.02015,52.25285],[14.02129,52.25357],[14.02188,52.2533],[14.02223,52.25384],[14.02306,52.2534],[14.02319,52.25365],[14.01954,52.25807],[14.01519,52.25942],[14.01449,52.25786],[14.01191,52.25768],[14.01184,52.25683],[14.01344,52.25636],[14.01146,52.25431],[14.00937,52.25136]]]}},{"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[14.01682,52.24573],[14.01942,52.24277],[14.01962,52.24157],[14.01929,52.24137],[14.02396,52.23952],[14.02522,52.24534],[14.02618,52.24778],[14.02794,52.24951],[14.02742,52.25046],[14.02766,52.25057],[14.02746,52.25074],[14.02714,52.25047],[14.0261,52.25094],[14.02553,52.25044],[14.02323,52.25216],[14.0221,52.25139],[14.02168,52.24974],[14.02006,52.24764],[14.01932,52.24719],[14.01881,52.24619],[14.01824,52.24584],[14.01682,52.24573]]]}}]};
+  const V = 'https://cdn.jsdelivr.net/npm/maplibre-gl@5.6.0/dist/maplibre-gl';
+  const css = h => new Promise(r => { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = h; l.onload = r; l.onerror = r; document.head.append(l); });
+  const js = h => new Promise((r, j) => { const t = document.createElement('script'); t.src = h; t.onload = r; t.onerror = j; document.head.append(t); });
+  const tint = st => { st.layers.forEach(l => { const id = l.id, p = l.paint = l.paint || {};
+    if (l.type === 'background') p['background-color'] = '#f1efe7';
+    else if (l.type === 'fill') {
+      if (/water/.test(id)) { p['fill-color'] = '#c4d3cd'; delete p['fill-opacity']; }
+      else if (/building/.test(id)) p['fill-color'] = '#e6e2d6';
+      else if (/park|wood|forest|grass|landcover|landuse|golf|cemetery/.test(id)) p['fill-color'] = '#e3e5d8'; }
+    else if (l.type === 'line') {
+      if (/water|river|stream|canal/.test(id)) p['line-color'] = '#b3c6bf';
+      else if (/casing/.test(id)) p['line-color'] = '#dcd7ca';
+      else if (/road|highway|street|bridge|tunnel|path|track|minor|major|motorway|trunk|primary|secondary|tertiary/.test(id)) p['line-color'] = /motorway|trunk|primary/.test(id) ? '#e9dfc9' : '#ffffff';
+      else if (/boundary|admin/.test(id)) p['line-opacity'] = .25; }
+    else if (l.type === 'symbol') {
+      if (/poi/.test(id)) { l.layout = Object.assign({}, l.layout, { visibility: 'none' }); return; }
+      if (l.layout && l.layout['text-field']) { p['text-color'] = /water/.test(id) ? '#5f7d72' : '#5b625e'; p['text-halo-color'] = '#f1efe7'; p['text-halo-width'] = 1.2; } } });
+    return st; };
+  const init = async () => {
+    await Promise.all([css(V + '.css'), js(V + '.js')]);
+    const st = tint(await (await fetch('https://tiles.openfreemap.org/styles/positron')).json());
+    const map = new maplibregl.Map({ container: mapEl, style: st, center: [14.022, 52.248], zoom: 13.3, attributionControl: { compact: true }, cooperativeGestures: true, dragRotate: false, pitchWithRotate: false,
+      locale: { 'CooperativeGesturesHandler.WindowsHelpText': 'Strg + Scrollen zum Zoomen', 'CooperativeGesturesHandler.MacHelpText': '⌘ + Scrollen zum Zoomen', 'CooperativeGesturesHandler.MobileHelpText': 'Mit zwei Fingern bewegen', 'NavigationControl.ZoomIn': 'Hineinzoomen', 'NavigationControl.ZoomOut': 'Herauszoomen' } });
+    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+    const fit = () => { const b = new maplibregl.LngLatBounds(); COURSES.features.forEach(f => f.geometry.coordinates[0].forEach(c => b.extend(c)));
+      const w = mapEl.clientWidth, d = w > 900; map.fitBounds(b, { padding: { top: 50, bottom: d ? 70 : 60, left: d ? Math.min(440, w * .38) : 30, right: d ? 60 : 30 }, duration: 0 }); };
+    map.on('load', () => {
+      map.addSource('courses', { type: 'geojson', data: COURSES });
+      map.addLayer({ id: 'courses-fill', type: 'fill', source: 'courses', paint: { 'fill-color': '#173d30', 'fill-opacity': .15 } });
+      map.addLayer({ id: 'courses-line', type: 'line', source: 'courses', paint: { 'line-color': '#173d30', 'line-width': 1.4, 'line-opacity': .5 } });
+      fit(); });
+    const mk = (ll, h, c, anchor) => { const d = document.createElement('div'); d.className = 'map_marker' + c; d.innerHTML = h; new maplibregl.Marker({ element: d, anchor }).setLngLat(ll).addTo(map); };
+    mk([14.02939, 52.23973], '<span class="map_marker-label">Clubhaus | Greenside</span><span class="map_marker-pin"></span>', '', 'bottom');
+    mk([14.02908, 52.23863], '<span class="map_marker-pin"></span><span class="map_marker-label">Precise Resort</span>', ' is-resort', 'top');
+    [['Faldo Course Berlin', 14.0205, 52.2470], ['Arnold Palmer', 14.0300, 52.2455], ['Stan Eby', 14.0170, 52.2540]].forEach(([n, x, y]) => mk([x, y], `<span class="map_course-label">${n}</span>`, ' is-course', 'center'));
+    addEventListener('resize', () => { clearTimeout(mapEl._t); mapEl._t = setTimeout(fit, 250); });
+  };
+  const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); init().catch(() => mapEl.classList.add('is-failed')); } }, { rootMargin: '400px' });
+  io.observe(mapEl);
+}
 
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const ANIM = !RM && window.gsap && window.ScrollTrigger && window.SplitText;

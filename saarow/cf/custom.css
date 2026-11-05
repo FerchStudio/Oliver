@@ -117,3 +117,23 @@ html,body{overflow-x:clip}
 @media screen and (max-width:991px){.spec_item:nth-child(3){border-left-style:none;padding-left:0}.spec_item:nth-child(n+3){border-top:1px solid var(--_theme---border--primary)}}
 @media screen and (max-width:767px){.home-partners_logo{height:3.2rem}}
 @media screen and (max-width:767px){.table_cell{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;min-width:0}}
+/* forms */
+.form_input:focus{border-bottom-color:var(--brand--forest);outline:0;box-shadow:none}
+.form_input::placeholder{color:rgba(91,98,94,.5)}
+.form_input.is-select{-webkit-appearance:none;appearance:none;padding-right:1.8rem;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23173d30' stroke-width='1.4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .2rem center;background-size:.75rem}
+.form_checkbox-icon{accent-color:var(--brand--forest)}
+.form_input:-webkit-autofill{-webkit-box-shadow:0 0 0 40px var(--brand--limestone) inset}
+/* map */
+.map_canvas .maplibregl-ctrl-group{border:1px solid rgba(37,43,40,.12);border-radius:100px;overflow:hidden;box-shadow:0 10px 24px -14px rgba(23,61,48,.4);background:#f7f6f1}
+.map_canvas .maplibregl-ctrl-top-right{top:.6rem;right:.6rem}
+.map_canvas .maplibregl-ctrl-attrib{font-size:.65rem;background:rgba(247,246,241,.85)}
+.map_canvas .maplibregl-cooperative-gesture-screen{background:rgba(23,61,48,.55);font-size:1.1rem}
+.map_marker{display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.map_marker-pin{width:1.15rem;height:1.15rem;border-radius:50%;background:#173d30;border:3px solid #f7f6f1;box-shadow:0 0 0 0 rgba(23,61,48,.45);animation:mapPulse 2.6s infinite}
+.map_marker-label{margin:.4rem 0;padding:.42rem .8rem;border-radius:100px;background:#173d30;color:#f7f6f1;font-size:.74rem;line-height:1;letter-spacing:.02em;white-space:nowrap;box-shadow:0 10px 24px -12px rgba(23,61,48,.6)}
+.map_marker.is-resort .map_marker-pin{width:.95rem;height:.95rem;background:#b9a98e;animation:none}
+.map_marker.is-resort .map_marker-label{background:#f7f6f1;color:#252b28;border:1px solid rgba(37,43,40,.15)}
+.map_course-label{padding:.32rem .6rem;border-radius:2px;background:rgba(247,246,241,.88);font-family:var(--font-family--mono);font-size:.62rem;line-height:1;letter-spacing:.14em;text-transform:uppercase;color:#173d30;white-space:nowrap}
+.map_canvas.is-failed{background:var(--brand--limestone)}
+@keyframes mapPulse{0%{box-shadow:0 0 0 0 rgba(23,61,48,.45)}70%{box-shadow:0 0 0 14px rgba(23,61,48,0)}100%{box-shadow:0 0 0 0 rgba(23,61,48,0)}}
+@media (prefers-reduced-motion:reduce){.map_marker-pin{animation:none}}
