@@ -1,0 +1,70 @@
+/* Golf Club Bad Saarow | custom code that Webflow cannot express natively.
+   Layout and typography live in native Webflow classes (Client-First). */
+html.is-loading .loader_component{display:flex}
+body{background-color:var(--_theme---background--primary)}
+.w-embed:before,.w-embed:after{display:none!important;content:none!important}
+[data-embed]>.w-embed{width:100%;height:100%}
+
+/* button arrow swap */
+.button.is-icon:hover .button_arrow,.button.is-icon:focus-visible .button_arrow{transform:translate(220%,0)}
+.button.is-icon:hover .button_arrow.is-second,.button.is-icon:focus-visible .button_arrow.is-second{transform:translate(0,0)}
+.button.is-icon.is-light .button_icon-wrap{background-color:var(--brand--forest);color:var(--brand--warm-white)}
+.button.is-icon.is-ghost .button_icon-wrap{background-color:var(--brand--warm-white);color:var(--brand--forest)}
+.button.is-icon.is-secondary .button_icon-wrap{background-color:var(--brand--forest);color:var(--brand--warm-white)}
+.section_home-plans .button.is-icon,.footer_component .button.is-icon{background-color:var(--brand--warm-white);color:var(--brand--charcoal)}
+.section_home-plans .button.is-icon .button_icon-wrap{background-color:var(--brand--forest);color:var(--brand--warm-white)}
+
+/* navbar states */
+.navbar_menu-line{background-color:var(--_theme---background--primary)}
+.navbar_component.is-transparent .navbar_menu-line{background-color:var(--brand--forest)}
+.navbar_component.is-transparent .button.is-icon.is-small-nav{background-color:var(--brand--warm-white);color:var(--brand--charcoal)}
+.navbar_component.is-transparent .button.is-icon.is-small-nav .button_icon-wrap{background-color:var(--brand--forest);color:var(--brand--warm-white)}
+.navbar_menu-button.is-open .navbar_menu-line{transform:translate(0,2.75px) rotate(45deg)}
+.navbar_menu-button.is-open .navbar_menu-line.is-bottom{transform:translate(0,-2.75px) rotate(-45deg)}
+
+/* hero scroll cue */
+.home-hero_scroll-thumb{animation:bs-cue 2.4s cubic-bezier(.65,0,.35,1) infinite}
+@keyframes bs-cue{0%{transform:translateY(-100%)}60%,100%{transform:translateY(260%)}}
+
+/* faq icon open state */
+.home-faq_item.is-open .home-faq_icon{background-color:var(--brand--forest);color:var(--brand--warm-white);transform:rotate(180deg)}
+.home-faq_item.is-open .home-faq_icon-line.is-vertical{transform:rotate(0deg)}
+
+/* embedded SVGs: badge, course map, lightbox image */
+.home-intro_badge-embed svg{width:100%;height:100%;overflow:visible}
+.home-intro_badge-embed text{font-family:var(--font-family--mono);font-size:8.2px;letter-spacing:.2em;text-transform:uppercase;fill:currentColor}
+.home-courses_map-embed svg{width:100%;height:100%;overflow:visible}
+.m-lake{fill:#2a5a49}
+.m-lake-t{font-family:var(--font-family--heading);font-size:22px;fill:rgba(237,235,227,.45);font-style:italic}
+.m-topo{fill:none;stroke:rgba(237,235,227,.07);stroke-width:1}
+.m-zone{fill:rgba(168,180,157,.14);stroke:rgba(237,235,227,.3);stroke-width:1;stroke-dasharray:3 4;transition:fill .8s cubic-bezier(.22,1,.36,1),stroke .8s}
+.m-g{cursor:pointer}
+.m-g.on .m-zone{fill:rgba(168,180,157,.32);stroke:#EDEBE3;stroke-dasharray:0}
+.m-fw{fill:none;stroke:rgba(237,235,227,.22);stroke-width:5;stroke-linecap:round;transition:stroke .8s}
+.m-g.on .m-fw{stroke:rgba(237,235,227,.7)}
+.m-lbl{font-family:var(--font-family--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;fill:rgba(237,235,227,.62);transition:fill .8s}
+.m-g.on .m-lbl{fill:#EDEBE3}
+.m-flight{fill:none;stroke:#B9A98E;stroke-width:1.5;stroke-dasharray:4 6}
+.m-note{font-family:var(--font-family--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;fill:rgba(237,235,227,.38)}
+.m-pin{fill:#B9A98E}
+.home-courses_ball{filter:drop-shadow(0 6px 6px rgba(0,0,0,.4))}
+.lightbox_embed img{max-height:80svh;width:auto;border-radius:4px}
+
+/* Designer: keep everything visible and editable */
+.wf-design-mode .home-hero_statement,.wf-design-mode .cursor_component{display:none}
+
+@media (prefers-reduced-motion:reduce){
+  .home-hero_scroll-thumb{animation:none}
+  html.is-loading .loader_component{display:none}
+}
+
+/* JS state combos */
+.navbar_component.is-hidden{transform:translate(0,-101%)}
+.home-courses_panels.is-js{display:block;height:64vh}
+.home-courses_panel.is-js{position:absolute;top:0;left:0;right:0;bottom:0;visibility:hidden}
+.home-courses_panel.is-js.is-active{visibility:visible}
+.home-courses_panel-image-wrapper.is-js{flex:1;height:auto;min-height:0}
+.lightbox_component.is-open{display:flex}
+@media screen and (max-width:991px){.home-courses_panels.is-js{height:40vh}}
+@media screen and (max-width:767px){.home-courses_panels.is-js{height:48vh}}
+.m-lbl.is-small{font-size:8px}
