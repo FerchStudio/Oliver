@@ -11,12 +11,18 @@ const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const ANIM = !RM && window.gsap && window.ScrollTrigger && window.SplitText;
 const FINE = matchMedia('(hover:hover) and (pointer:fine)').matches;
 const FRAMES = 24, turn = (el, deg) => { const f = ((Math.round(deg / (360 / FRAMES)) % FRAMES) + FRAMES) % FRAMES; el.style.backgroundPosition = `${(f / (FRAMES - 1)) * 100}% 0`; };
+const masked = sp => { (sp.masks || []).forEach(m => { m.style.padding = '.06em .1em .2em .02em'; m.style.margin = '-.06em -.1em -.2em -.02em'; }); return sp; };
+/* custom arrow: an editorial half-barb instead of the stock glyph */
+const ARROW = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M1.5 10.5h13M14.5 10.5 9.5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+$$('.button_arrow').forEach(a => { a.innerHTML = ARROW; });
+/* rolling letters on footer and menu links */
+$$('.footer_link,.menu_link,.navbar_link').forEach(a => { const t = a.textContent; if (!t.trim()) return; a.setAttribute('aria-label', t.replace('↗', '').trim()); a.classList.add('bs-roll'); a.innerHTML = '<span class="bs-roll_inner" aria-hidden="true">' + [...t].map((c, i) => `<span class="bs-roll_char" style="--i:${i}">${c === ' ' ? '&nbsp;' : c}</span>`).join('') + '</span>'; });
 const mw = $('.main-wrapper'); if (mw && !mw.id) mw.id = 'main';
 
 /* smooth scroll */
 let lenis = null;
 if (ANIM && window.Lenis) {
-  lenis = new Lenis({ duration: 1.25, easing: t => 1 - Math.pow(1 - t, 4), smoothWheel: true });
+  lenis = new Lenis({ lerp: .085, smoothWheel: true, wheelMultiplier: .9 });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0);
   if (html.classList.contains('is-loading')) lenis.stop();
@@ -99,7 +105,7 @@ const placeBall = (x, y) => { const [px, py] = toPx(x, y); ball.style.left = px 
 const show = (i, instant) => {
   zones.forEach((z, k) => z.classList.toggle('on', k === i));
   steps.forEach((b, k) => { b.classList.toggle('is-active', k === i); b.setAttribute('aria-selected', k === i); });
-  const a = panels[cur], b = panels[i], parts = p => [$('.home-courses_panel-title', p), $('p', p), $('.home-courses_tags', p)];
+  const a = panels[cur], b = panels[i], parts = p => [$('.home-courses_panel-title', p), $('p', p), ...$$('.home-courses_tag', p)];
   if (!ANIM || instant || a === b) panels.forEach((n, k) => n.classList.toggle('is-active', k === i));
   else {
     gsap.to(parts(a), { opacity: 0, y: -16, duration: .5, stagger: .04, ease: 'power2.inOut', overwrite: true, onComplete: () => a.classList.remove('is-active') });
@@ -110,11 +116,13 @@ const show = (i, instant) => {
     gsap.fromTo(parts(b), { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 1.2, stagger: .08, delay: .45, ease: 'expo.out', overwrite: true });
   }
   const [x1, y1] = CENTERS[cur], [x2, y2] = CENTERS[i], fl = $('[data-flight]', svg);
-  fl.setAttribute('d', `M${x1} ${y1} Q${(x1 + x2) / 2} ${Math.min(y1, y2) - 120} ${x2} ${y2}`);
+  fl.setAttribute('d', `M${x1} ${y1} Q${(x1 + x2) / 2} ${Math.min(y1, y2) - 70} ${x2} ${y2}`);
   if (ANIM && !instant && cur !== i) {
     const L = fl.getTotalLength(), o = { t: 0 };
-    gsap.fromTo(fl, { strokeDasharray: `${L} ${L}`, strokeDashoffset: L }, { strokeDashoffset: 0, duration: 1.5, ease: 'power2.inOut' });
-    gsap.to(o, { t: 1, duration: 1.5, ease: 'power2.inOut', overwrite: true, onUpdate: () => { const p = fl.getPointAtLength(L * o.t); placeBall(p.x, p.y); turn(sprite, o.t * 1440); gsap.set(ball, { scale: 1 + Math.sin(o.t * Math.PI) * .6 }); } });
+    gsap.killTweensOf(fl);
+    gsap.fromTo(fl, { opacity: 1, strokeDasharray: `${L} ${L}`, strokeDashoffset: L }, { strokeDashoffset: 0, duration: 1.3, ease: 'power3.inOut' });
+    gsap.to(fl, { opacity: 0, duration: .8, delay: 1.5, ease: 'power1.out' });
+    gsap.to(o, { t: 1, duration: 1.3, ease: 'power3.inOut', overwrite: true, onUpdate: () => { const p = fl.getPointAtLength(L * o.t); placeBall(p.x, p.y); turn(sprite, o.t * 1080); gsap.set(ball, { scale: 1 + Math.sin(o.t * Math.PI) * .18 }); } });
   } else placeBall(x2, y2);
   cur = i;
 };
@@ -134,25 +142,30 @@ gsap.defaults({ ease: 'power3.out' });
 const S = 1.6;
 const mm = gsap.matchMedia();
 
-/* loader + hero intro */
+/* loader: a ball rolls into the hole, the curtain closes onto the line and reveals the hero */
 const ln = { v: 0 };
-const heroLines = $$('[data-hero-line]').map(l => SplitText.create(l, { type: 'words', mask: 'words' }).words);
-gsap.set('[data-hero-image]', { clipPath: 'inset(30% 34% 30% 34% round 6px)' });
-gsap.set('[data-hero-image] img', { scale: 1.45 });
-const intro = gsap.timeline();
-if (html.classList.contains('is-loading')) {
-  intro.to(ln, { v: 100, duration: 1.5, ease: 'power2.inOut', onUpdate: () => { $('[data-loader-number]').textContent = Math.round(ln.v); } })
-    .to('[data-loader-bar]', { scaleX: 1, duration: 1.5, ease: 'power2.inOut' }, 0)
-    .to(loader, { yPercent: -100, duration: 1.2, ease: 'expo.inOut' }, 1.6);
+const heroLines = $$('[data-hero-line]').map(l => masked(SplitText.create(l, { type: 'words', mask: 'words' })).words);
+gsap.set('[data-hero-image] img', { scale: 1.3 });
+const intro = gsap.timeline({ defaults: { ease: 'expo.out' } });
+let t0 = .15;
+if (html.classList.contains('is-loading') && loader) {
+  const lBall = $('[data-loader-ball]', loader), lSprite = $('.loader_ball-sprite', loader), lHole = $('[data-loader-hole]', loader), lFlag = $('[data-loader-flag]', loader);
+  const target = () => lHole.offsetLeft + lHole.offsetWidth / 2 - lBall.offsetWidth / 2;
+  gsap.set(lFlag, { scaleY: 0 });
+  intro.from($$('.loader_top > *,.loader_bottom > *', loader), { opacity: 0, y: 14, duration: 1, stagger: .08 }, 0)
+    .to(ln, { v: 100, duration: 2.1, ease: 'power2.inOut', onUpdate: () => { const p = ln.v / 100; $('[data-loader-number]').textContent = Math.round(ln.v); gsap.set('[data-loader-bar]', { scaleX: p }); gsap.set(lBall, { x: p * target() }); turn(lSprite, p * 1800); } }, .2)
+    .to(lBall, { y: lBall.offsetHeight * .75, scale: .45, duration: .35, ease: 'power2.in' }, 2.3)
+    .to(lBall, { opacity: 0, duration: .1 }, 2.6)
+    .to(lFlag, { scaleY: 1, duration: .9, ease: 'elastic.out(1,.55)' }, 2.5)
+    .to(loader, { clipPath: 'inset(50% 0% 50% 0%)', duration: 1.3, ease: 'expo.inOut' }, 3.05);
+  t0 = 3.45;
 }
-const t0 = html.classList.contains('is-loading') ? 2 : .2;
-intro.to('[data-hero-image]', { clipPath: 'inset(0% 0% 0% 0% round 0px)', duration: 1.8, ease: 'expo.inOut' }, t0)
-  .to('[data-hero-image] img', { scale: 1.04, duration: 2.6, ease: 'expo.out' }, t0)
-  .from('[data-hero-eyebrow]', { opacity: 0, y: 14, duration: 1.2, ease: 'expo.out' }, t0 + .7)
-  .from(heroLines.flat(), { yPercent: 110, duration: 1.4, stagger: .08, ease: 'expo.out' }, t0 + .75)
-  .from($$('[data-hero-bottom] > *'), { opacity: 0, y: 24, duration: 1.2, stagger: .12, ease: 'expo.out' }, t0 + 1.3)
-  .from(nav, { opacity: 0, y: -16, duration: 1.2, ease: 'expo.out' }, t0 + 1.3)
-  .add(endLoad);
+intro.to('[data-hero-image] img', { scale: 1.04, duration: 2.8 }, t0 - .4)
+  .from('[data-hero-eyebrow]', { opacity: 0, y: 14, duration: 1.2 }, t0 + .3)
+  .from(heroLines.flat(), { yPercent: 115, duration: 1.5, stagger: .07 }, t0 + .2)
+  .from($$('[data-hero-bottom] > *, [data-hero-bottom] .button'), { opacity: 0, y: 24, duration: 1.2, stagger: .1 }, t0 + .7)
+  .from(nav, { opacity: 0, y: -16, duration: 1.2 }, t0 + .6)
+  .add(endLoad, t0 + .2);
 
 /* hero pinned: words drift apart, image zooms, statement appears */
 const stmt = $('[data-hero-statement]'); stmt.style.display = 'grid';
@@ -164,7 +177,7 @@ gsap.timeline({ scrollTrigger: { trigger: '[data-hero]', start: 'top top', end: 
   .to(heroLines[1], { xPercent: i => 30 + i * 30, opacity: 0, ease: 'power2.in', duration: .5, stagger: .02 }, 0)
   .to('[data-hero-eyebrow]', { opacity: 0, duration: .3 }, 0)
   .to('[data-hero-bottom]', { opacity: 0, y: 30, duration: .35 }, 0)
-  .to('[data-hero-image]', { filter: 'brightness(.55)', duration: .5, ease: 'none' }, .2)
+  .to('[data-hero-shade]', { opacity: .55, duration: .5, ease: 'none' }, .2)
   .to(say, { opacity: 1, filter: 'blur(0px)', y: 0, stagger: .06, duration: .35, ease: 'power2.out' }, .42)
   .to({}, { duration: .2 });
 
@@ -175,12 +188,20 @@ ScrollTrigger.create({ onUpdate: s => gsap.to(mq, { timeScale: (s.direction < 0 
 /* headings word by word, text fill, reveals */
 $$('[data-split-words]').forEach(h => {
   const pills = $$('[data-pill]', h);
-  const words = SplitText.create(h, { type: 'words', mask: 'words', ignore: '[data-pill]' }).words;
+  const words = masked(SplitText.create(h, { type: 'words', mask: 'words', ignore: '[data-pill]' })).words;
   gsap.fromTo(words, { yPercent: 110 }, { yPercent: 0, ease: 'power2.out', stagger: .1, scrollTrigger: { trigger: h, start: 'top 92%', end: 'top 55%', scrub: S } });
-  pills.forEach(p => gsap.fromTo(p, { width: 0 }, { width: p.classList.contains('is-wide') ? '2.5em' : '1.9em', ease: 'power2.inOut', scrollTrigger: { trigger: h, start: 'top 75%', end: 'top 35%', scrub: S } }));
+  pills.forEach((p, k) => { gsap.fromTo(p, { clipPath: 'inset(0% 50% 0% 50% round 1em)' }, { clipPath: 'inset(0% 0% 0% 0% round 1em)', ease: 'power2.inOut', scrollTrigger: { trigger: h, start: 'top 80%', end: 'top 40%', scrub: S } }); gsap.fromTo($('img', p), { scale: 1.6 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: h, start: 'top 85%', end: 'bottom 30%', scrub: S } }); });
 });
 $$('[data-fill]').forEach(p => { const w = SplitText.create(p, { type: 'words' }).words; gsap.fromTo(w, { opacity: .15 }, { opacity: 1, stagger: .1, ease: 'none', scrollTrigger: { trigger: p, start: 'top 85%', end: 'bottom 55%', scrub: S } }); });
-$$('[data-reveal]').forEach(el => gsap.fromTo(el, { opacity: 0, y: 40 }, { opacity: 1, y: 0, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 94%', end: 'top 70%', scrub: S } }));
+/* staggered reveals: small elements animate in once, in batches, with a soft expo ease */
+const batch = (sel, from, opts = {}) => { const els = $$(sel).filter(e => !e.closest('[data-gallery-cta],[data-hero],[data-loader],[data-menu]')); if (!els.length) return; gsap.set(els, from); ScrollTrigger.batch(els, { start: opts.start || 'top 92%', once: true, onEnter: b => gsap.to(b, { opacity: 1, x: 0, y: 0, scale: 1, rotate: 0, duration: opts.d || 1.3, stagger: opts.st || .09, ease: 'expo.out', overwrite: true }) }); };
+batch('[data-reveal]', { opacity: 0, y: 36 });
+batch('.chapter_component', { opacity: 0, y: 18 }, { st: .06 });
+batch('[data-award-item], [data-award-seal]', { opacity: 0, y: 30 }, { st: .12 });
+batch('.home-greenfee_chip, .home-tournaments_item, .home-school_pro', { opacity: 0, y: 24 }, { st: .07 });
+batch('.footer_column, .footer_brand', { opacity: 0, y: 40 }, { st: .08, start: 'top 95%' });
+batch('.footer_bottom > *', { opacity: 0, y: 16 }, { st: .1, start: 'top 98%' });
+gsap.from('[data-award-seal]', { rotate: -90, ease: 'none', scrollTrigger: { trigger: '[data-award]', start: 'top bottom', end: 'bottom top', scrub: 2 } });
 gsap.to('[data-badge] svg', { rotate: 300, ease: 'none', scrollTrigger: { trigger: '[data-badge]', start: 'top bottom', end: 'bottom top', scrub: 2 } });
 $$('[data-count]').forEach(b => { const n = +b.dataset.count, o = { v: 0 }; gsap.to(o, { v: n, ease: 'power1.out', scrollTrigger: { trigger: '[data-facts]', start: 'top 95%', end: 'top 60%', scrub: S }, onUpdate: () => b.textContent = Math.round(o.v) }); });
 gsap.fromTo('.home-intro_fact', { opacity: 0, y: 50 }, { opacity: 1, y: 0, stagger: .12, ease: 'power2.out', scrollTrigger: { trigger: '[data-facts]', start: 'top 98%', end: 'top 65%', scrub: S } });
@@ -208,36 +229,42 @@ gsap.fromTo('[data-school-image]', { clipPath: 'inset(0% 0% 100% 0% round 4px)' 
 gsap.fromTo('[data-school-image] img', { scale: 1.35 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: '#golfschule', start: 'top 80%', end: 'bottom bottom', scrub: true } });
 $$('[data-school-row]').forEach(r => gsap.fromTo(r, { opacity: 0, y: 50 }, { opacity: 1, y: 0, ease: 'power2.out', scrollTrigger: { trigger: r, start: 'top 95%', end: 'top 70%', scrub: S } }));
 
-/* membership oval mask */
-gsap.set('[data-membership-image]', { clipPath: 'inset(20% 30% 20% 30% round 600px)' });
-gsap.timeline({ scrollTrigger: { trigger: '[data-membership]', start: 'top top', end: '+=110%', pin: true, scrub: S, anticipatePin: 1 } })
-  .to('[data-membership-image]', { clipPath: 'inset(0% 0% 0% 0% round 0px)', ease: 'power1.inOut', duration: 1 }, 0)
-  .fromTo('[data-membership-image] img', { scale: 1.25 }, { scale: 1, ease: 'none', duration: 1 }, 0)
-  .from('.home-membership_content', { scale: .9, ease: 'power1.out', duration: 1 }, 0);
+/* membership: the oval opens to full bleed (animated as layout, no clip-path glitches) */
+const memImg = $('[data-membership-image]');
+gsap.set(memImg, { top: '17%', bottom: '17%', left: '30%', right: '30%', borderRadius: '50vw' });
+gsap.timeline({ scrollTrigger: { trigger: '[data-membership]', start: 'top top', end: '+=120%', pin: true, scrub: S, anticipatePin: 1 } })
+  .to(memImg, { top: 0, bottom: 0, left: 0, right: 0, borderRadius: 0, ease: 'power2.inOut', duration: 1 }, 0)
+  .fromTo('[data-membership-image] img', { scale: 1.3 }, { scale: 1, ease: 'none', duration: 1 }, 0)
+  .fromTo('.home-membership_content', { scale: .92 }, { scale: 1, ease: 'power1.out', duration: 1 }, 0);
 gsap.fromTo('[data-plan]', { opacity: 0, y: 70 }, { opacity: 1, y: 0, stagger: .12, ease: 'power2.out', scrollTrigger: { trigger: '[data-plans]', start: 'top 92%', end: 'top 50%', scrub: S } });
 
 /* tournaments */
-gsap.fromTo('[data-tournaments] > li', { opacity: 0, x: 60 }, { opacity: 1, x: 0, stagger: .12, ease: 'power2.out', scrollTrigger: { trigger: '[data-tournaments]', start: 'top 90%', end: 'top 50%', scrub: S } });
 
-/* gallery grid zooms into the CTA */
-const grid = $('[data-gallery-grid]'), center = $('[data-gallery-center]'), cta = $('[data-gallery-cta]');
+/* gallery: images rise in before the pin, header turns light over them, then the grid zooms into the CTA */
+const grid = $('[data-gallery-grid]'), center = $('[data-gallery-center]'), cta = $('[data-gallery-cta]'), gHead = $('[data-gallery-header]');
+$$('img', grid).forEach(im => { im.loading = 'eager'; im.decoding = 'async'; });
+gsap.set(grid, { force3D: true, willChange: 'transform' });
 const zScale = () => Math.max(innerWidth / center.offsetWidth, innerHeight / center.offsetHeight) * 1.02;
-const ctaWords = SplitText.create('[data-cta-heading]', { type: 'words', mask: 'words' }).words;
+const ctaWords = masked(SplitText.create('[data-cta-heading]', { type: 'words', mask: 'words' })).words;
 gsap.set(cta, { autoAlpha: 0 });
+gsap.timeline({ scrollTrigger: { trigger: '[data-gallery]', start: 'top 85%', end: 'top top', scrub: S } })
+  .fromTo([...$$('[data-gallery-item]'), center], { y: i => [160, 90, 200, 120, 140, 180, 70, 220, 110][i] || 120, opacity: 0 }, { y: 0, opacity: 1, ease: 'power2.out', stagger: .04, duration: .6 }, 0)
+  .to(gHead, { color: '#F7F6F1', duration: .3, ease: 'none' }, .45)
+  .to($$('.text-style-eyebrow,.chapter_number', gHead), { color: 'rgba(247,246,241,.85)', borderColor: 'rgba(247,246,241,.85)', duration: .3, ease: 'none' }, .45)
+  .to('[data-gallery-shade]', { opacity: .35, duration: .4, ease: 'none' }, .4);
 gsap.timeline({ scrollTrigger: { trigger: '[data-gallery]', start: 'top top', end: '+=220%', pin: true, scrub: S, anticipatePin: 1, invalidateOnRefresh: true } })
-  .fromTo('[data-gallery-item]', { y: i => [120, 60, 160, 80, 100, 140, 40, 180][i] || 80, opacity: 0 }, { y: 0, opacity: 1, ease: 'power2.out', stagger: .03, duration: .3 }, 0)
-  .fromTo(center, { y: 90, opacity: 0 }, { y: 0, opacity: 1, duration: .3 }, 0)
-  .to('[data-gallery-header]', { opacity: 0, y: -40, duration: .2 }, .45)
-  .to(grid, { scale: () => zScale(), top: '50%', ease: 'power2.inOut', duration: .5 }, .45)
-  .to('[data-gallery-item]', { opacity: 0, duration: .3 }, .55)
-  .to('[data-gallery-shade]', { opacity: 1, duration: .2 }, .8)
+  .to('[data-gallery-item]', { y: i => [-40, -90, -20, -70, -30, -100, -50, -10][i] || -40, ease: 'none', duration: .45 }, 0)
+  .to(gHead, { opacity: 0, y: -40, duration: .2, ease: 'power2.in' }, .3)
+  .to(grid, { scale: () => zScale(), top: '50%', ease: 'power3.inOut', duration: .55 }, .35)
+  .to('[data-gallery-item]', { opacity: 0, duration: .25 }, .5)
+  .to('[data-gallery-shade]', { opacity: 1, duration: .2 }, .78)
   .to(cta, { autoAlpha: 1, duration: .01 }, .82)
-  .from(ctaWords, { yPercent: 110, stagger: .03, duration: .2 }, .82)
+  .from(ctaWords, { yPercent: 115, stagger: .03, duration: .22, ease: 'power3.out' }, .82)
   .from([...cta.querySelectorAll('.chapter_component,.home-gallery_cta-row')], { opacity: 0, y: 24, duration: .15, stagger: .05 }, .95)
   .to({}, { duration: .15 });
 
 /* faq */
-gsap.fromTo('[data-faq-item]', { opacity: 0, y: 30 }, { opacity: 1, y: 0, stagger: .08, ease: 'power2.out', scrollTrigger: { trigger: '[data-faq]', start: 'top 92%', end: 'top 50%', scrub: S } });
+batch('[data-faq-item]', { opacity: 0, y: 30 }, { st: .07 });
 
 /* footer wordmark */
 const fw = $('[data-footer-word]'); const chars = SplitText.create(fw, { type: 'chars' }).chars;
