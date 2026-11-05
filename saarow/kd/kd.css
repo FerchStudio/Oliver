@@ -4,15 +4,15 @@
 @font-face{font-family:'Argon';font-style:normal;font-weight:400;font-display:swap;src:url(https://cdn.prod.website-files.com/6aec94049b1377cc9cc0bf00/6aed06dc73cc4940f9d8e0f3_Argon_Regular1.otf) format('opentype')}
 
 /* ---------- loader (Osmo Welcoming Words, Ferch look) ---------- */
-.loading-container{z-index:500;pointer-events:none;position:fixed;inset:0;overflow:hidden}
-.loading-screen{pointer-events:auto;color:#f3f3f1;background-color:#0b0b0c;justify-content:center;align-items:center;width:100%;height:100%;display:flex;position:absolute;top:0;left:0}
-.loading-words{gap:1.4em;align-items:center;display:flex;opacity:0;font-size:1rem}
-.loading-words__dot{background-color:#6366F1;border-radius:50%;width:.75em;height:.75em;flex:none;box-shadow:0 0 0 .5em rgba(99,102,241,.18)}
-.loading-words__word{font-size:4.5em;font-weight:400;letter-spacing:-.04em;line-height:1;margin:0;white-space:nowrap}
-.loading-meta{position:absolute;left:clamp(1rem,3vw,2.5rem);right:clamp(1rem,3vw,2.5rem);bottom:clamp(1rem,3vw,2rem);display:flex;justify-content:space-between;font-size:.85rem;color:rgba(243,243,241,.5)}
-html.kd-seen .loading-container{display:none}
-@media screen and (max-width:767px){.loading-words{font-size:2.75vw}.loading-words__word{font-size:6.5em;white-space:normal;max-width:12ch}}
-:is(.wf-design-mode,.w-editor) .loading-container{display:none}
+.kd-loader{display:block;z-index:500;pointer-events:none;position:fixed;inset:0;overflow:hidden}
+.kd-loader-screen{pointer-events:auto;color:#f3f3f1;background-color:#0b0b0c;justify-content:center;align-items:center;width:100%;height:100%;display:flex;position:absolute;top:0;left:0}
+.kd-loader-words{gap:1.4em;align-items:center;display:flex;opacity:0;font-size:1rem}
+.kd-loader-dot{background-color:#6366F1;border-radius:50%;width:.75em;height:.75em;flex:none;box-shadow:0 0 0 .5em rgba(99,102,241,.18)}
+.kd-loader-word{font-size:4.5em;font-weight:400;letter-spacing:-.04em;line-height:1;margin:0;white-space:nowrap}
+.kd-loader-meta{position:absolute;left:clamp(1rem,3vw,2.5rem);right:clamp(1rem,3vw,2.5rem);bottom:clamp(1rem,3vw,2rem);display:flex;justify-content:space-between;font-size:.85rem;color:rgba(243,243,241,.5)}
+html.kd-seen .kd-loader{display:none}
+@media screen and (max-width:767px){.kd-loader-words{font-size:2.75vw}.kd-loader-word{font-size:6.5em;white-space:normal;max-width:12ch}}
+:is(.wf-design-mode,.w-editor) .kd-loader{display:none}
 
 /* ---------- theme ---------- */
 .fx.kd{--fx-bg:#0b0b0c;--fx-ink:#f3f3f1;--fx-mute:rgba(243,243,241,.55);--fx-line:rgba(243,243,241,.12);--kd-card:#141416;--kd-card-2:#1c1c1f;--fx-acc:#6366F1;--kd-hl:#8B8DF7;background:var(--fx-bg);color:var(--fx-ink);overflow:hidden}
