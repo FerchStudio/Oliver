@@ -60,7 +60,23 @@ if (mapEl) {
 }
 
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* a11y: accessible names that match the visible text */
+$$('.navbar_logo-link').forEach(a => a.removeAttribute('aria-label'));
+$$('[data-menu-toggle]').forEach(b => b.setAttribute('aria-label', 'Menü'));
+/* animation libraries: right away on desktop; on phones only after the first touch, scroll or key, so the page is usable instantly */
+const CDN = 'https://cdn.jsdelivr.net/npm/', LIBS = ['gsap@3.15/dist/gsap.min.js', 'gsap@3.15/dist/ScrollTrigger.min.js', 'gsap@3.15/dist/SplitText.min.js', 'lenis@1.3.27/dist/lenis.min.js'];
+const addScript = src => new Promise(r => { const sc = document.createElement('script'); sc.src = src; sc.onload = sc.onerror = r; document.head.appendChild(sc); });
+const firstInput = () => new Promise(r => { const ev = ['pointerdown', 'touchstart', 'wheel', 'scroll', 'keydown'], go = () => { ev.forEach(e => removeEventListener(e, go, true)); r(); }; ev.forEach(e => addEventListener(e, go, { capture: true, passive: true })); });
+let pending = null; const pm = e => { const b = e.target.closest && e.target.closest('button,[role="button"]'); if (b && !b.closest('form')) { pending = b; e.preventDefault(); e.stopPropagation(); } };
+let LATE = false;
+if (!RM && !window.gsap) {
+  addEventListener('click', pm, true);
+  if (!matchMedia('(min-width: 992px)').matches && !html.classList.contains('is-loading')) { await firstInput(); LATE = true; }
+  for (const l of LIBS) await addScript(CDN + l);
+}
+removeEventListener('click', pm, true);
 const ANIM = !RM && window.gsap && window.ScrollTrigger && window.SplitText;
+if (ANIM) { const sc = SplitText.create.bind(SplitText); SplitText.create = (t, o = {}) => sc(t, { aria: 'none', ...o }); }
 const FINE = matchMedia('(hover:hover) and (pointer:fine)').matches;
 const FRAMES = 24, turn = (el, deg) => { const f = ((Math.round(deg / (360 / FRAMES)) % FRAMES) + FRAMES) % FRAMES; el.style.backgroundPosition = `${(f / (FRAMES - 1)) * 100}% 0`; };
 const masked = sp => { (sp.masks || []).forEach(m => { m.style.padding = '.06em .1em .2em .02em'; m.style.margin = '-.06em -.1em -.2em -.02em'; }); return sp; };
@@ -108,7 +124,7 @@ await yieldTask();
 let menuTl = null;
 const setMenu = open => {
   menuOpen = open; toggle.setAttribute('aria-expanded', open); toggle.classList.toggle('is-open', open);
-  if (label) label.textContent = open ? 'Schließen' : 'Menü';
+  if (label) label.textContent = open ? 'Schließen' : 'Menü'; toggle.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü');
   if (open) { nav.classList.add('is-transparent'); nav.classList.remove('is-hidden'); lenis && lenis.stop(); }
   else { lenis && lenis.start(); menuOpen = false; onScroll(scrollY); }
   menuTl && menuTl.kill();
@@ -146,6 +162,7 @@ $$('[data-gallery-item],[data-gallery-center]').forEach(f => { const im = $('img
 if (lb) $('[data-lightbox-close]').addEventListener('click', closeLb); lb && lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
 addEventListener('keydown', e => { if (e.key === 'Escape') { if (menuOpen) setMenu(false); closeLb(); } });
 
+if (pending && pending.isConnected) { const b = pending; pending = null; setTimeout(() => b.click(), 0); }
 /* footer wordmark fits its width */
 const fit = () => { const t = $('[data-footer-word]'); if (!t) return; const w = t.parentElement; t.style.fontSize = '100px'; t.style.fontSize = Math.floor(100 * w.clientWidth / t.offsetWidth * .985) + 'px'; };
 fit(); addEventListener('resize', () => { clearTimeout(fit.t); fit.t = setTimeout(fit, 150); });
@@ -255,6 +272,7 @@ gsap.timeline({ scrollTrigger: { trigger: '[data-hero]', start: 'top top', end: 
   .to({}, { duration: .2 });
 }
 
+if (LATE) intro.progress(1);
 await yieldTask();
 /* marquee reacts to scroll velocity */
 if ($('[data-marquee]')) {
