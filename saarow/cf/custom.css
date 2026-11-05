@@ -175,3 +175,4 @@ body{font-variant-numeric:lining-nums}
 /* mobile menu: scrollable while smooth scroll is paused */
 .menu_component{-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 @media (max-width:991px){html.sticky-busy .concept_badge{opacity:0;transform:translateY(1rem);pointer-events:none}html.menu-open,html.menu-open body{overflow:hidden}}
+@media (max-width:991px){html.menu-open [data-nav]{background-color:var(--brand--forest);box-shadow:0 1px 0 var(--brand--line-dark)}}
