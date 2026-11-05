@@ -1,3 +1,4 @@
+@font-face{font-family:'Argon';font-style:normal;font-weight:400;font-display:swap;src:url(https://cdn.prod.website-files.com/6aec94049b1377cc9cc0bf00/6aed06dc73cc4940f9d8e0f3_Argon_Regular1.otf) format('opentype')}
 @font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:500;font-display:swap;src:url(https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond@5.3.0/files/cormorant-garamond-latin-500-normal.woff2) format('woff2')}
 @font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:500;font-display:swap;src:url(https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond@5.3.0/files/cormorant-garamond-latin-500-italic.woff2) format('woff2')}
 @font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:400;font-display:swap;src:url(https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond@5.3.0/files/cormorant-garamond-latin-400-normal.woff2) format('woff2')}
@@ -72,17 +73,17 @@
 .kd-type{display:grid;grid-template-columns:1.25fr 1fr;gap:.75rem;margin-bottom:.75rem}
 .kd-specimen{border-radius:var(--fx-r);background:var(--kd-forest);color:var(--kd-lime);padding:clamp(1.5rem,4vw,3rem);display:flex;flex-direction:column;justify-content:space-between;gap:2rem;min-height:30rem;overflow:hidden}
 .kd-specimen-top{display:flex;justify-content:space-between;font-size:.85rem;color:rgba(237,235,227,.65)}
-.kd-aa{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(8rem,18vw,15rem);line-height:.8;letter-spacing:-.03em}
+.kd-aa{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(8rem,18vw,15rem);line-height:.8;letter-spacing:-.03em}
 .kd-aa em{font-style:italic}
-.kd-specimen-line{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(1.6rem,3vw,2.6rem);line-height:1.05;letter-spacing:-.01em;margin:0}
-.kd-glyphs{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.35rem;line-height:1.4;color:rgba(237,235,227,.75);word-break:break-all}
+.kd-specimen-line{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(1.6rem,3vw,2.6rem);line-height:1.05;letter-spacing:-.01em;margin:0}
+.kd-glyphs{font-family:'Cormorant Garamond',serif;font-size:1.35rem;line-height:1.4;color:rgba(237,235,227,.75);word-break:break-all}
 .kd-type-side{display:grid;gap:.75rem}
 .kd-type-card{background:#fff;border-radius:var(--fx-r);box-shadow:0 0 0 1px var(--fx-line);padding:clamp(1.25rem,3vw,2rem);display:flex;flex-direction:column;gap:.75rem}
 .kd-type-k{font-size:.8rem;color:var(--fx-mute);display:flex;justify-content:space-between;gap:1rem}
 .kd-type-name{font-size:clamp(1.6rem,2.6vw,2.2rem);letter-spacing:-.02em;line-height:1.1}
-.kd-type-name.is-serif{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;letter-spacing:0}
-.kd-type-name.is-sans{font-family:Argon,Arial,Helvetica,sans-serif}
-.kd-weights{display:flex;gap:1rem;font-family:'Cormorant Garamond',Georgia,serif;font-size:1.5rem}
+.kd-type-name.is-serif{font-family:'Cormorant Garamond',serif;font-weight:500;letter-spacing:0}
+.kd-type-name.is-sans{font-family:Argon,sans-serif}
+.kd-weights{display:flex;gap:1rem;font-family:'Cormorant Garamond',serif;font-size:1.5rem}
 .kd-type-p{margin:0;font-size:.92rem;line-height:1.5;color:var(--fx-mute)}
 .kd-swatches{display:grid;grid-template-columns:repeat(7,1fr);gap:.75rem;margin-bottom:clamp(3rem,6vw,5rem)}
 .kd-swatch{border-radius:var(--fx-r);overflow:hidden;background:#fff;box-shadow:0 0 0 1px var(--fx-line)}
