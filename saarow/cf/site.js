@@ -180,11 +180,11 @@ const stmt = $('[data-hero-statement]'); stmt.style.display = 'grid';
 const say = SplitText.create('[data-hero-say]', { type: 'words' }).words;
 gsap.set(say, { opacity: 0, filter: 'blur(8px)', y: 24 });
 gsap.timeline({ scrollTrigger: { trigger: '[data-hero]', start: 'top top', end: '+=140%', pin: true, scrub: S, anticipatePin: 1 } })
-  .to('[data-hero-image] img', { scale: 1.35, ease: 'none', duration: 1 }, 0)
-  .to(heroLines[0], { xPercent: i => -40 - i * 30, opacity: 0, ease: 'power2.in', duration: .5, stagger: .02 }, 0)
-  .to(heroLines[1], { xPercent: i => 30 + i * 30, opacity: 0, ease: 'power2.in', duration: .5, stagger: .02 }, 0)
-  .to('[data-hero-eyebrow]', { opacity: 0, duration: .3 }, 0)
-  .to('[data-hero-bottom]', { opacity: 0, y: 30, duration: .35 }, 0)
+  .fromTo('[data-hero-image]', { scale: 1 }, { scale: 1.28, ease: 'none', duration: 1, immediateRender: false }, 0)
+  .fromTo(heroLines[0], { xPercent: 0, opacity: 1 }, { xPercent: i => -40 - i * 30, opacity: 0, ease: 'power2.in', duration: .5, stagger: .02, immediateRender: false }, 0)
+  .fromTo(heroLines[1], { xPercent: 0, opacity: 1 }, { xPercent: i => 30 + i * 30, opacity: 0, ease: 'power2.in', duration: .5, stagger: .02, immediateRender: false }, 0)
+  .fromTo('[data-hero-eyebrow]', { opacity: 1 }, { opacity: 0, duration: .3, immediateRender: false }, 0)
+  .fromTo('[data-hero-bottom]', { opacity: 1, y: 0 }, { opacity: 0, y: 30, duration: .35, immediateRender: false }, 0)
   .to('[data-hero-shade]', { opacity: .55, duration: .5, ease: 'none' }, .2)
   .to(say, { opacity: 1, filter: 'blur(0px)', y: 0, stagger: .06, duration: .35, ease: 'power2.out' }, .42)
   .to({}, { duration: .2 });
