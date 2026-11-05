@@ -7,6 +7,13 @@ html.lang = 'de';
 /* Webflow renders <button> from the HTML builder as links with type="button": restore real buttons */
 $$('a[type="button"]').forEach(a => { const b = document.createElement('button'); [...a.attributes].forEach(at => { if (at.name !== 'href') b.setAttribute(at.name, at.value); }); b.type = 'button'; b.classList.remove('w-button'); b.innerHTML = a.innerHTML; a.replaceWith(b); });
 
+/* PC CADDIE embeds load only after an explicit click (privacy), the choice is kept for the visit */
+const loadEmbed = c => { if (c.dataset.loaded) return; c.dataset.loaded = '1'; const h = +c.dataset.embedHeight || 900;
+  const f = document.createElement('iframe'); f.className = 'embed_frame'; f.src = c.dataset.embed; f.title = 'PC CADDIE | ' + (c.dataset.embedTitle || 'Buchung'); f.loading = 'lazy'; f.style.height = h + 'px';
+  c.replaceChildren(f); setTimeout(() => window.ScrollTrigger && ScrollTrigger.refresh(), 800); };
+$$('[data-embed-load]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); try { sessionStorage.setItem('pcc-ok', '1'); } catch (_) {} $$('[data-embed]').forEach(loadEmbed); }));
+try { if (sessionStorage.getItem('pcc-ok')) $$('[data-embed]').forEach(loadEmbed); } catch (_) {}
+
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const ANIM = !RM && window.gsap && window.ScrollTrigger && window.SplitText;
 const FINE = matchMedia('(hover:hover) and (pointer:fine)').matches;
