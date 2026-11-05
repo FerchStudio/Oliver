@@ -127,7 +127,8 @@ $$('[data-course-link]').forEach(a => a.addEventListener('click', e => { e.preve
 /* newsletter demo form: submission is intercepted, nothing is sent, the concept says so */
 const nl = $('[data-newsletter]');
 if (nl) {
-  const msg = $('[data-newsletter-message]', nl), mail = $('[data-newsletter-email]', nl), ok = $('[data-newsletter-consent]', nl), form = $('[data-newsletter-form]', nl);
+  const msg = $('[data-newsletter-message]', nl), mail = $('[data-newsletter-email]', nl) || $('input[type=email]', nl), form = $('[data-newsletter-form]', nl);
+  let ok = $('[data-newsletter-consent]', nl); if (!ok || ok.tagName !== 'INPUT') ok = $('input[type=checkbox]', nl);
   const submit = e => {
     if (e) { e.preventDefault(); e.stopImmediatePropagation(); }
     if (!mail.value || !mail.checkValidity()) { msg.textContent = 'Bitte gebt eine gültige E-Mail-Adresse ein.'; mail.focus(); }
@@ -137,7 +138,8 @@ if (nl) {
     return false;
   };
   if (form) { form.setAttribute('action', '#'); form.removeAttribute('data-name'); }
-  addEventListener('submit', e => { if (e.target === form) submit(e); }, true);
+  addEventListener('submit', e => { if (e.target === form || (form && form.contains(e.target))) submit(e); }, true);
+  $$('[data-newsletter-submit]', nl).forEach(btn => btn.addEventListener('click', submit));
 }
 
 const loader = $('[data-loader]');
