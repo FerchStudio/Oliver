@@ -23,13 +23,13 @@
     const loadingWords = loadingContainer.querySelector('[data-loading-words]');
     const wordsTarget = loadingWords.querySelector('[data-loading-words-target]');
     const words = loadingWords.getAttribute('data-loading-words').split(',').map(w => w.trim());
-    const tl = G.timeline();
-    tl.set(loadingWords, { yPercent: 50 });
-    tl.to(loadingWords, { opacity: 1, yPercent: 0, duration: 1, ease: 'Expo.easeInOut' });
-    words.forEach((word, i) => { tl.call(() => { wordsTarget.textContent = word; }, null, i === 0 ? '+=0.1' : '+=0.42'); });
-    tl.to(loadingWords, { opacity: 0, yPercent: -75, duration: .8, ease: 'Expo.easeIn' }, '+=0.5');
-    tl.to(loadingContainer, { autoAlpha: 0, duration: .6, ease: 'Power1.easeInOut' }, '+=-0.2');
-    tl.call(intro, null, '-=0.35');
+    const tl = G.timeline(), step = .55, t1 = 1.05, tEnd = t1 + (words.length - 1) * step + .9;
+    tl.set(loadingWords, { yPercent: 50 }, 0);
+    tl.to(loadingWords, { opacity: 1, yPercent: 0, duration: 1, ease: 'expo.inOut' }, 0);
+    words.forEach((word, i) => { tl.call(() => { wordsTarget.textContent = word; }, null, t1 + i * step); });
+    tl.to(loadingWords, { opacity: 0, yPercent: -75, duration: .8, ease: 'expo.in' }, tEnd);
+    tl.to(loadingContainer, { autoAlpha: 0, duration: .6, ease: 'power1.inOut' }, tEnd + .6);
+    tl.call(intro, null, tEnd + .75);
   }
   initWelcomingWordsLoader();
 
