@@ -93,7 +93,7 @@ if (sc && !/^\/startzeiten/.test(location.pathname)) {
   if (ft) new IntersectionObserver(es => { footIn = es[0].isIntersecting; upd(); }).observe(ft);
   /* steps aside while a pinned or content-heavy section fills the screen, so it never covers its text */
   const busy = () => $$('[data-courses],[data-day],[data-membership],[data-gallery]').some(el => { const r = (el.closest('.pin-spacer') || el).getBoundingClientRect(); return r.top < innerHeight * .9 && r.bottom > innerHeight * .1; });
-  function upd() { const on = scrollY > innerHeight * .6 && !footIn && !html.classList.contains('menu-open') && !busy(); sc.classList.toggle('is-visible', on); html.classList.toggle('has-sticky-cta', on); }
+  function upd() { const b = busy(); html.classList.toggle('sticky-busy', b); const on = scrollY > innerHeight * .6 && !footIn && !html.classList.contains('menu-open') && !b; sc.classList.toggle('is-visible', on); html.classList.toggle('has-sticky-cta', on); }
   addEventListener('scroll', upd, { passive: true }); upd();
   addEventListener('load', () => setTimeout(() => html.classList.toggle('has-wf-badge', !!$('.w-webflow-badge')), 300));
 } else if (sc) sc.remove();
@@ -163,7 +163,7 @@ let LATE = false;
 if (!RM && !window.gsap) {
   addEventListener('click', pm, true);
   if (!matchMedia('(min-width: 992px)').matches && !html.classList.contains('is-loading')) { await firstInput(); LATE = true; }
-  for (const l of LIBS) await addScript(CDN + l);
+  for (const l of LIBS) { if (/lenis/.test(l) && !matchMedia('(hover:hover) and (pointer:fine)').matches) continue; await addScript(CDN + l); }
 }
 removeEventListener('click', pm, true);
 const ANIM = !RM && window.gsap && window.ScrollTrigger && window.SplitText;
@@ -175,7 +175,7 @@ const mw = $('.main-wrapper'); if (mw && !mw.id) mw.id = 'main';
 
 /* smooth scroll */
 let lenis = null;
-if (ANIM && window.Lenis) {
+if (ANIM && window.Lenis && FINE) { /* smooth wheel only with a mouse; phones keep native touch scrolling */
   lenis = new Lenis({ lerp: .085, smoothWheel: true, wheelMultiplier: .9 });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0);

@@ -174,3 +174,4 @@ body{font-variant-numeric:lining-nums}
 .breadcrumb_item,.card_price-label,.home-school_price-label,.home-courses_row-number,.menu_heading-number,.table_cell.is-head,.home-partners_sub,.lightbox_close,.concept_badge,.plan_badge,.home-hero_eyebrow,.home-status_time,.home-plans_price-label,.list_meta,.home-courses_row-meta,.mosaic_caption,.spec_label,.steps_meta-label,.link-list_meta,.chapter_number,.card_number,.steps_number,.plan_price-label,.form_label,.footer_link.is-small,.home-courses_tag,.home-award_seal-text,.text-style-eyebrow,.home-newsletter_label,.navbar_logo-tagline,.home-status_badge{font-kerning:none}
 /* mobile menu: scrollable while smooth scroll is paused */
 .menu_component{-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+@media (max-width:991px){html.sticky-busy .concept_badge{opacity:0;transform:translateY(1rem);pointer-events:none}html.menu-open,html.menu-open body{overflow:hidden}}
