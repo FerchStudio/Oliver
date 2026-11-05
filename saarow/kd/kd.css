@@ -52,7 +52,7 @@
 .kd-handle:after{content:"\2194";position:absolute;top:50%;left:50%;width:3rem;height:3rem;margin:-1.5rem 0 0 -1.5rem;border-radius:50%;background:#fff;color:var(--fx-ink);display:grid;place-items:center;font-size:1.1rem;box-shadow:0 10px 30px -10px rgba(0,0,0,.45)}
 .kd-tag{position:absolute;top:1rem;padding:.4rem .7rem;border-radius:.25rem;font-size:.8rem;background:rgba(17,17,17,.75);color:#fff;backdrop-filter:blur(6px)}
 .kd-tag.is-l{left:1rem}.kd-tag.is-r{right:1rem;background:var(--fx-acc)}
-.kd-range{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.kd-compare{cursor:ew-resize}.kd-handle:focus-visible{outline:none}.kd-handle:focus-visible:after{box-shadow:0 0 0 3px var(--fx-acc)}
 .kd-phones{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:clamp(3rem,6vw,5rem)}
 .kd-phone-card{background:#fff;border-radius:var(--fx-r);box-shadow:0 0 0 1px var(--fx-line);padding:clamp(1.25rem,3vw,2rem);display:grid;justify-items:center;gap:1.25rem}
 .kd-phone-card.is-new{background:var(--kd-forest);color:var(--kd-lime)}
