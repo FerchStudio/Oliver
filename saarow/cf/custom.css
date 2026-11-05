@@ -99,3 +99,6 @@ body{background-color:var(--_theme---background--primary)}
 .faq_item.is-open .faq_icon{background-color:var(--_theme---button-primary--background);color:var(--_theme---button-primary--text);transform:rotate(180deg)}
 .faq_item.is-open .faq_icon-line.is-vertical{transform:rotate(0deg)}
 .table_price,.page-hero_fact-value,.card_price,.steps_meta{font-variant-numeric:lining-nums tabular-nums}
+
+/* prevent sideways scroll from pre-animation offsets */
+html,body{overflow-x:clip}
