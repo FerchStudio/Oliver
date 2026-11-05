@@ -31,19 +31,6 @@ body{background-color:var(--_theme---background--primary)}
 /* embedded SVGs: badge, course map, lightbox image */
 .home-intro_badge-embed svg{width:100%;height:100%;overflow:visible}
 .home-intro_badge-embed text{font-family:var(--font-family--mono);font-size:8.2px;letter-spacing:.2em;text-transform:uppercase;fill:currentColor}
-.home-courses_map-embed svg{width:100%;height:100%;overflow:visible}
-.m-lake{fill:#2a5a49}
-.m-lake-t{font-family:var(--font-family--heading);font-size:22px;fill:rgba(237,235,227,.45);font-style:italic}
-.m-topo{fill:none;stroke:rgba(237,235,227,.07);stroke-width:1}
-.m-zone{fill:rgba(168,180,157,.14);stroke:rgba(237,235,227,.3);stroke-width:1;stroke-dasharray:3 4;transition:fill .8s cubic-bezier(.22,1,.36,1),stroke .8s}
-.m-g{cursor:pointer}
-.m-fw{fill:none;stroke:rgba(237,235,227,.22);stroke-width:5;stroke-linecap:round;transition:stroke .8s}
-.m-g.on .m-fw{stroke:rgba(237,235,227,.7)}
-.m-lbl{font-family:var(--font-family--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;fill:rgba(237,235,227,.62);transition:fill .8s}
-.m-g.on .m-lbl{fill:#EDEBE3}
-.m-flight{fill:none;stroke:#B9A98E;stroke-width:1.5;stroke-dasharray:4 6}
-.m-note{font-family:var(--font-family--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;fill:rgba(237,235,227,.38)}
-.m-pin{fill:#B9A98E}
 .home-courses_ball{filter:drop-shadow(0 6px 6px rgba(0,0,0,.4))}
 .lightbox_embed img{max-height:80svh;width:auto;border-radius:4px}
 
@@ -64,7 +51,6 @@ body{background-color:var(--_theme---background--primary)}
 .lightbox_component.is-open{display:flex}
 @media screen and (max-width:991px){.home-courses_panels.is-js{height:40vh}}
 @media screen and (max-width:767px){.home-courses_panels.is-js{height:48vh}}
-.m-lbl.is-small{font-size:8px}
 
 /* v2: editorial arrow, link underline, rolling letters, loader flag, gallery header */
 .button_arrow{display:flex;width:1rem;height:1rem;font-size:0;line-height:0}
@@ -82,8 +68,23 @@ body{background-color:var(--_theme---background--primary)}
 .footer_link.bs-roll:hover{color:var(--brand--sand)}
 .loader_flag:after{content:"";position:absolute;top:0;left:1px;border-left:1.2rem solid var(--brand--sand);border-top:.42rem solid transparent;border-bottom:.42rem solid transparent}
 .home-gallery_header{text-shadow:0 1px 24px rgba(12,24,19,.18)}
-.m-g.on .m-zone{fill:rgba(168,180,157,.26);stroke:rgba(237,235,227,.55);stroke-dasharray:0}
-.m-g.on .m-fw{stroke:rgba(237,235,227,.55)}
-.m-flight{stroke-width:1;stroke-dasharray:2 5}
 .home-courses_ball{filter:drop-shadow(0 4px 4px rgba(0,0,0,.35))}
 @media (prefers-reduced-motion:reduce){.bs-roll_char,.button.is-icon .button_arrow{transition:none}}
+
+/* v3: north-east arrow swap, external link arrow, status pulse, popup, newsletter */
+.button_arrow.is-second{transform:translate(-160%,160%)}
+.button.is-icon:hover .button_arrow,.button.is-icon:focus-visible .button_arrow{transform:translate(160%,-160%)}
+.button.is-icon:hover .button_arrow.is-second,.button.is-icon:focus-visible .button_arrow.is-second{transform:translate(0,0)}
+.button_arrow{width:.85rem;height:.85rem}
+.bs-ext{display:inline-flex;width:.62em;height:.62em;margin-left:.35em;vertical-align:.12em;transition:transform .6s cubic-bezier(.76,0,.24,1)}
+.bs-ext svg{width:100%;height:100%;overflow:visible}
+.bs-roll:hover .bs-ext{transform:translate(.15em,-.15em)}
+.home-status_dot:after{content:"";position:absolute;inset:0;border-radius:50%;background:inherit;animation:bs-pulse 2.2s cubic-bezier(.22,1,.36,1) infinite}
+@keyframes bs-pulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(3.2);opacity:0}}
+.popup_component.is-open{display:flex}
+.popup_close:before,.popup_close:after{content:"";position:absolute;left:50%;top:50%;width:.6rem;height:1px;background:currentColor;transform:translate(-50%,-50%) rotate(45deg)}
+.popup_close:after{transform:translate(-50%,-50%) rotate(-45deg)}
+.home-newsletter_input:focus{outline:none;border-bottom-color:var(--brand--forest)}
+.home-newsletter_input::placeholder{color:rgba(37,43,40,.3)}
+.home-courses_row:focus-visible{outline:1px solid var(--brand--sand);outline-offset:4px}
+@media (prefers-reduced-motion:reduce){.home-status_dot:after{animation:none}}
