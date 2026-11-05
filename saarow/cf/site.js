@@ -147,6 +147,11 @@ const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* a11y: accessible names that match the visible text */
 $$('.navbar_logo-link').forEach(a => a.removeAttribute('aria-label'));
 $$('[data-menu-toggle]').forEach(b => b.setAttribute('aria-label', 'Menü'));
+/* custom arrow: an editorial half-barb instead of the stock glyph */
+const ARROW = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 12.5 12.5 3.5M5.5 3.5h7v7" stroke="currentColor" stroke-width="1.25" stroke-linecap="square"/></svg>';
+$$('.button_arrow,[data-arrow]').forEach(a => { a.innerHTML = ARROW; });
+/* rolling letters on footer and menu links */
+$$('.footer_link,.menu_link,.navbar_link').forEach(a => { const ext = a.textContent.includes('↗'); const t = a.textContent.replace('↗', '').trim(); if (!t) return; a.setAttribute('aria-label', t + (ext ? ' (neues Fenster)' : '')); a.classList.add('bs-roll'); a.innerHTML = '<span class="bs-roll_inner" aria-hidden="true">' + [...t].map((c, i) => `<span class="bs-roll_char" style="--i:${i}">${c === ' ' ? '&nbsp;' : c}</span>`).join('') + '</span>' + (ext ? '<span class="bs-ext" aria-hidden="true">' + ARROW + '</span>' : ''); });
 /* animation libraries: right away on desktop; on phones only after the first touch, scroll or key, so the page is usable instantly */
 const CDN = 'https://cdn.jsdelivr.net/npm/', LIBS = ['gsap@3.15/dist/gsap.min.js', 'gsap@3.15/dist/ScrollTrigger.min.js', 'gsap@3.15/dist/SplitText.min.js', 'lenis@1.3.27/dist/lenis.min.js'];
 const addScript = src => new Promise(r => { const sc = document.createElement('script'); sc.src = src; sc.onload = sc.onerror = r; document.head.appendChild(sc); });
@@ -164,11 +169,6 @@ if (ANIM) { const sc = SplitText.create.bind(SplitText); SplitText.create = (t, 
 const FINE = matchMedia('(hover:hover) and (pointer:fine)').matches;
 const FRAMES = 24, turn = (el, deg) => { const f = ((Math.round(deg / (360 / FRAMES)) % FRAMES) + FRAMES) % FRAMES; el.style.backgroundPosition = `${(f / (FRAMES - 1)) * 100}% 0`; };
 const masked = sp => { (sp.masks || []).forEach(m => { m.style.padding = '.06em .1em .2em .02em'; m.style.margin = '-.06em -.1em -.2em -.02em'; }); return sp; };
-/* custom arrow: an editorial half-barb instead of the stock glyph */
-const ARROW = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 12.5 12.5 3.5M5.5 3.5h7v7" stroke="currentColor" stroke-width="1.25" stroke-linecap="square"/></svg>';
-$$('.button_arrow,[data-arrow]').forEach(a => { a.innerHTML = ARROW; });
-/* rolling letters on footer and menu links */
-$$('.footer_link,.menu_link,.navbar_link').forEach(a => { const ext = a.textContent.includes('↗'); const t = a.textContent.replace('↗', '').trim(); if (!t) return; a.setAttribute('aria-label', t + (ext ? ' (neues Fenster)' : '')); a.classList.add('bs-roll'); a.innerHTML = '<span class="bs-roll_inner" aria-hidden="true">' + [...t].map((c, i) => `<span class="bs-roll_char" style="--i:${i}">${c === ' ' ? '&nbsp;' : c}</span>`).join('') + '</span>' + (ext ? '<span class="bs-ext" aria-hidden="true">' + ARROW + '</span>' : ''); });
 const mw = $('.main-wrapper'); if (mw && !mw.id) mw.id = 'main';
 
 /* smooth scroll */
