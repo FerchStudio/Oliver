@@ -377,10 +377,8 @@ batch('[data-faq-item]', { opacity: 0, y: 30 }, { st: .07 });
 const fw = $('[data-footer-word]'); const chars = SplitText.create(fw, { type: 'chars' }).chars;
 gsap.fromTo(chars, { yPercent: 100 }, { yPercent: 0, stagger: .04, ease: 'power2.out', scrollTrigger: { trigger: fw, start: 'top 98%', end: 'bottom 85%', scrub: S } });
 
-/* cursor + magnetic buttons */
+/* magnetic buttons */
 if (FINE) {
-  const c = $('[data-cursor]') || document.createElement('div'), xT = gsap.quickTo(c, 'x', { duration: .6, ease: 'power3' }), yT = gsap.quickTo(c, 'y', { duration: .6, ease: 'power3' });
-  $$('[data-gallery-item],[data-gallery-center],[data-day-image]').forEach(f => { f.addEventListener('pointerenter', e => { gsap.set(c, { x: e.clientX, y: e.clientY }); gsap.to(c, { scale: 1, opacity: 1, duration: .6, ease: 'expo.out' }); }); f.addEventListener('pointermove', e => { xT(e.clientX); yT(e.clientY); }); f.addEventListener('pointerleave', () => gsap.to(c, { scale: .2, opacity: 0, duration: .45 })); });
   $$('[data-magnetic]').forEach(b => { const x = gsap.quickTo(b, 'x', { duration: .8, ease: 'power3' }), y = gsap.quickTo(b, 'y', { duration: .8, ease: 'power3' }); b.addEventListener('pointermove', e => { const r = b.getBoundingClientRect(); x((e.clientX - r.left - r.width / 2) * .16); y((e.clientY - r.top - r.height / 2) * .28); }); b.addEventListener('pointerleave', () => { x(0); y(0); }); });
 }
 
