@@ -11,7 +11,7 @@ $$('a[type="button"]').forEach(a => { const b = document.createElement('button')
 const loadEmbed = c => { if (c.dataset.loaded) return; c.dataset.loaded = '1'; const h = +c.dataset.embedHeight || 900;
   const f = document.createElement('iframe'); f.className = 'embed_frame'; f.src = c.dataset.embed; f.title = 'PC CADDIE | ' + (c.dataset.embedTitle || 'Buchung'); f.style.height = h + 'px';
   c.replaceChildren(f); setTimeout(() => window.ScrollTrigger && ScrollTrigger.refresh(), 800); };
-$$('[data-embed]').forEach(loadEmbed);
+$$('[data-embed^="http"]').forEach(loadEmbed);
 
 /* Map (MapLibre + OpenFreeMap, no API key), tinted to the brand palette, loaded when it comes near the viewport */
 const mapEl = $('[data-map]');
