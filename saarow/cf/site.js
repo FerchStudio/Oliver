@@ -1,6 +1,7 @@
 /* Golf Club Bad Saarow | page script (Client-First build). Hooks use data attributes only. */
-(() => {
+(async () => {
 const $ = (s, c = document) => c.querySelector(s), $$ = (s, c = document) => [...c.querySelectorAll(s)];
+const yieldTask = () => new Promise(r => ('scheduler' in window && scheduler.yield) ? scheduler.yield().then(r) : setTimeout(r, 0));
 const html = document.documentElement;
 html.lang = 'de';
 
@@ -102,6 +103,7 @@ const onScroll = y => {
 lenis ? lenis.on('scroll', e => onScroll(e.scroll)) : addEventListener('scroll', () => onScroll(scrollY), { passive: true });
 onScroll(scrollY);
 
+await yieldTask();
 /* menu overlay */
 let menuTl = null;
 const setMenu = open => {
@@ -134,6 +136,7 @@ $$('[data-faq-item]').forEach(item => {
   btn.addEventListener('click', () => { const on = !item.classList.contains('is-open'); item.classList.toggle('is-open', on); ans.classList.toggle('is-open', on); btn.setAttribute('aria-expanded', on); setTimeout(() => window.ScrollTrigger && ScrollTrigger.refresh(), 850); });
 });
 
+await yieldTask();
 /* lightbox */
 const lb = $('[data-lightbox]'), lbImg = $('[data-lb-img]'); let lastF;
 const closeLb = () => { if (!lb || !lb.classList.contains('is-open')) return; lb.classList.remove('is-open'); lenis && lenis.start(); lastF && lastF.focus(); };
@@ -147,6 +150,7 @@ addEventListener('keydown', e => { if (e.key === 'Escape') { if (menuOpen) setMe
 const fit = () => { const t = $('[data-footer-word]'); if (!t) return; const w = t.parentElement; t.style.fontSize = '100px'; t.style.fontSize = Math.floor(100 * w.clientWidth / t.offsetWidth * .985) + 'px'; };
 fit(); addEventListener('resize', () => { clearTimeout(fit.t); fit.t = setTimeout(fit, 150); });
 
+await yieldTask();
 /* course index: the ball rolls down to the active course */
 const panelsBox = $('[data-course-panels]'), panels = $$('[data-course-panel]'), rows = $$('[data-course-row]'), ball = $('[data-course-ball]'), sprite = ball && $('.home-courses_ball-sprite', ball);
 const HASC = !!panelsBox && !!ball;
@@ -178,6 +182,7 @@ const goStep = i => { if (mapST) scrollToY(mapST.start + (mapST.end - mapST.star
 rows.forEach((r, i) => r.addEventListener('click', () => goStep(i)));
 $$('[data-course-link]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); setMenu(false); setTimeout(() => goStep(+a.dataset.courseLink), 500); }));
 
+await yieldTask();
 /* newsletter demo form: submission is intercepted, nothing is sent, the concept says so */
 const nl = $('[data-newsletter]');
 if (nl) {
@@ -250,12 +255,14 @@ gsap.timeline({ scrollTrigger: { trigger: '[data-hero]', start: 'top top', end: 
   .to({}, { duration: .2 });
 }
 
+await yieldTask();
 /* marquee reacts to scroll velocity */
 if ($('[data-marquee]')) {
 const mq = gsap.to('[data-marquee]', { xPercent: -50, ease: 'none', duration: 34, repeat: -1 });
 ScrollTrigger.create({ onUpdate: s => gsap.to(mq, { timeScale: (s.direction < 0 ? -1 : 1) * (1 + Math.min(3, Math.abs(s.getVelocity()) / 600)), duration: .8, ease: 'power2.out', overwrite: true }) });
 
 }
+await yieldTask();
 /* headings word by word, text fill, reveals */
 $$('[data-split-words]').forEach(h => {
   const pills = $$('[data-pill]', h);
@@ -264,6 +271,7 @@ $$('[data-split-words]').forEach(h => {
   pills.forEach((p, k) => { gsap.fromTo(p, { clipPath: 'inset(0% 50% 0% 50% round 1em)' }, { clipPath: 'inset(0% 0% 0% 0% round 1em)', ease: 'power2.inOut', scrollTrigger: { trigger: h, start: 'top 80%', end: 'top 40%', scrub: S } }); gsap.fromTo($('img', p), { scale: 1.6 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: h, start: 'top 85%', end: 'bottom 30%', scrub: S } }); });
 });
 $$('[data-fill]').forEach(p => { const w = SplitText.create(p, { type: 'words' }).words; gsap.fromTo(w, { opacity: .15 }, { opacity: 1, stagger: .1, ease: 'none', scrollTrigger: { trigger: p, start: 'top 85%', end: 'bottom 55%', scrub: S } }); });
+await yieldTask();
 /* staggered reveals: small elements animate in once, in batches, with a soft expo ease */
 const batch = (sel, from, opts = {}) => { const els = $$(sel).filter(e => !e.closest('[data-gallery-cta],[data-hero],[data-loader],[data-menu]')); if (!els.length) return; gsap.set(els, from); ScrollTrigger.batch(els, { start: opts.start || 'top 92%', once: true, onEnter: b => gsap.to(b, { opacity: 1, x: 0, y: 0, scale: 1, rotate: 0, duration: opts.d || 1.3, stagger: opts.st || .09, ease: 'expo.out', overwrite: true }) }); };
 batch('[data-reveal]', { opacity: 0, y: 36 });
@@ -277,6 +285,7 @@ gsap.to('[data-badge] svg', { rotate: 300, ease: 'none', scrollTrigger: { trigge
 $$('[data-count]').forEach(b => { const n = +b.dataset.count, o = { v: 0 }; gsap.to(o, { v: n, ease: 'power1.out', scrollTrigger: { trigger: '[data-facts]', start: 'top 95%', end: 'top 60%', scrub: S }, onUpdate: () => b.textContent = Math.round(o.v) }); });
 gsap.fromTo('.home-intro_fact', { opacity: 0, y: 50 }, { opacity: 1, y: 0, stagger: .12, ease: 'power2.out', scrollTrigger: { trigger: '[data-facts]', start: 'top 98%', end: 'top 65%', scrub: S } });
 
+await yieldTask();
 /* courses pinned: the ball flies from course to course */
 if (HASC) {
 mapST = ScrollTrigger.create({ trigger: '[data-courses]', start: 'top top', end: '+=320%', pin: true, anticipatePin: 1,
@@ -286,12 +295,14 @@ gsap.fromTo(ball, { opacity: 0 }, { opacity: 1, scrollTrigger: { trigger: '[data
 gsap.fromTo(panelsBox, { opacity: 0, y: 70 }, { opacity: 1, y: 0, ease: 'power2.out', scrollTrigger: { trigger: '[data-courses]', start: 'top 70%', end: 'top 10%', scrub: S } });
 
 }
+await yieldTask();
 /* greenfee */
 if ($('[data-price-row]')) {
 $$('[data-price]').forEach(b => { const n = +b.textContent, o = { v: Math.round(n * .6) }; gsap.to(o, { v: n, ease: 'power1.out', scrollTrigger: { trigger: '.home-greenfee_table', start: 'top 90%', end: 'top 55%', scrub: S }, onUpdate: () => b.textContent = Math.round(o.v) }); });
 gsap.fromTo('[data-price-row]', { opacity: 0, x: 40 }, { opacity: 1, x: 0, stagger: .12, ease: 'power2.out', scrollTrigger: { trigger: '.home-greenfee_table', start: 'top 92%', end: 'top 55%', scrub: S } });
 
 }
+await yieldTask();
 /* day: horizontal */
 if ($('[data-day]')) {
 const track = $('[data-day-track]'), dist = () => Math.max(0, track.scrollWidth - innerWidth);
@@ -301,6 +312,7 @@ $$('[data-day-image] img').forEach(im => { gsap.set(im, { scale: 1.2 }); gsap.fr
 $$('[data-day-card]').forEach(c => gsap.fromTo(c, { opacity: .25, y: 40 }, { opacity: 1, y: 0, ease: 'power2.out', scrollTrigger: { trigger: c, containerAnimation: dayTl, start: 'left 98%', end: 'left 60%', scrub: true } }));
 
 }
+await yieldTask();
 /* school */
 if ($('#golfschule [data-school-image]')) {
 gsap.fromTo('[data-school-image]', { clipPath: 'inset(0% 0% 100% 0% round 4px)' }, { clipPath: 'inset(0% 0% 0% 0% round 4px)', ease: 'power2.inOut', scrollTrigger: { trigger: '#golfschule', start: 'top 80%', end: 'top 20%', scrub: S } });
@@ -308,6 +320,7 @@ gsap.fromTo('[data-school-image] img', { scale: 1.35 }, { scale: 1, ease: 'none'
 $$('[data-school-row]').forEach(r => gsap.fromTo(r, { opacity: 0, y: 50 }, { opacity: 1, y: 0, ease: 'power2.out', scrollTrigger: { trigger: r, start: 'top 95%', end: 'top 70%', scrub: S } }));
 
 }
+await yieldTask();
 /* membership: the oval opens to full bleed (animated as layout, no clip-path glitches) */
 if ($('[data-membership]')) {
 const memImg = $('[data-membership-image]');
@@ -319,8 +332,10 @@ gsap.timeline({ scrollTrigger: { trigger: '[data-membership]', start: 'top top',
 gsap.fromTo('[data-plan]', { opacity: 0, y: 70 }, { opacity: 1, y: 0, stagger: .12, ease: 'power2.out', scrollTrigger: { trigger: '[data-plans]', start: 'top 92%', end: 'top 50%', scrub: S } });
 
 }
+await yieldTask();
 /* tournaments */
 
+await yieldTask();
 /* gallery: a calm collage; on scroll the frames part outwards and the centre image becomes the CTA */
 if ($('[data-gallery]')) {
 const grid = $('[data-gallery-grid]'), center = $('[data-gallery-center]'), cta = $('[data-gallery-cta]'), gHead = $('[data-gallery-header]');
@@ -349,10 +364,12 @@ gsap.timeline({ scrollTrigger: { trigger: '[data-gallery]', start: 'top top', en
   .to({}, { duration: .2 });
 
 }
+await yieldTask();
 /* status board: rows tick in, partners fade up */
 batch('[data-status-row]', { opacity: 0, x: 30 }, { st: .06 });
 batch('[data-partner]', { opacity: 0, y: 30 }, { st: .08 });
 
+await yieldTask();
 /* newsletter hint: appears once per visit after half the page, never over the newsletter itself */
 if ($('#newsletter')) {
 const pop = $('[data-popup]');
@@ -370,13 +387,16 @@ if (pop) {
 }
 
 }
+await yieldTask();
 /* faq */
 batch('[data-faq-item]', { opacity: 0, y: 30 }, { st: .07 });
 
+await yieldTask();
 /* footer wordmark */
 const fw = $('[data-footer-word]'); const chars = SplitText.create(fw, { type: 'chars' }).chars;
 gsap.fromTo(chars, { yPercent: 100 }, { yPercent: 0, stagger: .04, ease: 'power2.out', scrollTrigger: { trigger: fw, start: 'top 98%', end: 'bottom 85%', scrub: S } });
 
+await yieldTask();
 /* cursor + magnetic buttons */
 if (FINE) {
   const c = $('[data-cursor]') || document.createElement('div'), xT = gsap.quickTo(c, 'x', { duration: .6, ease: 'power3' }), yT = gsap.quickTo(c, 'y', { duration: .6, ease: 'power3' });
@@ -384,6 +404,7 @@ if (FINE) {
   $$('[data-magnetic]').forEach(b => { const x = gsap.quickTo(b, 'x', { duration: .8, ease: 'power3' }), y = gsap.quickTo(b, 'y', { duration: .8, ease: 'power3' }); b.addEventListener('pointermove', e => { const r = b.getBoundingClientRect(); x((e.clientX - r.left - r.width / 2) * .16); y((e.clientY - r.top - r.height / 2) * .28); }); b.addEventListener('pointerleave', () => { x(0); y(0); }); });
 }
 
+await yieldTask();
 /* subpages: rows, cards and images */
 batch('[data-row]', { opacity: 0, y: 24 }, { st: .05 });
 batch('[data-card]', { opacity: 0, y: 50 }, { st: .1 });
