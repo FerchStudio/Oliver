@@ -34,7 +34,7 @@ $$('[data-embed^="http"]').forEach(c => {
   if (!extOK()) { const ph = $('.embed_placeholder', c); const t = $('.embed_text', c);
     if (t) t.textContent = 'Der Buchungskalender kommt von PC CADDIE, einem externen Anbieter. Mit einem Klick zeigen wir ihn direkt hier an. Eure Wahl merken wir uns.';
     const g = ph && $('.button-group', ph);
-    if (g) { const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'button is-small'; btn.textContent = 'Kalender hier anzeigen'; btn.addEventListener('click', grantExt); g.prepend(btn); } }
+    if (g) { const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'button is-icon'; btn.innerHTML = '<div class="button_text">Kalender hier anzeigen</div><div class="button_icon-wrap"><div class="button_arrow">→</div><div class="button_arrow is-second">→</div></div>'; btn.addEventListener('click', grantExt); g.prepend(btn); } }
   whenExt(() => loadEmbed(c)); });
 
 /* Map (MapLibre + OpenFreeMap, no API key), tinted to the brand palette, loaded when it comes near the viewport */
@@ -81,7 +81,7 @@ if (mapEl) {
   const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); init().catch(() => mapEl.classList.add('is-failed')); } }, { rootMargin: '400px' });
   if (extOK()) io.observe(mapEl);
   else { mapEl.classList.add('is-gated'); const g = document.createElement('div'); g.className = 'map_gate';
-    g.innerHTML = '<p class="map_gate-text">Die Karte lädt Kacheln von OpenFreeMap, einem externen Anbieter.</p><button type="button" class="button is-small is-secondary">Karte anzeigen</button>';
+    g.innerHTML = '<p class="map_gate-text">Die Karte lädt Kacheln von OpenFreeMap, einem externen Anbieter.</p><button type="button" class="button is-icon"><div class="button_text">Karte anzeigen</div><div class="button_icon-wrap"><div class="button_arrow">→</div><div class="button_arrow is-second">→</div></div></button>';
     $('button', g).addEventListener('click', grantExt); mapEl.append(g);
     whenExt(() => { g.remove(); mapEl.classList.remove('is-gated'); io.observe(mapEl); }); }
 }
@@ -143,7 +143,6 @@ if (pg) {
   raf = requestAnimationFrame(swing);
 }
 
-if (!$('[data-nav]')) return; /* utility pages (404) have no navbar: stop after the light modules */
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* a11y: accessible names that match the visible text */
 $$('.navbar_logo-link').forEach(a => a.removeAttribute('aria-label'));
@@ -190,6 +189,7 @@ document.addEventListener('click', e => {
 });
 if (location.hash.length > 1) addEventListener('load', () => { let t; try { t = document.querySelector(decodeURIComponent(location.hash)); } catch (_) {} if (t) setTimeout(() => { window.ScrollTrigger && ScrollTrigger.refresh(); const y = yOf(t); lenis ? lenis.scrollTo(y, { immediate: true, force: true }) : scrollTo(0, y); }, 400); });
 
+if (!$('[data-nav]')) return; /* utility pages (404) have no navbar */
 /* navbar: transparent over hero, solid after, hides on scroll down */
 const nav = $('[data-nav]'), toggle = $('[data-menu-toggle]'), menu = $('[data-menu]');
 const label = toggle && toggle.querySelector('.navbar_menu-label');
