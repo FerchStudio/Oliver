@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="heath" class="gc-loading">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Grove Club | Find your own pace</title>
+<meta name="description" content="The Grove Club: a design concept for a private golf and country club near Hamburg. Eighteen holes, a clubhouse, a golf academy and a community worth returning to.">
+<meta name="theme-color" content="#183132">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=zodiak@300,301,400,401,500&f[]=switzer@300,400,500&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/commit-mono@5/400.css">
+<style>
+:root{
+  --f-display:"Zodiak","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --f-body:"Switzer","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"Commit Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --pad:clamp(1.25rem,4.4vw,5rem);
+  --max:100rem;
+  --r:.3rem;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-io:cubic-bezier(.65,.05,0,1);
+  --nav-h:4.75rem;
+}
+[data-theme="limestone"]{
+  --paper:#E9E7E1; --paper-2:#E0DDD5; --paper-3:#D2CEC4;
+  --ink:#171A27; --ink-soft:rgba(23,26,39,.66); --ink-faint:rgba(23,26,39,.4);
+  --deep:#171A27; --on-deep:#E9E7E1; --on-deep-soft:rgba(233,231,225,.64);
+  --field:#0E402D; --field-2:#0B3424; --on-field:#E9E7E1; --on-field-soft:rgba(233,231,225,.7);
+  --hi:#E9E7E1; --accent:#0E402D; --tint:#9FB4A3; --water:#7F95A3; --sand:#D9CFB8;
+  --line:rgba(23,26,39,.15); --line-d:rgba(233,231,225,.17);
+  --err:#8F2F24;
+  --ph-sky:#CDD0C8; --ph-mid:#8C9A8B; --ph-ground:#0E402D; --ph-warm:#B8AD99; --ph-dark:#171A27;
+  --c-light:rgba(14,64,45,.16); --c-dark:rgba(233,231,225,.09); --c-field:rgba(233,231,225,.12);
+}
+[data-theme="heath"]{
+  --paper:#EBFFF5; --paper-2:#DCF4E8; --paper-3:#C6E6D6;
+  --ink:#183132; --ink-soft:rgba(24,49,50,.7); --ink-faint:rgba(24,49,50,.44);
+  --deep:#183132; --on-deep:#EBFFF5; --on-deep-soft:rgba(235,255,245,.64);
+  --field:#004D43; --field-2:#003F37; --on-field:#EBFFF5; --on-field-soft:rgba(235,255,245,.72);
+  --hi:#D0FF71; --accent:#004D43; --tint:#27EAA6; --water:#8F93FF; --sand:#D0FF71;
+  --line:rgba(24,49,50,.15); --line-d:rgba(235,255,245,.17);
+  --err:#A2321F;
+  --ph-sky:#CFEFE0; --ph-mid:#5FA88D; --ph-ground:#004D43; --ph-warm:#A9C9B4; --ph-dark:#183132;
+  --c-light:rgba(0,77,67,.18); --c-dark:rgba(208,255,113,.1); --c-field:rgba(39,234,166,.16);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-weight:300;font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip}
+h1,h2,h3,h4,p,figure,blockquote,dl,dd,ul,ol{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+img,svg,video,canvas{display:block;max-width:100%}
+em{font-style:italic}
+::selection{background:var(--field);color:var(--on-field)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:2px}
+.is-dark :focus-visible,.is-field :focus-visible{outline-color:var(--hi)}
+.gc-sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.gc-skip{position:fixed;left:1rem;top:-5rem;z-index:300;background:var(--deep);color:var(--on-deep);padding:.8rem 1.1rem;font-family:var(--f-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;transition:top .3s var(--ease)}
+.gc-skip:focus{top:1rem}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-stopped{overflow:hidden}
+
+/* type */
+.gc-mono{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;line-height:1.35;font-weight:400}
+.gc-h2{font-family:var(--f-display);font-weight:300;font-size:clamp(2.8rem,7vw,7.6rem);line-height:.94;letter-spacing:-.035em}
+.gc-h3{font-family:var(--f-display);font-weight:400;font-size:clamp(1.6rem,2.4vw,2.4rem);line-height:1.06;letter-spacing:-.02em}
+.gc-lede{font-size:clamp(1.15rem,1.45vw,1.4rem);line-height:1.5;letter-spacing:-.006em}
+.gc-soft{color:var(--ink-soft)}
+.is-dark .gc-soft{color:var(--on-deep-soft)} .is-field .gc-soft{color:var(--on-field-soft)}
+[data-chars]>div,[data-lines]>div,[data-arc-sub]>div,[data-club-19]>div{padding:0 .1em .14em 0;margin:0 -.1em -.14em 0}
+[data-hero-l1]>div,[data-hero-own]>div,[data-hero-pace]>div{padding:0 .12em .16em 0;margin:0 -.12em -.16em 0}
+.gc-char{display:inline-block;will-change:transform}
+
+/* layout */
+.gc-wrap{max-width:var(--max);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+.gc-section{position:relative;padding:clamp(6rem,13vw,12rem) 0;isolation:isolate}
+.is-dark{background:var(--deep);color:var(--on-deep)}
+.is-field{background:var(--field);color:var(--on-field)}
+.is-paper2{background:var(--paper-2)}
+.gc-tag{display:inline-flex;align-items:center;gap:.75rem}
+.gc-tag b{font-weight:400;display:inline-grid;place-items:center;min-width:2.1rem;height:1.45rem;padding:0 .4rem;border-radius:1rem;box-shadow:inset 0 0 0 1px currentColor;font-size:.62rem}
+.gc-g12{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(1rem,2vw,2rem)}
+
+/* contours */
+.gc-contours{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.gc-contours canvas{width:100%;height:100%}
+
+/* plates */
+.gc-plate{position:relative;overflow:hidden;background:var(--ph-sky);isolation:isolate;margin:0}
+.gc-plate::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--ph,linear-gradient(180deg,var(--ph-sky) 0%,color-mix(in srgb,var(--ph-sky) 70%,var(--ph-mid)) 52%,var(--ph-mid) 58%,var(--ph-ground) 72%,var(--ph-ground) 100%))}
+.gc-plate::after{content:"";position:absolute;inset:0;z-index:-1;opacity:.2;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.gc-plate.ph-warm{--ph:linear-gradient(160deg,var(--ph-warm) 0%,color-mix(in srgb,var(--ph-warm) 55%,var(--ph-dark)) 62%,var(--ph-dark) 100%)}
+.gc-plate.ph-detail{--ph:radial-gradient(70% 60% at 50% 55%,var(--ph-mid) 0%,var(--ph-ground) 70%,var(--ph-dark) 100%)}
+.gc-plate.ph-dusk{--ph:linear-gradient(180deg,color-mix(in srgb,var(--ph-warm) 60%,var(--ph-sky)) 0%,var(--ph-warm) 45%,color-mix(in srgb,var(--ph-ground) 70%,var(--ph-dark)) 62%,var(--ph-dark) 100%)}
+.gc-plate.ph-water{--ph-mid:var(--water)}
+.gc-plate img,.gc-plate video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gc-plate_id{position:absolute;left:.85rem;bottom:.85rem;z-index:2;padding:.3rem .5rem;border-radius:2px;background:rgba(0,0,0,.2);color:#fff;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);font-family:var(--f-mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;pointer-events:none;white-space:nowrap}
+.gc-plate.has-img .gc-plate_id{display:none}
+
+/* roll text (hover) */
+.gc-roll{display:inline-flex;align-items:flex-start;overflow:hidden;height:1.2em;line-height:1.2em;vertical-align:bottom}
+.gc-roll_c{display:flex;flex-direction:column;transition:transform .55s var(--ease-io);transition-delay:calc(var(--i)*12ms)}
+.gc-roll_c>span{display:block;height:1.2em;white-space:pre}
+.gc-roll.is-italic .gc-roll_c>span+span{font-style:italic}
+:is(a,button,label):is(:hover,:focus-visible) .gc-roll_c,.gc-roll-host:is(:hover,:focus-within) .gc-roll_c{transform:translateY(-50%)}
+
+/* buttons */
+.gc-btn{--b-bg:var(--deep);--b-fg:var(--on-deep);--b-fill:var(--field);--b-fill-fg:var(--on-field);position:relative;display:inline-flex;align-items:center;gap:.9rem;height:3.4rem;padding:0 .55rem 0 1.5rem;border-radius:3rem;background:var(--b-bg);color:var(--b-fg);font-weight:400;font-size:.97rem;overflow:hidden;isolation:isolate;white-space:nowrap;transition:color .5s var(--ease),transform .25s var(--ease)}
+.gc-btn::before{content:"";position:absolute;left:var(--mx,50%);top:var(--my,50%);width:0;height:0;border-radius:50%;background:var(--b-fill);transform:translate(-50%,-50%);transition:width .7s var(--ease),height .7s var(--ease);z-index:-1}
+.gc-btn:hover::before,.gc-btn:focus-visible::before{width:260%;height:600%}
+.gc-btn:hover,.gc-btn:focus-visible{color:var(--b-fill-fg)}
+.gc-btn:active{transform:scale(.97)}
+.gc-btn_i{width:2.35rem;height:2.35rem;border-radius:50%;display:grid;place-items:center;background:var(--b-fg);color:var(--b-bg);flex:none;transition:transform .6s var(--ease),background .5s,color .5s}
+.gc-btn_i svg{width:.95rem;height:.95rem}
+.gc-btn:hover .gc-btn_i,.gc-btn:focus-visible .gc-btn_i{transform:rotate(-45deg);background:var(--b-fill-fg);color:var(--b-fill)}
+.gc-btn.is-light{--b-bg:var(--paper);--b-fg:var(--ink);--b-fill:var(--hi);--b-fill-fg:var(--deep)}
+[data-theme="limestone"] .gc-btn.is-light{--b-fill:var(--field);--b-fill-fg:var(--on-field)}
+.gc-btn.is-line{--b-bg:transparent;--b-fg:currentColor;box-shadow:inset 0 0 0 1px currentColor;padding-right:1.5rem}
+.gc-btn.is-line .gc-btn_i{display:none}
+.is-dark .gc-btn.is-line,.is-field .gc-btn.is-line{--b-fill:var(--on-deep);--b-fill-fg:var(--deep)}
+.gc-link{position:relative;display:inline-flex;align-items:center;gap:.55rem;padding-bottom:.25rem}
+.gc-link::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .6s var(--ease-io)}
+.gc-link:hover::after,.gc-link:focus-visible::after{transform:scaleX(1);transform-origin:left}
+.gc-link.is-under::after{transform:scaleX(1);opacity:.35}
+.gc-link.is-under:hover::after{opacity:1}
+.gc-link:active{opacity:.7}
+
+/* loader */
+.gc-loader{position:fixed;inset:0;z-index:250;display:grid;place-items:center;background:var(--deep);color:var(--on-deep)}
+.gc-loader svg{width:min(18rem,70vw);overflow:visible}
+.gc-loader .l-line{stroke:var(--on-deep-soft);stroke-width:1.2}
+.gc-loader .l-ball{fill:var(--on-deep)}
+.gc-loader .l-flag{stroke:var(--on-deep);stroke-width:1.2}
+.gc-loader .l-pennant{fill:var(--hi)}
+.gc-loader_word{position:absolute;bottom:clamp(2rem,7vh,4rem);left:0;right:0;text-align:center;opacity:.7}
+html:not(.gc-loading) .gc-loader{display:none}
+
+/* nav */
+.gc-nav{position:fixed;inset:0 0 auto 0;z-index:120;height:var(--nav-h);color:var(--on-deep);transition:color .45s var(--ease),transform .6s var(--ease)}
+.gc-nav_bg{position:absolute;inset:0;background:color-mix(in srgb,var(--paper) 84%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);opacity:0;transition:opacity .45s var(--ease)}
+.gc-nav.is-solid{color:var(--ink)}
+.gc-nav.is-solid .gc-nav_bg{opacity:1}
+.gc-nav.is-hidden{transform:translateY(-105%)}
+.gc-nav_in{position:relative;height:100%;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1.5rem}
+.gc-logo{display:inline-flex;align-items:center;gap:.65rem;font-family:var(--f-display);font-size:1.22rem;font-weight:400;letter-spacing:-.01em;white-space:nowrap;line-height:1}
+.gc-logo svg{width:1.75rem;height:1.75rem;flex:none}
+.gc-logo svg *{fill:none;stroke:currentColor;stroke-width:1.4}
+.gc-nav_meta{justify-self:center;display:flex;gap:1.5rem;opacity:.8}
+.gc-nav_r{justify-self:end;display:flex;align-items:center;gap:.6rem}
+.gc-nav .gc-btn{height:2.8rem;padding-left:1.15rem;font-size:.88rem;--b-bg:var(--on-deep);--b-fg:var(--deep);--b-fill:var(--field);--b-fill-fg:var(--on-field)}
+.gc-nav .gc-btn_i{width:1.85rem;height:1.85rem}
+.gc-nav.is-solid .gc-btn{--b-bg:var(--deep);--b-fg:var(--on-deep)}
+.gc-menu-btn{height:2.8rem;padding:0 1.1rem;border-radius:3rem;box-shadow:inset 0 0 0 1px currentColor;display:inline-flex;align-items:center;gap:.7rem;font-size:.88rem;transition:background .35s,color .35s}
+.gc-menu-btn i{position:relative;width:.95rem;height:.6rem;display:block}
+.gc-menu-btn i::before,.gc-menu-btn i::after{content:"";position:absolute;left:0;right:0;height:1px;background:currentColor;transition:transform .5s var(--ease),top .5s var(--ease)}
+.gc-menu-btn i::before{top:0}.gc-menu-btn i::after{top:100%}
+.gc-menu-btn[aria-expanded="true"] i::before{top:50%;transform:rotate(45deg)}
+.gc-menu-btn[aria-expanded="true"] i::after{top:50%;transform:rotate(-45deg)}
+.gc-menu-btn:active{transform:scale(.96)}
+.gc-menu{position:fixed;inset:0;z-index:110;background:var(--deep);color:var(--on-deep);visibility:hidden;clip-path:inset(0 0 100% 0);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(1rem,2vw,2rem);padding:calc(var(--nav-h) + 3vh) var(--pad) 2rem}
+.gc-menu_list{grid-column:1 / span 7;display:flex;flex-direction:column;justify-content:center}
+.gc-menu_list a{display:flex;align-items:baseline;gap:1.4rem;padding:.25rem 0;font-family:var(--f-display);font-weight:300;font-size:clamp(2.4rem,6.4vh,4.6rem);line-height:1.08;letter-spacing:-.03em}
+.gc-menu_list a .gc-mono{width:2.4rem;opacity:.45;transition:opacity .3s,color .3s}
+.gc-menu_list a:hover .gc-mono,.gc-menu_list a:focus-visible .gc-mono{opacity:1;color:var(--hi)}
+.gc-menu_side{grid-column:9 / span 4;display:flex;flex-direction:column;justify-content:center;gap:2rem}
+.gc-menu_img{aspect-ratio:4/5;border-radius:var(--r);position:relative}
+.gc-menu_img .gc-plate{position:absolute;inset:0;opacity:0;transition:opacity .5s var(--ease)}
+.gc-menu_img .gc-plate.is-on{opacity:1}
+.gc-menu_foot{display:flex;justify-content:space-between;gap:1rem;color:var(--on-deep-soft)}
+
+/* round rail */
+.gc-rail{position:fixed;right:clamp(.75rem,1.6vw,1.6rem);top:50%;transform:translateY(-50%);z-index:90;display:flex;flex-direction:column;align-items:center;gap:.9rem;color:var(--ink);transition:color .4s var(--ease),opacity .4s}
+.gc-rail.is-on-dark{color:var(--on-deep)}
+.gc-rail_label{writing-mode:vertical-rl;transform:rotate(180deg);opacity:.7;white-space:nowrap}
+.gc-rail_track{position:relative;width:1px;height:38vh;background:currentColor;opacity:1}
+.gc-rail_track::before{content:"";position:absolute;inset:0;background:inherit;opacity:.25}
+.gc-rail_track{background:transparent}
+.gc-rail_track::after{content:"";position:absolute;left:0;top:0;width:1px;height:100%;background:currentColor;opacity:.25}
+.gc-rail_ticks{position:absolute;inset:0}
+.gc-rail_ticks a{position:absolute;left:50%;width:1.4rem;height:1.4rem;margin:-.7rem 0 0 -.7rem;display:grid;place-items:center}
+.gc-rail_ticks a::before{content:"";width:.45rem;height:1px;background:currentColor;opacity:.6;transition:width .3s,opacity .3s}
+.gc-rail_ticks a:hover::before,.gc-rail_ticks a:focus-visible::before,.gc-rail_ticks a[aria-current="true"]::before{width:.9rem;opacity:1}
+.gc-rail_ticks a span{position:absolute;right:1.6rem;top:50%;transform:translate(6px,-50%);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .3s,transform .4s var(--ease);background:var(--paper);color:var(--ink);padding:.3rem .5rem;border-radius:2px}
+.gc-rail_ticks a:hover span,.gc-rail_ticks a:focus-visible span{opacity:1;transform:translate(0,-50%)}
+.gc-rail_ball{position:absolute;left:50%;top:0;width:.6rem;height:.6rem;margin:-.3rem 0 0 -.3rem;border-radius:50%;background:currentColor;box-shadow:0 0 0 3px color-mix(in srgb,currentColor 18%,transparent)}
+.gc-rail_flag{width:.9rem;height:1.2rem}
+.gc-rail_flag *{fill:none;stroke:currentColor;stroke-width:1.2}
+.gc-rail_flag path:last-child{fill:currentColor;stroke:none}
+.gc-rail_count{font-variant-numeric:tabular-nums}
+
+/* concept badge */
+.gc-concept{position:fixed;left:1rem;bottom:1rem;z-index:95;display:flex;align-items:center;gap:.55rem;padding:.5rem .75rem;border-radius:2rem;background:var(--paper);color:var(--ink);box-shadow:0 0 0 1px var(--line),0 .5rem 2rem -1rem rgba(0,0,0,.35);font-family:var(--f-mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase}
+.gc-concept i{width:.45rem;height:.45rem;border-radius:50%;background:var(--accent)}
+[data-theme="heath"] .gc-concept i{background:var(--water)}
+
+/* 1 HERO */
+.gc-hero{position:relative;height:100svh;min-height:40rem;color:var(--on-deep);overflow:hidden;background:var(--deep)}
+.gc-hero_media{position:absolute;inset:-4% 0 0 0}
+.gc-hero_media .gc-plate{position:absolute;inset:0}
+.gc-hero_shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,0) 26%,rgba(0,0,0,0) 46%,rgba(0,0,0,.52) 100%);pointer-events:none}
+.gc-hero_in{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-top:var(--nav-h);padding-bottom:clamp(4.2rem,8vh,5.6rem)}
+.gc-hero_title{font-family:var(--f-display);font-weight:300;letter-spacing:-.045em;line-height:.84;margin-bottom:clamp(1.6rem,4vh,3rem)}
+.gc-hero_l1{display:block;font-size:clamp(2.2rem,5.4vw,6rem);letter-spacing:-.03em;margin-bottom:.06em;padding-left:.05em}
+.gc-hero_l2{display:block;font-size:clamp(4.4rem,15.6vw,17.6rem);white-space:nowrap}
+.gc-hero_l2 .w-own{font-style:italic;display:inline-block}
+.gc-hero_l2 .w-pace{display:inline-block}
+.gc-ball{display:inline-block;width:.15em;height:.15em;margin-left:.035em;border-radius:50%;vertical-align:baseline;background:radial-gradient(circle at 34% 30%,#fff 0 18%,#F1EFEA 45%,#C9C5BB 100%);box-shadow:inset -.012em -.016em .03em rgba(0,0,0,.25),0 .02em .05em rgba(0,0,0,.35);position:relative}
+.gc-ball::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,rgba(0,0,0,.09) 18%,transparent 22%) 0 0/.035em .035em;opacity:.8}
+.gc-hero_meta{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr) auto;align-items:end;gap:1.5rem;border-top:1px solid var(--line-d);padding-top:1.1rem}
+.gc-hero_meta p{max-width:23rem;color:var(--on-deep-soft);font-size:.98rem;line-height:1.5}
+.gc-hero_meta dl{display:flex;flex-direction:column;gap:.35rem}
+.gc-hero_meta dl div{display:flex;gap:.9rem}
+.gc-hero_meta dt{opacity:.55;min-width:5.5rem}
+.gc-scrollcue{display:inline-flex;align-items:center;gap:.7rem}
+.gc-scrollcue_dot{position:relative;width:2.6rem;height:2.6rem;border-radius:50%;box-shadow:inset 0 0 0 1px var(--line-d);display:grid;place-items:center;transition:box-shadow .3s,background .3s}
+.gc-scrollcue_dot i{width:.4rem;height:.4rem;border-radius:50%;background:currentColor;animation:cue 2.2s var(--ease-io) infinite}
+.gc-scrollcue:hover .gc-scrollcue_dot{box-shadow:inset 0 0 0 1px currentColor}
+@keyframes cue{0%{transform:translateY(-.55rem);opacity:0}30%{opacity:1}70%{opacity:1}100%{transform:translateY(.55rem);opacity:0}}
+
+/* 2 INTRO */
+.gc-intro{padding-top:clamp(7rem,14vw,12rem)}
+.gc-intro_tag{margin-bottom:clamp(2.5rem,5vw,4rem)}
+.gc-statement{font-family:var(--f-display);font-weight:300;font-size:clamp(2.1rem,4.6vw,5rem);line-height:1.08;letter-spacing:-.03em;max-width:21ch}
+.gc-statement em{font-style:italic}
+.gc-pill{display:inline-block;width:clamp(4rem,9vw,9.5rem);height:.82em;border-radius:1em;vertical-align:-.06em;position:relative;overflow:hidden;margin:0 .06em}
+.gc-pill .gc-plate{position:absolute;inset:0;display:block}
+.gc-pill .gc-plate_id{display:none}
+.gc-intro_row{margin-top:clamp(4rem,8vw,7rem);align-items:start}
+.gc-intro_text{grid-column:7 / span 5;display:flex;flex-direction:column;gap:1.3rem}
+.gc-intro_facts{grid-column:1 / span 5;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.gc-intro_facts div{padding:1.2rem 1rem 0 0;display:flex;flex-direction:column;gap:.5rem}
+.gc-intro_facts b{font-family:var(--f-display);font-weight:300;font-size:clamp(2.6rem,4vw,4rem);line-height:.9;letter-spacing:-.04em}
+.gc-pace{padding:clamp(7rem,14vw,12rem) 0;overflow:hidden}
+.gc-pace_q{font-family:var(--f-display);font-weight:300;font-size:clamp(2.5rem,6.6vw,7.4rem);line-height:1;letter-spacing:-.035em;text-align:center;max-width:15ch;margin:0 auto}
+.gc-pace_q .gc-pw{display:inline-block;will-change:transform}
+.gc-pace_q em{font-style:italic;color:var(--hi)}
+[data-theme="limestone"] .gc-pace_q em{color:var(--on-deep)}
+.gc-pace_foot{display:flex;justify-content:space-between;align-items:end;gap:2rem;flex-wrap:wrap;margin-top:clamp(3rem,6vw,5rem)}
+.gc-pace_foot p{max-width:30rem;color:var(--on-deep-soft)}
+
+/* 3 COURSE */
+.gc-course{padding-bottom:clamp(5rem,10vw,8rem)}
+.gc-arc{position:relative;margin-top:1rem;font-size:inherit;font-weight:300}
+.gc-arc svg{width:100%;height:auto;overflow:visible}
+.gc-arc .a-text{font-family:var(--f-display);font-weight:300;font-size:150px;letter-spacing:-5px;fill:var(--on-field)}
+.gc-arc .a-trail{fill:none;stroke:var(--on-field-soft);stroke-width:2;stroke-dasharray:2 14;stroke-linecap:round}
+.gc-arc .a-ball{fill:#fff}
+.gc-arc .a-land{fill:none;stroke:var(--hi);stroke-width:1.5}
+.gc-arc_sub{position:absolute;right:0;bottom:-1rem;font-family:var(--f-display);font-weight:300;font-style:italic;font-size:clamp(2.4rem,6vw,6.6rem);line-height:1;letter-spacing:-.035em;text-align:right}
+.gc-arc_mobile{display:none}
+.gc-course_intro{margin-top:clamp(4rem,8vw,7rem);align-items:end}
+.gc-course_intro p{grid-column:7 / span 5}
+.gc-course_intro .gc-tag{grid-column:1 / span 4}
+
+.gc-chap{position:relative;margin-top:clamp(3rem,7vw,6rem)}
+.gc-chap_scroll{height:100vh;display:flex;align-items:center}
+.gc-chap_in{width:100%;align-items:center}
+.gc-chap_vis{grid-column:1 / span 7;position:relative;aspect-ratio:4/3;max-height:76vh;width:100%}
+.gc-chap_img{position:absolute;inset:0;clip-path:inset(0 0 0 100% round var(--r))}
+.gc-chap_img:first-child{clip-path:inset(0 0 0 0% round var(--r))}
+.gc-chap_img .gc-plate{position:absolute;inset:0}
+.gc-yard{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.gc-yard .y-shot{fill:none;stroke:#fff;stroke-width:1.6;stroke-dasharray:5 7;stroke-linecap:round}
+.gc-yard .y-ring{fill:none;stroke:#fff;stroke-width:1.2;opacity:.9}
+.gc-yard .y-ring2{fill:none;stroke:#fff;stroke-width:1;opacity:.45}
+.gc-yard .y-tee{fill:#fff}
+.gc-yard .y-arc{fill:none;stroke:rgba(255,255,255,.55);stroke-width:1}
+.gc-yard .y-lbl rect{fill:rgba(0,0,0,.35)}
+.gc-yard .y-lbl text{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;fill:#fff}
+.gc-chap_txt{grid-column:9 / span 4;position:relative;min-height:26rem}
+.gc-chap_item{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:1.1rem;visibility:hidden}
+.gc-chap_item:first-child{visibility:visible}
+.gc-chap_no{display:flex;align-items:flex-end;gap:1rem}
+.gc-chap_no b{font-family:var(--f-display);font-weight:300;font-size:clamp(5rem,9vw,9rem);line-height:.78;letter-spacing:-.06em}
+.gc-chap_no span{padding-bottom:.4rem;color:var(--hi)}
+.gc-chap_item p{color:var(--on-field-soft)}
+.gc-chap_facts{display:flex;gap:1.6rem;padding-top:1rem;border-top:1px solid var(--line-d)}
+.gc-chap_dots{position:absolute;left:var(--pad);bottom:clamp(1.5rem,4vh,2.5rem);display:flex;gap:.4rem;align-items:center}
+.gc-chap_dots i{width:2.4rem;height:2px;background:var(--line-d);position:relative;overflow:hidden}
+.gc-chap_dots i b{position:absolute;inset:0;background:var(--hi);transform:scaleX(0);transform-origin:left}
+.gc-chap_m{display:none}
+
+/* scorecard */
+.gc-sc{margin-top:clamp(5rem,10vw,9rem)}
+.gc-sc_head{display:flex;justify-content:space-between;align-items:end;gap:2rem;flex-wrap:wrap;margin-bottom:2rem}
+.gc-sc_wrap{position:relative;overflow-x:auto;border-radius:var(--r);box-shadow:inset 0 0 0 1px var(--line-d);scrollbar-width:thin}
+.gc-sc_table{width:100%;border-collapse:collapse;font-family:var(--f-mono);font-size:.78rem;text-align:center;min-width:56rem;font-variant-numeric:tabular-nums}
+.gc-sc_table th,.gc-sc_table td{padding:0;height:2.9rem;border-right:1px solid var(--line-d);border-bottom:1px solid var(--line-d);font-weight:400;transition:background .35s var(--ease),color .35s var(--ease)}
+.gc-sc_table tr:last-child>*{border-bottom:0}
+.gc-sc_table th[scope="row"]{text-align:left;padding:0 1rem;letter-spacing:.09em;text-transform:uppercase;font-size:.66rem;color:var(--on-field-soft);width:6.5rem;white-space:nowrap}
+.gc-sc_table .is-sum{background:rgba(0,0,0,.12);color:var(--on-field-soft)}
+.gc-sc_table button{width:100%;height:100%;min-width:2.6rem;display:grid;place-items:center;font-variant-numeric:tabular-nums;transition:background .3s,color .3s}
+.gc-sc_table button:hover{background:rgba(255,255,255,.08)}
+.gc-sc_table .is-sel{background:var(--hi);color:var(--deep)}
+[data-theme="limestone"] .gc-sc_table .is-sel{background:var(--on-field);color:var(--field)}
+.gc-sc_table .is-sel button:hover{background:transparent}
+.gc-sc_detail{margin-top:clamp(2.5rem,5vw,4rem);align-items:center}
+.gc-sc_map{grid-column:1 / span 5;aspect-ratio:1;border-radius:var(--r);overflow:hidden;background:var(--field-2);position:relative}
+.gc-sc_map svg{width:100%;height:100%}
+.gc-sc_info{grid-column:7 / span 6;display:flex;flex-direction:column;gap:1.4rem}
+.gc-sc_top{display:flex;align-items:flex-end;gap:1.5rem;flex-wrap:wrap}
+.gc-sc_no{font-family:var(--f-display);font-weight:300;font-size:clamp(5.5rem,11vw,10rem);line-height:.78;letter-spacing:-.06em}
+.gc-sc_name{font-family:var(--f-display);font-style:italic;font-weight:300;font-size:clamp(1.7rem,2.8vw,2.6rem);line-height:1.05;padding-bottom:.4rem}
+.gc-sc_stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line-d);border-bottom:1px solid var(--line-d)}
+.gc-sc_stats div{padding:1rem 0;display:flex;flex-direction:column;gap:.35rem}
+.gc-sc_stats div+div{padding-left:1.2rem;border-left:1px solid var(--line-d)}
+.gc-sc_stats dt{color:var(--on-field-soft)}
+.gc-sc_stats dd{font-family:var(--f-display);font-weight:300;font-size:2.1rem;line-height:1;letter-spacing:-.03em}
+.gc-sc_note{color:var(--on-field-soft);max-width:34rem;min-height:3.2em}
+.gc-sc_nav{display:flex;gap:.6rem}
+.gc-round{width:3rem;height:3rem;border-radius:50%;display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--line-d);transition:background .35s var(--ease),color .35s var(--ease),box-shadow .35s,transform .2s}
+.gc-round svg{width:1rem;height:1rem}
+.gc-round:hover,.gc-round:focus-visible{background:var(--on-field);color:var(--field);box-shadow:none}
+.gc-round:active{transform:scale(.92)}
+.gc-sc_map .m-rough{fill:var(--field-2)}
+.gc-sc_map .m-con{fill:none;stroke:var(--c-field);stroke-width:1}
+.gc-sc_map .m-fair{fill:color-mix(in srgb,var(--tint) 30%,var(--field))}
+.gc-sc_map .m-green{fill:color-mix(in srgb,var(--tint) 58%,var(--field))}
+.gc-sc_map .m-tee{fill:var(--on-field)}
+.gc-sc_map .m-bunker{fill:var(--sand);opacity:.9}
+.gc-sc_map .m-water{fill:var(--water);opacity:.8}
+.gc-sc_map .m-tree{fill:color-mix(in srgb,var(--field) 50%,#000)}
+.gc-sc_map .m-line{fill:none;stroke:var(--hi);stroke-width:1.4;stroke-dasharray:4 5}
+.gc-sc_map .m-dist{fill:none;stroke:var(--on-field-soft);stroke-width:.8;stroke-dasharray:2 3}
+.gc-sc_map .m-flag{stroke:var(--on-field);stroke-width:1.4}
+.gc-sc_map .m-flagc{fill:var(--hi)}
+.gc-sc_map text{font-family:var(--f-mono);font-size:8.5px;letter-spacing:.08em;fill:var(--on-field-soft);text-transform:uppercase}
+.gc-odo{display:inline-flex;align-items:flex-start;overflow:hidden;height:1em;line-height:1;vertical-align:bottom}
+.gc-odo_c{display:flex;flex-direction:column;transition:transform 1s var(--ease);transition-delay:calc(var(--i)*60ms)}
+.gc-odo_c span{display:block;height:1em}
+
+/* 4 MEMBERSHIP */
+.gc-mem_head{align-items:end;margin-bottom:clamp(3.5rem,7vw,6rem)}
+.gc-mem_head .gc-h2{grid-column:1 / span 8}
+.gc-mem_head p{grid-column:9 / span 4;color:var(--ink-soft)}
+.gc-mem{align-items:start}
+.gc-finder{grid-column:1 / span 6;display:flex;flex-direction:column;gap:2.2rem}
+.gc-finder fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:.9rem}
+.gc-finder legend{display:flex;gap:1rem;align-items:baseline;padding:0;margin-bottom:.9rem;font-family:var(--f-display);font-size:clamp(1.3rem,1.8vw,1.7rem);letter-spacing:-.015em;line-height:1.15}
+.gc-finder legend .gc-mono{opacity:.5}
+.gc-seg{display:flex;flex-wrap:wrap;gap:.45rem}
+.gc-seg label{position:relative}
+.gc-seg input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.gc-seg span{display:inline-flex;align-items:center;height:2.9rem;padding:0 1.2rem;border-radius:3rem;box-shadow:inset 0 0 0 1px var(--line);font-size:.94rem;transition:background .35s var(--ease),color .35s var(--ease),box-shadow .35s}
+.gc-seg input:hover+span{box-shadow:inset 0 0 0 1px var(--ink-faint)}
+.gc-seg input:checked+span{background:var(--deep);color:var(--on-deep);box-shadow:none}
+.gc-seg input:focus-visible+span{outline:2px solid var(--accent);outline-offset:3px}
+.gc-seg input:active+span{transform:scale(.97)}
+.gc-rec{grid-column:8 / span 5;position:sticky;top:calc(var(--nav-h) + 2rem);border-radius:calc(var(--r)*2);background:var(--deep);color:var(--on-deep);overflow:hidden;isolation:isolate}
+.gc-rec_img{aspect-ratio:16/10;position:relative}
+.gc-rec_img .gc-plate{position:absolute;inset:0}
+.gc-rec_body{padding:clamp(1.5rem,2.6vw,2.4rem);display:flex;flex-direction:column;gap:1.2rem}
+.gc-rec_k{display:flex;justify-content:space-between;color:var(--on-deep-soft)}
+.gc-rec h3{font-family:var(--f-display);font-weight:300;font-size:clamp(2.3rem,3.6vw,3.6rem);line-height:.95;letter-spacing:-.035em}
+.gc-rec p{color:var(--on-deep-soft)}
+.gc-rec ul{display:flex;flex-direction:column;border-top:1px solid var(--line-d)}
+.gc-rec li{display:grid;grid-template-columns:1.3rem 1fr;gap:.7rem;padding:.7rem 0;border-bottom:1px solid var(--line-d);font-size:.95rem}
+.gc-rec li svg{width:.95rem;height:.95rem;margin-top:.3rem;color:var(--hi)}
+.gc-rec_foot{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-top:.4rem}
+.gc-rec_all{display:flex;flex-wrap:wrap;gap:.35rem .9rem;color:var(--on-deep-soft)}
+.gc-rec_all button{position:relative;padding:.2rem 0;transition:color .3s}
+.gc-rec_all button[aria-pressed="true"],.gc-rec_all button:hover{color:var(--on-deep)}
+.gc-rec_all button[aria-pressed="true"]::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor}
+
+/* 5 CLUBHOUSE */
+.gc-club{background:var(--deep);color:var(--on-deep);position:relative}
+.gc-club_stage{position:relative;height:100vh;overflow:hidden;display:grid;place-items:center}
+.gc-club_head{position:relative;z-index:2;text-align:center;padding:0 var(--pad)}
+.gc-club_head .gc-h2{max-width:15ch;margin:0 auto}
+.gc-club_media{position:absolute;inset:0;z-index:1;clip-path:inset(31% 34% 31% 34% round .3rem)}
+.gc-club_media .gc-plate{position:absolute;inset:-6% 0}
+.gc-club_media::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.6),rgba(0,0,0,.28) 60%)}
+.gc-club_over{position:absolute;left:var(--pad);right:var(--pad);bottom:clamp(2rem,6vh,4rem);z-index:3;display:flex;justify-content:space-between;align-items:end;gap:2rem;visibility:hidden}
+.gc-club_19{font-family:var(--f-display);font-weight:300;font-size:clamp(3.6rem,10vw,11rem);line-height:.86;letter-spacing:-.05em}
+.gc-club_19 em{font-style:italic}
+.gc-club_over p{max-width:24rem;color:rgba(255,255,255,.82)}
+.gc-day{padding:clamp(5rem,10vw,9rem) 0}
+.gc-day_head{display:flex;justify-content:space-between;align-items:end;gap:2rem;flex-wrap:wrap;margin-bottom:clamp(2.5rem,5vw,4rem)}
+.gc-day_list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(1rem,1.6vw,1.6rem)}
+.gc-day_card{display:flex;flex-direction:column;gap:1rem}
+.gc-day_img{aspect-ratio:4/5;border-radius:var(--r);overflow:hidden;position:relative}
+.gc-day_img .gc-plate{position:absolute;inset:0;transition:transform 1.1s var(--ease)}
+.gc-day_card:hover .gc-day_img .gc-plate{transform:scale(1.05)}
+.gc-day_t{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line-d);padding-top:.9rem}
+.gc-day_t b{font-family:var(--f-display);font-weight:300;font-size:2rem;letter-spacing:-.03em;line-height:1}
+.gc-day_card h3{font-family:var(--f-display);font-weight:400;font-size:1.35rem;letter-spacing:-.015em}
+.gc-day_card p{color:var(--on-deep-soft);font-size:.95rem}
+
+/* 6 ACADEMY */
+.gc-acad_head{align-items:end;margin-bottom:clamp(3rem,6vw,5rem)}
+.gc-acad_head .gc-h2{grid-column:1 / span 8}
+.gc-acad_head p{grid-column:9 / span 4;color:var(--ink-soft)}
+.gc-acad_list{border-top:1px solid var(--line)}
+.gc-acad_row{position:relative;display:grid;grid-template-columns:4.5rem minmax(0,1.3fr) minmax(0,1fr) auto;gap:1.5rem;align-items:center;padding:2.1rem .25rem;border-bottom:1px solid var(--line);isolation:isolate;outline-offset:-2px}
+.gc-acad_row::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper-2);transform:scaleY(0);transform-origin:bottom;transition:transform .6s var(--ease-io)}
+.gc-acad_row:hover::before,.gc-acad_row:focus-visible::before{transform:scaleY(1)}
+.gc-acad_row h3{font-family:var(--f-display);font-weight:300;font-size:clamp(2rem,4.2vw,4rem);letter-spacing:-.035em;line-height:1}
+.gc-acad_row p{color:var(--ink-soft);font-size:.97rem}
+.gc-acad_row .gc-mono{opacity:.55}
+.gc-acad_thumb{display:none}
+.gc-acad_prev{position:fixed;left:0;top:0;width:clamp(14rem,19vw,19rem);aspect-ratio:4/5;z-index:60;pointer-events:none;border-radius:var(--r);overflow:hidden;opacity:0;visibility:hidden}
+.gc-acad_prev .gc-plate{position:absolute;inset:0;clip-path:inset(100% 0 0 0);transition:clip-path .6s var(--ease-io)}
+.gc-acad_prev .gc-plate.is-on{clip-path:inset(0 0 0 0)}
+
+/* 7 EVENTS (season dial) */
+.gc-year{background:var(--paper-2)}
+.gc-year_pin{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:clamp(3.5rem,6vw,5rem) 0}
+.gc-year_head{display:flex;justify-content:space-between;align-items:end;gap:2rem;flex-wrap:wrap;margin-bottom:clamp(2rem,4vw,3rem)}
+.gc-year_head p{max-width:24rem;color:var(--ink-soft)}
+.gc-year_body{align-items:center}
+.gc-dial{grid-column:1 / span 6;position:relative;aspect-ratio:1;max-height:54vh;justify-self:center;width:100%}
+.gc-dial svg{width:100%;height:100%;overflow:visible}
+.gc-dial .d-ring{fill:none;stroke:var(--line);stroke-width:1}
+.gc-dial .d-prog{fill:none;stroke:var(--accent);stroke-width:2}
+.gc-dial .d-tick{stroke:var(--ink-faint);stroke-width:1}
+.gc-dial .d-tick.is-q{stroke:var(--ink);stroke-width:1.4}
+.gc-dial .d-m{font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;fill:var(--ink-soft);text-anchor:middle;dominant-baseline:middle}
+.gc-dial .d-ball{fill:var(--paper);stroke:var(--ink);stroke-width:1.2}
+.gc-dial_c{position:absolute;inset:0;display:grid;place-items:center;text-align:center;pointer-events:none}
+.gc-dial_c b{display:block;font-family:var(--f-display);font-style:italic;font-weight:300;font-size:clamp(2.6rem,5vw,4.6rem);line-height:1;letter-spacing:-.035em}
+.gc-seasons{grid-column:8 / span 5;position:relative;min-height:24rem}
+.gc-season{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:1.1rem;visibility:hidden}
+.gc-season:first-child{visibility:visible}
+.gc-season h3{font-family:var(--f-display);font-weight:300;font-size:clamp(2rem,3.4vw,3.2rem);letter-spacing:-.03em;line-height:1}
+.gc-season p{color:var(--ink-soft)}
+.gc-season_tags{display:flex;flex-wrap:wrap;gap:.45rem}
+.gc-season_tags span{padding:.35rem .75rem;border-radius:2rem;box-shadow:inset 0 0 0 1px var(--line);font-size:.84rem}
+.gc-season_m{display:none}
+
+/* 8 GALLERY */
+.gc-gal{overflow:hidden;padding-top:clamp(5rem,9vw,8rem);padding-bottom:clamp(3rem,5vw,4.5rem)}
+.gc-gal_head{display:flex;justify-content:space-between;align-items:end;gap:2rem;flex-wrap:wrap;margin-bottom:3rem}
+.gc-gal_head p{max-width:24rem;color:var(--on-deep-soft)}
+.gc-gal_track{display:flex;gap:clamp(1rem,1.6vw,1.6rem);padding:0 var(--pad);width:max-content;align-items:center}
+.gc-gal_item{position:relative;flex:none;border-radius:var(--r);overflow:hidden;cursor:none;height:min(56vh,34rem)}
+.gc-gal_item.is-p{aspect-ratio:4/5}.gc-gal_item.is-l{aspect-ratio:3/2}.gc-gal_item.is-s{aspect-ratio:1;height:min(40vh,24rem)}
+.gc-gal_skew{position:absolute;inset:0}
+.gc-gal_item .gc-plate{position:absolute;inset:-4%;transition:transform 1.1s var(--ease)}
+.gc-gal_item:hover .gc-plate,.gc-gal_item:focus-visible .gc-plate{transform:scale(1.05)}
+.gc-gal_item:active .gc-plate{transform:scale(1.02)}
+.gc-gal_cap{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;padding:1rem;color:#fff;background:linear-gradient(0deg,rgba(0,0,0,.45),transparent)}
+.gc-gal_foot{display:flex;justify-content:space-between;align-items:center;gap:2rem;margin-top:2.5rem}
+.gc-gal_bar{flex:1;height:1px;background:var(--line-d);position:relative}
+.gc-gal_bar i{position:absolute;inset:0;background:var(--hi);transform:scaleX(0);transform-origin:left}
+.gc-cursor{position:fixed;left:0;top:0;z-index:80;width:5.2rem;height:5.2rem;margin:-2.6rem 0 0 -2.6rem;border-radius:50%;background:var(--hi);color:var(--deep);display:grid;place-items:center;pointer-events:none;opacity:0;transform:scale(.3)}
+[data-theme="limestone"] .gc-cursor{background:var(--paper)}
+.gc-lightbox{border:0;padding:0;margin:0;width:100vw;height:100vh;max-width:none;max-height:none;background:var(--deep);color:var(--on-deep)}
+.gc-lightbox::backdrop{background:transparent}
+.gc-lightbox_in{position:absolute;inset:0;display:grid;grid-template-rows:auto 1fr auto;padding:1.25rem var(--pad) 1.75rem}
+.gc-lightbox_top,.gc-lightbox_bot{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.gc-lightbox_stage{position:relative;margin:1.25rem 0;display:grid;place-items:center;min-height:0}
+.gc-lightbox_stage .gc-plate{position:relative;border-radius:var(--r)}
+.gc-lightbox .gc-round:hover,.gc-lightbox .gc-round:focus-visible{background:var(--on-deep);color:var(--deep)}
+
+/* 9 APPLY */
+.gc-apply{align-items:start}
+.gc-apply_l{grid-column:1 / span 5;position:sticky;top:calc(var(--nav-h) + 2rem);display:flex;flex-direction:column;gap:1.6rem}
+.gc-apply_l p{color:var(--ink-soft);max-width:27rem}
+.gc-steps{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.gc-steps li{display:grid;grid-template-columns:2.6rem 1fr;gap:.75rem;padding:1rem 0;border-bottom:1px solid var(--line);font-size:.97rem}
+.gc-steps .gc-mono{padding-top:.25rem;opacity:.55}
+.gc-apply_r{grid-column:7 / span 6}
+.gc-form{display:flex;flex-direction:column;gap:2.6rem}
+.gc-fs{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:1.4rem}
+.gc-fs>legend{display:flex;align-items:baseline;gap:1rem;padding:0;margin-bottom:1.2rem;font-family:var(--f-display);font-size:1.6rem;letter-spacing:-.02em;line-height:1.1;width:100%;border-bottom:1px solid var(--line);padding-bottom:.8rem}
+.gc-fs>legend .gc-mono{opacity:.5}
+.gc-row2{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem 1.6rem}
+.gc-field{display:flex;flex-direction:column;gap:.35rem;position:relative}
+.gc-field label,.gc-q{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft)}
+.gc-field label b,.gc-q b{color:var(--accent);font-weight:400}
+.gc-opt{text-transform:none;letter-spacing:0;opacity:.75}
+.gc-in{width:100%;height:3rem;padding:0;border:0;border-radius:0;background:transparent;border-bottom:1px solid var(--ink-faint);font:inherit;font-size:1.12rem;font-weight:300;color:var(--ink);transition:border-color .3s}
+textarea.gc-in{height:auto;min-height:6.5rem;padding:.6rem 0;resize:vertical;line-height:1.5}
+select.gc-in{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23777' stroke-width='1.3'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .2rem center;background-size:.7rem;cursor:pointer}
+.gc-in::placeholder{color:var(--ink-faint)}
+.gc-in:hover{border-bottom-color:var(--ink)}
+.gc-field_line{position:absolute;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease-io);pointer-events:none}
+[data-theme="heath"] .gc-field_line{background:var(--ink)}
+.gc-in:focus{outline:none}
+.gc-in:focus~.gc-field_line{transform:scaleX(1)}
+.gc-in:focus-visible{outline:none}
+.gc-field.is-invalid .gc-in{border-bottom-color:var(--err)}
+.gc-field.is-invalid .gc-field_line{background:var(--err)}
+.gc-err{display:none;align-items:center;gap:.4rem;font-size:.85rem;color:var(--err)}
+.gc-field.is-invalid .gc-err,.gc-fs.is-invalid .gc-err,.gc-check.is-invalid .gc-err{display:flex}
+.gc-hint{font-size:.82rem;color:var(--ink-faint)}
+.gc-fs.is-invalid .gc-seg span{box-shadow:inset 0 0 0 1px var(--err)}
+.gc-check{display:grid;grid-template-columns:1.3rem 1fr;gap:.85rem;align-items:start;font-size:.93rem;color:var(--ink-soft)}
+.gc-check input{appearance:none;width:1.3rem;height:1.3rem;margin:.15rem 0 0;border-radius:3px;box-shadow:inset 0 0 0 1px var(--ink-faint);background:var(--paper);cursor:pointer;display:grid;place-items:center;transition:background .25s,box-shadow .25s}
+.gc-check input:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.gc-check input:checked{background:var(--deep);box-shadow:none}
+.gc-check input:checked::after{content:"";width:.65rem;height:.35rem;border-left:1.5px solid var(--on-deep);border-bottom:1.5px solid var(--on-deep);transform:translateY(-1px) rotate(-45deg)}
+.gc-check input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.gc-check.is-invalid input{box-shadow:inset 0 0 0 1.5px var(--err)}
+.gc-check .gc-err{grid-column:2}
+.gc-form_foot{display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.gc-form_foot .gc-hint{max-width:21rem}
+.gc-btn.is-busy{pointer-events:none}
+.gc-spin{width:.95rem;height:.95rem;border-radius:50%;border:1.5px solid currentColor;border-right-color:transparent;animation:spin .8s linear infinite;display:none}
+.gc-btn.is-busy .gc-spin{display:block}.gc-btn.is-busy .gc-btn_i svg{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gc-summary{padding:1.1rem 1.25rem;border-radius:var(--r);background:color-mix(in srgb,var(--err) 7%,var(--paper));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--err) 40%,transparent);font-size:.93rem}
+.gc-summary ul{margin-top:.5rem;display:flex;flex-direction:column;gap:.25rem}
+.gc-summary a{text-decoration:underline;text-underline-offset:3px}
+.gc-done{display:flex;flex-direction:column;gap:1.3rem;padding:clamp(1.6rem,3vw,2.6rem);border-radius:calc(var(--r)*2);background:var(--deep);color:var(--on-deep)}
+.gc-done h3{font-family:var(--f-display);font-weight:300;font-size:clamp(2.2rem,3.4vw,3.2rem);line-height:.98;letter-spacing:-.03em}
+.gc-done p{color:var(--on-deep-soft)}
+.gc-done dl{display:grid;grid-template-columns:auto 1fr;gap:.5rem 1.5rem;border-top:1px solid var(--line-d);padding-top:1.2rem;font-size:.95rem}
+.gc-done dt{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;opacity:.6;padding-top:.3rem}
+.gc-done .gc-btn{align-self:flex-start}
+
+/* 10 CTA + FOOTER */
+.gc-cta{position:relative;overflow:hidden;color:var(--on-deep);background:var(--field)}
+.gc-cta_in{position:relative;min-height:92vh;display:flex;flex-direction:column;justify-content:space-between;padding-top:clamp(6rem,10vw,9rem);padding-bottom:clamp(2rem,5vw,3.5rem)}
+.gc-cta_title{font-family:var(--f-display);font-weight:300;font-size:clamp(3.4rem,10vw,11.5rem);line-height:.88;letter-spacing:-.05em;max-width:11ch}
+.gc-cta_title em{font-style:italic}
+.gc-cta_row{display:flex;justify-content:space-between;align-items:end;gap:2rem;flex-wrap:wrap;margin-top:2.5rem}
+.gc-cta_row p{max-width:26rem;color:var(--on-field-soft)}
+.gc-putt{position:relative;height:5rem;margin-top:clamp(3rem,7vw,5rem)}
+.gc-putt svg{width:100%;height:100%;overflow:visible}
+.gc-putt .p-ground{stroke:var(--on-field-soft);stroke-width:1}
+.gc-putt .p-line{stroke:var(--on-field-soft);stroke-width:1;stroke-dasharray:2 6}
+.gc-putt .p-cup{fill:var(--field-2);stroke:var(--on-field-soft);stroke-width:1}
+.gc-putt .p-pole{stroke:var(--on-field);stroke-width:1.4}
+.gc-putt .p-pen{fill:var(--hi)}
+.gc-putt_ball{position:absolute;left:3%;top:calc(67.5% - 6px);width:12px;height:12px;margin-left:-6px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#E4E1DA 60%,#BDB8AD);box-shadow:0 2px 4px rgba(0,0,0,.3)}
+.gc-putt_lbl{position:absolute;right:0;top:-1.5rem;color:var(--on-field-soft)}
+.gc-foot{position:relative;background:var(--deep);color:var(--on-deep);padding:clamp(4rem,7vw,6rem) 0 2rem;overflow:hidden;isolation:isolate}
+.gc-foot_grid{row-gap:3rem}
+.gc-foot_brand{grid-column:1 / span 4;display:flex;flex-direction:column;gap:1.3rem}
+.gc-foot_brand p{color:var(--on-deep-soft);max-width:22rem;font-size:.97rem}
+.gc-foot_col{grid-column:span 2;display:flex;flex-direction:column;gap:.85rem}
+.gc-foot_col.is-first{grid-column:6 / span 2}
+.gc-foot_col.is-wide{grid-column:span 3}
+.gc-foot_col .gc-mono{opacity:.55;margin-bottom:.3rem}
+.gc-foot_col a{align-self:flex-start;font-size:.97rem}
+.gc-foot_col address{font-style:normal;font-size:.97rem;color:var(--on-deep-soft);line-height:1.6}
+.gc-foot_word{margin-top:clamp(4rem,8vw,7rem);font-family:var(--f-display);font-weight:300;font-size:clamp(3rem,14vw,16rem);line-height:.82;letter-spacing:-.055em;white-space:nowrap;overflow:hidden}
+.gc-foot_word em{font-style:italic}
+.gc-foot_bot{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;margin-top:2rem;padding-top:1.25rem;border-top:1px solid var(--line-d);color:var(--on-deep-soft)}
+
+/* responsive */
+@media (max-width:1099px){ .gc-rail{display:none} .gc-nav_meta{display:none} .gc-nav_in{grid-template-columns:1fr auto} }
+@media (max-width:991px){
+  .gc-intro_text,.gc-intro_facts{grid-column:1 / -1}
+  .gc-intro_facts{order:2;margin-top:3rem}
+  .gc-course_intro p,.gc-course_intro .gc-tag{grid-column:1 / -1}
+  .gc-course_intro p{margin-top:1.5rem}
+  .gc-chap_vis{grid-column:1 / span 6}.gc-chap_txt{grid-column:7 / span 6}
+  .gc-sc_map{grid-column:1 / span 5}.gc-sc_info{grid-column:6 / span 7}
+  .gc-mem_head .gc-h2,.gc-mem_head p,.gc-acad_head .gc-h2,.gc-acad_head p{grid-column:1 / -1}
+  .gc-mem_head p,.gc-acad_head p{margin-top:1.5rem}
+  .gc-finder,.gc-rec{grid-column:1 / -1}
+  .gc-rec{position:relative;top:auto;margin-top:3rem}
+  .gc-day_list{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:2.5rem}
+  .gc-acad_row{grid-template-columns:3.5rem 1fr auto}
+  .gc-acad_row p{grid-column:2 / span 2}
+  .gc-dial{grid-column:1 / span 6}.gc-seasons{grid-column:7 / span 6}
+  .gc-apply_l,.gc-apply_r{grid-column:1 / -1}
+  .gc-apply_l{position:relative;top:auto;margin-bottom:3.5rem}
+  .gc-foot_brand{grid-column:1 / -1}
+  .gc-foot_col,.gc-foot_col.is-first{grid-column:span 3}
+  .gc-foot_col.is-wide{grid-column:span 6}
+  .gc-menu_list{grid-column:1 / -1}.gc-menu_side{display:none}
+}
+@media (max-width:767px){
+  :root{--nav-h:4.2rem}
+  body{font-size:1rem}
+  .gc-logo{font-size:1.08rem}
+  .gc-nav .gc-btn{display:none}
+  .gc-hero_meta{grid-template-columns:1fr auto}
+  .gc-hero_meta p{grid-column:1 / -1}
+  .gc-hero_meta dl:nth-of-type(2){display:none}
+  .gc-statement{font-size:clamp(1.9rem,8.4vw,2.6rem)}
+  .gc-intro_facts{grid-template-columns:1fr 1fr 1fr}
+  .gc-arc svg,.gc-arc_sub{display:none}
+  .gc-arc_mobile{display:block}
+  .gc-chap_scroll{height:auto;display:block}
+  .gc-chap_vis{display:none}
+  .gc-chap_txt{grid-column:1 / -1;min-height:0;display:flex;flex-direction:column;gap:4rem}
+  .gc-chap_item{position:relative;inset:auto;visibility:visible}
+  .gc-chap_m{display:block;aspect-ratio:4/3;border-radius:var(--r);margin-bottom:.4rem;position:relative}
+  .gc-chap_m .gc-plate{position:absolute;inset:0}
+  .gc-chap_dots{display:none}
+  .gc-sc_map,.gc-sc_info{grid-column:1 / -1}
+  .gc-sc_info{margin-top:2rem}
+  .gc-day_list{grid-template-columns:1fr}
+  .gc-club_over{flex-direction:column;align-items:flex-start;visibility:visible;position:relative;left:auto;right:auto;bottom:auto;padding:2rem var(--pad) 0}
+  .gc-club_stage{height:auto;display:block}
+  .gc-club_head{padding:6rem var(--pad) 3rem}
+  .gc-club_media{position:relative;inset:auto;height:62vh;clip-path:none;margin:0 var(--pad);border-radius:var(--r);overflow:hidden}
+  .gc-club_media::after{display:none}
+  .gc-club_over p:last-child{color:var(--on-deep-soft)}
+  .gc-acad_row{grid-template-columns:1fr auto;gap:.8rem;padding:1.6rem 0}
+  .gc-acad_row>.gc-mono:first-child{grid-column:1 / -1}
+  .gc-acad_row p{grid-column:1 / -1}
+  .gc-acad_thumb{display:block;grid-column:1 / -1;aspect-ratio:16/10;border-radius:var(--r);order:-1;position:relative}
+  .gc-acad_thumb .gc-plate{position:absolute;inset:0}
+  .gc-year_pin{min-height:0}
+  .gc-dial{display:none}
+  .gc-seasons{grid-column:1 / -1;min-height:0;display:flex;flex-direction:column;gap:2.5rem}
+  .gc-season{position:relative;inset:auto;visibility:visible;border-top:1px solid var(--line);padding-top:1.5rem}
+  .gc-season_m{display:block}
+  .gc-gal_track{width:auto;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:1rem;scrollbar-width:none}
+  .gc-gal_track::-webkit-scrollbar{display:none}
+  .gc-gal_item{scroll-snap-align:center;height:auto;cursor:zoom-in}
+  .gc-gal_item.is-l{width:84vw}.gc-gal_item.is-p,.gc-gal_item.is-s{width:68vw;height:auto}
+  .gc-row2{grid-template-columns:1fr}
+  .gc-foot_col,.gc-foot_col.is-first{grid-column:span 6}
+  .gc-foot_col.is-wide{grid-column:1 / -1}
+  .gc-concept_long{display:none}
+  .gc-concept{left:.75rem;bottom:.75rem}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;transition-delay:0s!important}
+}
+/* static fallback (reduced motion or no JS animation library) */
+html.gc-static .gc-chap_scroll{height:auto;display:block}
+html.gc-static .gc-chap_vis,html.gc-static .gc-chap_dots{display:none}
+html.gc-static .gc-chap_txt{grid-column:1 / -1;min-height:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:3rem}
+html.gc-static .gc-chap_item{position:relative;inset:auto;visibility:visible;justify-content:flex-start}
+html.gc-static .gc-chap_m{display:block;aspect-ratio:4/3;border-radius:var(--r);position:relative}
+html.gc-static .gc-chap_m .gc-plate{position:absolute;inset:0}
+html.gc-static .gc-club_media{clip-path:none}
+html.gc-static .gc-club_stage{height:auto;min-height:100vh}
+html.gc-static .gc-club_head{padding:8rem var(--pad)}
+html.gc-static .gc-club_over{visibility:visible}
+html.gc-static .gc-dial{display:none}
+html.gc-static .gc-seasons{grid-column:1 / -1;min-height:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:2.5rem}
+html.gc-static .gc-season{position:relative;inset:auto;visibility:visible}
+html.gc-static .gc-season_m{display:block}
+html.gc-static .gc-arc_sub{position:relative;bottom:auto}
+html.gc-static .gc-gal_item{cursor:zoom-in}
+</style>
+</head>
+<body>
+<a class="gc-skip" href="#main">Skip to content</a>
+
+<div class="gc-loader" aria-hidden="true">
+  <svg viewBox="0 0 240 70"><path class="l-line" d="M0 50 H182 M198 50 H240"/><path class="l-line" d="M182 50 v6 h16 v-6" fill="none"/><line class="l-flag" x1="190" y1="50" x2="190" y2="50"/><path class="l-pennant" d="M190 18 l16 5 l-16 5 z" opacity="0"/><circle class="l-ball" cx="8" cy="45" r="5"/></svg>
+  <span class="gc-loader_word gc-mono">The Grove Club | Near Hamburg</span>
+</div>
+
+<header class="gc-nav" data-nav>
+  <div class="gc-nav_bg"></div>
+  <div class="gc-wrap gc-nav_in">
+    <a class="gc-logo" href="#top" aria-label="The Grove Club, back to top"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="21" r="12"/><path d="M6 36 H42"/></svg><span>The Grove Club</span></a>
+    <div class="gc-nav_meta gc-mono" aria-label="Local conditions"><span>Hamburg <span data-clock>--:--</span></span><span>Sunset <span data-sunset>--:--</span></span></div>
+    <div class="gc-nav_r">
+      <a class="gc-btn" href="#apply" data-magnet><span data-roll>Enquire</span><span class="gc-btn_i" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+      <button class="gc-menu-btn" type="button" aria-expanded="false" aria-controls="gc-menu" data-menu-btn><span data-roll>Menu</span><i aria-hidden="true"></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="gc-menu" id="gc-menu" role="dialog" aria-modal="true" aria-label="Menu" data-menu>
+  <nav class="gc-menu_list" aria-label="Sections">
+    <a href="#course" data-menu-i="0"><span class="gc-mono">03</span><span data-roll="italic">The Course</span></a>
+    <a href="#membership" data-menu-i="1"><span class="gc-mono">04</span><span data-roll="italic">Membership</span></a>
+    <a href="#clubhouse" data-menu-i="2"><span class="gc-mono">05</span><span data-roll="italic">The 19th Hole</span></a>
+    <a href="#academy" data-menu-i="3"><span class="gc-mono">06</span><span data-roll="italic">Academy</span></a>
+    <a href="#community" data-menu-i="4"><span class="gc-mono">07</span><span data-roll="italic">A Year at the Grove</span></a>
+    <a href="#apply" data-menu-i="5"><span class="gc-mono">09</span><span data-roll="italic">Enquire</span></a>
+  </nav>
+  <div class="gc-menu_side">
+    <div class="gc-menu_img" aria-hidden="true">
+      <figure class="gc-plate is-on" data-ph="G03"><img src="img/g03.webp" alt="" loading="lazy"></figure>
+      <figure class="gc-plate ph-dusk" data-ph="G07"><img src="img/g07.webp" alt="" loading="lazy"></figure>
+      <figure class="gc-plate ph-dusk" data-ph="G08"><img src="img/g08.webp" alt="" loading="lazy"></figure>
+      <figure class="gc-plate ph-detail" data-ph="G11"><img src="img/g11.webp" alt="" loading="lazy"></figure>
+      <figure class="gc-plate ph-dusk" data-ph="G15"><img src="img/g15.webp" alt="" loading="lazy"></figure>
+      <figure class="gc-plate" data-ph="G23"><img src="img/g23.webp" alt="" loading="lazy"></figure>
+    </div>
+    <div class="gc-menu_foot gc-mono"><span>Near Hamburg, Germany</span><span>Find your own pace</span></div>
+  </div>
+</div>
+
+<nav class="gc-rail" aria-label="Page progress" data-rail>
+  <span class="gc-rail_label gc-mono"><span class="gc-rail_count" data-rail-count>01</span> / <span data-rail-total>12</span> | <span data-rail-name>Tee</span></span>
+  <div class="gc-rail_track"><div class="gc-rail_ticks" data-rail-ticks></div><i class="gc-rail_ball" data-rail-ball></i></div>
+  <svg class="gc-rail_flag" viewBox="0 0 12 16" aria-hidden="true"><path d="M2 15V1"/><path d="M2 1l9 3-9 3z"/></svg>
+</nav>
+
+<main id="main">
+
+<!-- 01 HERO -->
+<section class="gc-hero" id="top" data-sec="Tee" data-tone="dark" aria-labelledby="hero-title">
+  <div class="gc-hero_media" data-hero-media>
+    <figure class="gc-plate" data-ph="G01 | Course at first light">
+      <video data-hero-video muted playsinline loop preload="none" aria-hidden="true"><source src="img/g01.mp4" type="video/mp4"></video>
+      <img src="img/g01.webp" alt="" fetchpriority="high">
+    </figure>
+  </div>
+  <div class="gc-hero_shade"></div>
+  <div class="gc-wrap gc-hero_in">
+    <h1 class="gc-hero_title" id="hero-title" aria-label="Find your own pace.">
+      <span class="gc-hero_l1" aria-hidden="true" data-hero-l1>Find your</span>
+      <span class="gc-hero_l2" aria-hidden="true"><span class="w-own" data-hero-own>own</span> <span class="w-pace" data-hero-pace>pace</span><span class="gc-ball" data-hero-ball></span></span>
+    </h1>
+    <div class="gc-hero_meta" data-hero-meta>
+      <p>A private golf and country club near Hamburg. Eighteen holes through heath and pine, a clubhouse worth staying for, and time that belongs to you.</p>
+      <dl class="gc-mono"><div><dt>Course</dt><dd>18 holes | Par 72</dd></div><div><dt>Setting</dt><dd>Heath, birch, pine</dd></div></dl>
+      <dl class="gc-mono"><div><dt>Sunrise</dt><dd data-sunrise>--:--</dd></div><div><dt>Sunset</dt><dd data-sunset>--:--</dd></div></dl>
+      <a class="gc-scrollcue gc-mono" href="#intro"><span class="gc-scrollcue_dot" aria-hidden="true"><i></i></span><span data-roll>Begin</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 02 INTRO -->
+<section class="gc-section gc-intro" id="intro" data-sec="The Club" data-tone="light" aria-labelledby="intro-h">
+  <div class="gc-contours" data-contours="light"><canvas></canvas></div>
+  <div class="gc-wrap">
+    <p class="gc-tag gc-mono gc-intro_tag" data-scramble><b>01</b>The Club</p>
+    <h2 class="gc-sr" id="intro-h">A place to play. A place to stay.</h2>
+    <p class="gc-statement" data-statement aria-hidden="true">A place to <em>play</em> <span class="gc-pill" data-pill><span class="gc-plate" data-ph="G02"><img src="img/g02.webp" alt="" loading="lazy"></span></span>. A place to <em>stay</em> <span class="gc-pill" data-pill><span class="gc-plate ph-dusk" data-ph="G10"><img src="img/g10.webp" alt="" loading="lazy"></span></span>. Golf here is a morning outside, a shot you did not think you had, and a long lunch with people you like.</p>
+    <div class="gc-g12 gc-intro_row">
+      <div class="gc-intro_facts" data-reveal>
+        <div><b data-count="18">18</b><span class="gc-mono gc-soft">Holes</span></div>
+        <div><b data-count="72">72</b><span class="gc-mono gc-soft">Par</span></div>
+        <div><b data-count="1">1</b><span class="gc-mono gc-soft">Clubhouse</span></div>
+      </div>
+      <div class="gc-intro_text">
+        <p class="gc-lede" data-lines>The Grove Club is a private golf and country club on the edge of Hamburg, set among birches, heath and open sky.</p>
+        <p class="gc-soft" data-lines>Members play an eighteen-hole walking course, learn at the academy and use the clubhouse as their own. Guests are always welcome to see for themselves.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gc-pace is-dark" data-sec="Philosophy" data-tone="dark" aria-labelledby="pace-h">
+  <div class="gc-contours" data-contours="dark"><canvas></canvas></div>
+  <div class="gc-wrap">
+    <p class="gc-tag gc-mono" style="justify-content:center;display:flex;margin-bottom:clamp(2.5rem,5vw,4rem);color:var(--on-deep-soft)" data-scramble><b>02</b>Philosophy</p>
+    <h2 class="gc-pace_q" id="pace-h" data-pace>Some days are best measured in holes, <em>not hours.</em></h2>
+    <div class="gc-pace_foot">
+      <p data-lines>No dress rehearsal and no unnecessary rules. We keep what makes golf good, the care for the course, the respect for each other, the quiet of an early tee time, and leave out the rest.</p>
+      <a class="gc-link is-under gc-mono" href="#course"><span data-roll>Walk the course</span> <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 03 COURSE -->
+<section class="gc-section is-field gc-course" id="course" data-sec="The Course" data-tone="dark" aria-labelledby="course-h">
+  <div class="gc-contours" data-contours="field"><canvas></canvas></div>
+  <div class="gc-wrap">
+    <p class="gc-tag gc-mono" style="color:var(--on-field-soft)" data-scramble><b>03</b>The Course</p>
+    <h2 class="gc-arc" id="course-h" aria-label="Eighteen holes. No need to rush.">
+      <svg viewBox="0 0 1600 520" aria-hidden="true" data-arc>
+        <defs>
+          <path id="gc-flight" d="M 30 500 C 380 -60, 1080 -40, 1420 430"/>
+          <mask id="gc-flight-mask" maskUnits="userSpaceOnUse"><path d="M 30 500 C 380 -60, 1080 -40, 1420 430" fill="none" stroke="#fff" stroke-width="330" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1" data-arc-mask/></mask>
+        </defs>
+        <g mask="url(#gc-flight-mask)">
+          <use href="#gc-flight" class="a-trail"/>
+          <text class="a-text" dy="-28"><textPath href="#gc-flight" startOffset="50%" text-anchor="middle">Eighteen holes.</textPath></text>
+        </g>
+        <ellipse class="a-land" cx="1420" cy="440" rx="0" ry="0" data-arc-land/>
+        <circle class="a-ball" r="11" cx="30" cy="500" data-arc-ball/>
+      </svg>
+      <span class="gc-arc_sub" aria-hidden="true" data-arc-sub>No need to rush.</span>
+      <span class="gc-arc_mobile gc-h2" aria-hidden="true" data-chars>Eighteen holes. <em>No need to rush.</em></span>
+    </h2>
+    <div class="gc-g12 gc-course_intro">
+      <p class="gc-tag gc-mono" style="color:var(--on-field-soft);align-self:start">Par 72 | Walking course</p>
+      <p class="gc-lede" data-lines>Laid into the land rather than carved out of it. Wide where it can be, tight where it should be, and never in a hurry to get you back to the clubhouse.</p>
+    </div>
+  </div>
+
+  <div class="gc-chap" data-chap>
+    <div class="gc-chap_scroll">
+      <div class="gc-wrap gc-g12 gc-chap_in">
+        <div class="gc-chap_vis">
+          <div class="gc-chap_img" data-chap-img><figure class="gc-plate" data-ph="G03 | Hole 1, birch-lined fairway"><img src="img/g03.webp" alt="The first fairway, lined with birches, in morning light." loading="lazy"></figure></div>
+          <div class="gc-chap_img" data-chap-img><figure class="gc-plate ph-water" data-ph="G04 | Hole 6, heath pond"><img src="img/g04.webp" alt="A short par three across a heath pond." loading="lazy"></figure></div>
+          <div class="gc-chap_img" data-chap-img><figure class="gc-plate ph-detail" data-ph="G05 | Hole 12, through the pines"><img src="img/g05.webp" alt="A fairway running between tall pines." loading="lazy"></figure></div>
+          <div class="gc-chap_img" data-chap-img><figure class="gc-plate ph-dusk" data-ph="G06 | Hole 18, home to the clubhouse"><img src="img/g06.webp" alt="The final green with the clubhouse behind it at dusk." loading="lazy"></figure></div>
+          <svg class="gc-yard" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true" data-yard></svg>
+        </div>
+        <div class="gc-chap_txt">
+          <article class="gc-chap_item" data-chap-item>
+            <div class="gc-chap_m"><figure class="gc-plate" data-ph="G03 | Hole 1"><img src="img/g03.webp" alt="" loading="lazy"></figure></div>
+            <div class="gc-chap_no" data-ct><b>01</b><span class="gc-mono">First Light</span></div>
+            <h3 class="gc-h3" data-ct>A gentle opening</h3>
+            <p data-ct>Wide and slightly downhill between birches. Enough room to find your swing before the course asks anything of you.</p>
+            <div class="gc-chap_facts gc-mono" data-ct><span>Par 4</span><span>352 m</span><span>SI 9</span></div>
+          </article>
+          <article class="gc-chap_item" data-chap-item>
+            <div class="gc-chap_m"><figure class="gc-plate ph-water" data-ph="G04 | Hole 6"><img src="img/g04.webp" alt="" loading="lazy"></figure></div>
+            <div class="gc-chap_no" data-ct><b>06</b><span class="gc-mono">The Pond</span></div>
+            <h3 class="gc-h3" data-ct>Across the water</h3>
+            <p data-ct>A short carry over a heath pond. The wind off the open field decides the club more often than the yardage does.</p>
+            <div class="gc-chap_facts gc-mono" data-ct><span>Par 3</span><span>172 m</span><span>SI 13</span></div>
+          </article>
+          <article class="gc-chap_item" data-chap-item>
+            <div class="gc-chap_m"><figure class="gc-plate ph-detail" data-ph="G05 | Hole 12"><img src="img/g05.webp" alt="" loading="lazy"></figure></div>
+            <div class="gc-chap_no" data-ct><b>12</b><span class="gc-mono">Into the Pines</span></div>
+            <h3 class="gc-h3" data-ct>Quiet in the trees</h3>
+            <p data-ct>The longest stretch of the back nine runs through tall pines. Three good shots and a little patience reach the green.</p>
+            <div class="gc-chap_facts gc-mono" data-ct><span>Par 5</span><span>489 m</span><span>SI 2</span></div>
+          </article>
+          <article class="gc-chap_item" data-chap-item>
+            <div class="gc-chap_m"><figure class="gc-plate ph-dusk" data-ph="G06 | Hole 18"><img src="img/g06.webp" alt="" loading="lazy"></figure></div>
+            <div class="gc-chap_no" data-ct><b>18</b><span class="gc-mono">Home</span></div>
+            <h3 class="gc-h3" data-ct>The way home</h3>
+            <p data-ct>The clubhouse comes into view on the approach. Most rounds end here. The better conversations usually start here.</p>
+            <div class="gc-chap_facts gc-mono" data-ct><span>Par 4</span><span>398 m</span><span>SI 10</span></div>
+          </article>
+        </div>
+      </div>
+      <div class="gc-chap_dots" aria-hidden="true"><i><b data-chap-dot></b></i><i><b data-chap-dot></b></i><i><b data-chap-dot></b></i><i><b data-chap-dot></b></i></div>
+    </div>
+  </div>
+
+  <div class="gc-wrap gc-sc" data-sc>
+    <div class="gc-sc_head">
+      <h3 class="gc-h3" data-chars>The card, <em>hole by hole.</em></h3>
+      <p class="gc-mono" style="color:var(--on-field-soft)">Concept data | Metres from the yellow tees | Select a hole</p>
+    </div>
+    <div class="gc-sc_wrap"><table class="gc-sc_table" data-sc-table><caption class="gc-sr">Scorecard of The Grove Club (concept data). Select a hole number to see its layout.</caption></table></div>
+    <div class="gc-g12 gc-sc_detail" aria-live="polite">
+      <div class="gc-sc_map"><svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Hole layout" data-sc-map></svg></div>
+      <div class="gc-sc_info">
+        <div class="gc-sc_top"><span class="gc-sc_no" data-odo="01" data-sc-no>01</span><span class="gc-sc_name" data-sc-name>First Light</span></div>
+        <dl class="gc-sc_stats">
+          <div><dt class="gc-mono">Par</dt><dd data-odo="4" data-sc-par>4</dd></div>
+          <div><dt class="gc-mono">Metres</dt><dd data-odo="352" data-sc-len>352</dd></div>
+          <div><dt class="gc-mono">Stroke index</dt><dd data-odo="09" data-sc-si>09</dd></div>
+        </dl>
+        <p class="gc-sc_note" data-sc-note></p>
+        <div class="gc-sc_nav">
+          <button class="gc-round" type="button" data-sc-prev aria-label="Previous hole"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M10 3 5 8l5 5"/></svg></button>
+          <button class="gc-round" type="button" data-sc-next aria-label="Next hole"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="m6 3 5 5-5 5"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 MEMBERSHIP -->
+<section class="gc-section" id="membership" data-sec="Membership" data-tone="light" aria-labelledby="mem-h">
+  <div class="gc-contours" data-contours="light"><canvas></canvas></div>
+  <div class="gc-wrap">
+    <p class="gc-tag gc-mono" style="margin-bottom:2rem" data-scramble><b>04</b>Membership</p>
+    <div class="gc-g12 gc-mem_head">
+      <h2 class="gc-h2" id="mem-h" data-chars>Make room for more <em>than the game.</em></h2>
+      <p data-lines>Four ways to belong, each with full use of the clubhouse. Answer four short questions and we will suggest where to start. You can always change as life does.</p>
+    </div>
+    <div class="gc-g12 gc-mem">
+      <form class="gc-finder" data-finder aria-label="Membership finder" onsubmit="return false">
+        <fieldset><legend><span class="gc-mono">01</span>How often would you like to play?</legend>
+          <div class="gc-seg"><label><input type="radio" name="freq" value="rare"><span>Now and then</span></label><label><input type="radio" name="freq" value="week" checked><span>Every week</span></label><label><input type="radio" name="freq" value="often"><span>Whenever I can</span></label></div></fieldset>
+        <fieldset><legend><span class="gc-mono">02</span>When does golf fit into your week?</legend>
+          <div class="gc-seg"><label><input type="radio" name="when" value="weekdays"><span>Weekdays</span></label><label><input type="radio" name="when" value="weekends"><span>Weekends</span></label><label><input type="radio" name="when" value="both" checked><span>Both</span></label></div></fieldset>
+        <fieldset><legend><span class="gc-mono">03</span>How long have you been playing?</legend>
+          <div class="gc-seg"><label><input type="radio" name="exp" value="new"><span>Not yet</span></label><label><input type="radio" name="exp" value="some" checked><span>A few years</span></label><label><input type="radio" name="exp" value="long"><span>For ages</span></label></div></fieldset>
+        <fieldset><legend><span class="gc-mono">04</span>Your age</legend>
+          <div class="gc-seg"><label><input type="radio" name="age" value="u30"><span>Under 30</span></label><label><input type="radio" name="age" value="o30" checked><span>30 or over</span></label></div></fieldset>
+      </form>
+      <aside class="gc-rec" aria-live="polite" aria-label="Suggested membership" data-rec>
+        <div class="gc-rec_img"><figure class="gc-plate" data-ph="G07 | Two members walking the fairway"><img src="img/g07.webp" alt="Two members walking down a fairway, seen from behind." loading="lazy"></figure></div>
+        <div class="gc-rec_body">
+          <div class="gc-rec_k gc-mono"><span>Suggested for you</span><span data-rec-n>01 / 04</span></div>
+          <h3 data-rec-title>Full Membership</h3>
+          <p data-rec-text></p>
+          <ul data-rec-list></ul>
+          <div class="gc-rec_foot">
+            <a class="gc-btn is-light" href="#apply" data-rec-apply><span data-roll>Enquire</span><span class="gc-btn_i" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+            <span class="gc-mono gc-soft">Fees shared on request</span>
+          </div>
+          <div class="gc-rec_all gc-mono" role="group" aria-label="All memberships">
+            <button type="button" data-rec-pick="full" aria-pressed="true">Full</button><button type="button" data-rec-pick="weekday" aria-pressed="false">Weekday</button><button type="button" data-rec-pick="young" aria-pressed="false">Young Grove</button><button type="button" data-rec-pick="first" aria-pressed="false">First Year</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- 05 CLUBHOUSE -->
+<section class="gc-club" id="clubhouse" data-sec="19th Hole" data-tone="dark" aria-labelledby="club-h">
+  <div class="gc-club_stage" data-club>
+    <div class="gc-club_head" data-club-head>
+      <p class="gc-tag gc-mono" style="justify-content:center;display:flex;margin-bottom:2rem;color:var(--on-deep-soft)"><b>05</b>The Clubhouse</p>
+      <h2 class="gc-h2" id="club-h" data-chars>The best part might come <em>after the last putt.</em></h2>
+    </div>
+    <div class="gc-club_media" data-club-media><figure class="gc-plate ph-dusk" data-ph="G08 | Clubhouse exterior, timber and brick"><img src="img/g08.webp" alt="The low brick and oak clubhouse beside the eighteenth green at blue hour." loading="lazy"></figure></div>
+    <div class="gc-club_over" data-club-over>
+      <p class="gc-club_19" aria-hidden="true" data-club-19>The <em>19th</em> hole.</p>
+      <p>Golfers have always called the clubhouse the nineteenth hole. Ours is a low building of brick, oak and glass beside the eighteenth green.</p>
+    </div>
+  </div>
+  <div class="gc-day">
+    <div class="gc-wrap">
+      <div class="gc-day_head">
+        <h3 class="gc-h3" data-chars>A day at the clubhouse.</h3>
+        <p class="gc-mono gc-soft">Example day | Concept</p>
+      </div>
+      <ol class="gc-day_list" data-reveal>
+        <li class="gc-day_card"><div class="gc-day_img"><figure class="gc-plate ph-warm" data-ph="G09 | Coffee by the window"><img src="img/g09.webp" alt="Morning coffee on an oak table by a large window onto the course." loading="lazy"></figure></div><div class="gc-day_t"><b>07:30</b><span class="gc-mono gc-soft">Morning</span></div><h3>First coffee</h3><p>Before the first tee time, a quiet table by the window.</p></li>
+        <li class="gc-day_card"><div class="gc-day_img"><figure class="gc-plate ph-warm" data-ph="G24 | Lunch, seasonal plate"><img src="img/g24.webp" alt="A seasonal lunch plate with vegetables from the region." loading="lazy"></figure></div><div class="gc-day_t"><b>13:00</b><span class="gc-mono gc-soft">Midday</span></div><h3>Lunch after the round</h3><p>Vegetables from the Vierlande, fish from the coast, game in autumn.</p></li>
+        <li class="gc-day_card"><div class="gc-day_img"><figure class="gc-plate ph-dusk" data-ph="G10 | West terrace at dusk"><img src="img/g10.webp" alt="The west terrace at dusk with two glasses on a table." loading="lazy"></figure></div><div class="gc-day_t"><b>18:30</b><span class="gc-mono gc-soft">Evening</span></div><h3>The west terrace</h3><p>It faces the sunset, which matters more than you might think.</p></li>
+        <li class="gc-day_card"><div class="gc-day_img"><figure class="gc-plate ph-detail" data-ph="G25 | Lounge fire"><img src="img/g25.webp" alt="Armchairs by an open fire in the clubhouse lounge." loading="lazy"></figure></div><div class="gc-day_t"><b>21:00</b><span class="gc-mono gc-soft">Late</span></div><h3>By the fire</h3><p>No dress code beyond being considerate, and no hurry to leave.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 06 ACADEMY -->
+<section class="gc-section" id="academy" data-sec="Academy" data-tone="light" aria-labelledby="acad-h">
+  <div class="gc-wrap">
+    <p class="gc-tag gc-mono" style="margin-bottom:2rem" data-scramble><b>06</b>Golf Academy</p>
+    <div class="gc-g12 gc-acad_head">
+      <h2 class="gc-h2" id="acad-h" data-chars>Learn the game. <em>Keep learning it.</em></h2>
+      <p data-lines>Our coaches teach complete beginners and single-figure players with the same patience. The practice ground and short-game area are open to every member.</p>
+    </div>
+    <div class="gc-acad_list" data-acad>
+      <article class="gc-acad_row gc-roll-host" tabindex="0" data-acad-row="0"><span class="gc-mono">01</span><div class="gc-acad_thumb"><figure class="gc-plate" data-ph="G11"><img src="img/g11.webp" alt="" loading="lazy"></figure></div><h3><span data-roll="italic">First Swing</span></h3><p>Four small-group sessions from grip to first round. Clubs provided.</p><span class="gc-mono">Beginners</span></article>
+      <article class="gc-acad_row gc-roll-host" tabindex="0" data-acad-row="1"><span class="gc-mono">02</span><div class="gc-acad_thumb"><figure class="gc-plate ph-detail" data-ph="G12"><img src="img/g12.webp" alt="" loading="lazy"></figure></div><h3><span data-roll="italic">Private Coaching</span></h3><p>One coach, your swing, a plan that fits your season.</p><span class="gc-mono">All levels</span></article>
+      <article class="gc-acad_row gc-roll-host" tabindex="0" data-acad-row="2"><span class="gc-mono">03</span><div class="gc-acad_thumb"><figure class="gc-plate ph-detail" data-ph="G13"><img src="img/g13.webp" alt="" loading="lazy"></figure></div><h3><span data-roll="italic">Short Game Studio</span></h3><p>Chipping, pitching and putting, where most strokes are saved.</p><span class="gc-mono">Members</span></article>
+      <article class="gc-acad_row gc-roll-host" tabindex="0" data-acad-row="3"><span class="gc-mono">04</span><div class="gc-acad_thumb"><figure class="gc-plate" data-ph="G14"><img src="img/g14.webp" alt="" loading="lazy"></figure></div><h3><span data-roll="italic">Juniors</span></h3><p>Weekend groups for ages eight to sixteen. Fun first, technique follows.</p><span class="gc-mono">Ages 8 to 16</span></article>
+    </div>
+  </div>
+  <div class="gc-acad_prev" aria-hidden="true" data-acad-prev>
+    <figure class="gc-plate" data-ph="G11 | Coach and player on the range"><img src="img/g11.webp" alt="" loading="lazy"></figure>
+    <figure class="gc-plate ph-detail" data-ph="G12 | One-to-one lesson"><img src="img/g12.webp" alt="" loading="lazy"></figure>
+    <figure class="gc-plate ph-detail" data-ph="G13 | Wedge on the chipping green"><img src="img/g13.webp" alt="" loading="lazy"></figure>
+    <figure class="gc-plate" data-ph="G14 | Juniors on the putting green"><img src="img/g14.webp" alt="" loading="lazy"></figure>
+  </div>
+</section>
+
+<!-- 07 YEAR -->
+<section class="gc-year" id="community" data-sec="The Year" data-tone="light" aria-labelledby="year-h">
+  <div class="gc-year_pin" data-year>
+    <div class="gc-wrap">
+      <div class="gc-year_head">
+        <div><p class="gc-tag gc-mono" style="margin-bottom:1.5rem" data-scramble><b>07</b>Events and Community</p><h2 class="gc-h2" id="year-h" data-chars>A year at <em>the Grove.</em></h2></div>
+        <p data-lines>Competitions for those who like them, long tables for everyone. An example of how a season could look.</p>
+      </div>
+      <div class="gc-g12 gc-year_body">
+        <div class="gc-dial" aria-hidden="true">
+          <svg viewBox="-260 -260 520 520" data-dial></svg>
+          <div class="gc-dial_c"><div><b data-dial-name>Spring</b><span class="gc-mono gc-soft" data-dial-months>March to May</span></div></div>
+        </div>
+        <div class="gc-seasons">
+          <article class="gc-season" data-season><span class="gc-season_m gc-mono gc-soft">Spring | March to May</span><h3 data-st>Opening of the season</h3><p data-st>The first shotgun start of the year, then lunch for everyone who played and everyone who just came to say hello.</p><div class="gc-season_tags" data-st><span>Opening Day</span><span>Spring Foursomes</span></div></article>
+          <article class="gc-season" data-season><span class="gc-season_m gc-mono gc-soft">Summer | June to August</span><h3 data-st>Twilight nines</h3><p data-st>Nine holes on Thursday evenings, teams drawn at random, dinner on the terrace. The best way to meet members you have not met yet.</p><div class="gc-season_tags" data-st><span>Thursday Twilight</span><span>Club Championship</span><span>Summer Long Table</span></div></article>
+          <article class="gc-season" data-season><span class="gc-season_m gc-mono gc-soft">Autumn | September to November</span><h3 data-st>Colour on the course</h3><p data-st>Matchplay finals, a game supper in the restaurant, and the last early tee times through the turning birches.</p><div class="gc-season_tags" data-st><span>Matchplay Finals</span><span>Game Supper</span></div></article>
+          <article class="gc-season" data-season><span class="gc-season_m gc-mono gc-soft">Winter | December to February</span><h3 data-st>By the fire</h3><p data-st>Winter rules on the course, talks and tastings in the lounge, and indoor coaching for a head start on spring.</p><div class="gc-season_tags" data-st><span>Fireside Talks</span><span>Winter Academy</span></div></article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 GALLERY -->
+<section class="gc-gal is-dark" id="gallery" data-sec="Gallery" data-tone="dark" aria-labelledby="gal-h" data-gal>
+  <div class="gc-wrap gc-gal_head">
+    <div><p class="gc-tag gc-mono" style="margin-bottom:1.5rem;color:var(--on-deep-soft)" data-scramble><b>08</b>Gallery</p><h2 class="gc-h2" id="gal-h" data-chars>Small things, <em>well kept.</em></h2></div>
+    <p data-lines>Details from the course and the clubhouse. Select an image to view it larger.</p>
+  </div>
+  <ul class="gc-gal_track" data-gal-track>
+    <li><button class="gc-gal_item is-l" type="button" data-gal-item><span class="gc-gal_skew" data-skew><figure class="gc-plate" data-ph="G16 | Morning dew on the green"><img src="img/g16.webp" alt="Morning dew on a green with a single ball and its line." loading="lazy"></figure></span><span class="gc-gal_cap gc-mono"><span>Dew line</span><span>01</span></span></button></li>
+    <li><button class="gc-gal_item is-p" type="button" data-gal-item><span class="gc-gal_skew" data-skew><figure class="gc-plate ph-detail" data-ph="G17 | Freshly raked bunker"><img src="img/g17.webp" alt="A freshly raked bunker with the rake laid along its edge." loading="lazy"></figure></span><span class="gc-gal_cap gc-mono"><span>Raked</span><span>02</span></span></button></li>
+    <li><button class="gc-gal_item is-s" type="button" data-gal-item><span class="gc-gal_skew" data-skew><figure class="gc-plate ph-warm" data-ph="G18 | Scorecard and pencil"><img src="img/g18.webp" alt="A paper scorecard and a short pencil on an oak table." loading="lazy"></figure></span><span class="gc-gal_cap gc-mono"><span>After the round</span><span>03</span></span></button></li>
+    <li><button class="gc-gal_item is-p" type="button" data-gal-item><span class="gc-gal_skew" data-skew><figure class="gc-plate" data-ph="G19 | Heather and birch"><img src="img/g19.webp" alt="Purple heather and a birch trunk at the edge of the rough." loading="lazy"></figure></span><span class="gc-gal_cap gc-mono"><span>Heath</span><span>04</span></span></button></li>
+    <li><button class="gc-gal_item is-l" type="button" data-gal-item><span class="gc-gal_skew" data-skew><figure class="gc-plate ph-warm" data-ph="G20 | Locker room, oak and linen"><img src="img/g20.webp" alt="A calm locker room with oak lockers and a linen towel on a bench." loading="lazy"></figure></span><span class="gc-gal_cap gc-mono"><span>Changing room</span><span>05</span></span></button></li>
+    <li><button class="gc-gal_item is-s" type="button" data-gal-item><span class="gc-gal_skew" data-skew><figure class="gc-plate ph-dusk" data-ph="G21 | Rain on the window"><img src="img/g21.webp" alt="Rain on the clubhouse window with the course blurred behind." loading="lazy"></figure></span><span class="gc-gal_cap gc-mono"><span>Weather window</span><span>06</span></span></button></li>
+    <li><button class="gc-gal_item is-p" type="button" data-gal-item><span class="gc-gal_skew" data-skew><figure class="gc-plate ph-detail" data-ph="G22 | Flagstick in the cup"><img src="img/g22.webp" alt="Close view of a flagstick resting in the cup." loading="lazy"></figure></span><span class="gc-gal_cap gc-mono"><span>In the cup</span><span>07</span></span></button></li>
+  </ul>
+  <div class="gc-wrap gc-gal_foot gc-mono"><span>Scroll or swipe</span><span class="gc-gal_bar" aria-hidden="true"><i data-gal-bar></i></span><span>07 images</span></div>
+</section>
+
+<!-- 09 APPLY -->
+<section class="gc-section" id="apply" data-sec="Enquire" data-tone="light" aria-labelledby="apply-h">
+  <div class="gc-wrap gc-g12 gc-apply">
+    <div class="gc-apply_l">
+      <p class="gc-tag gc-mono" data-scramble><b>09</b>Membership enquiry</p>
+      <h2 class="gc-h2" id="apply-h" data-chars>Start with <em>a conversation.</em></h2>
+      <p>Tell us a little about yourself and how you would like to use the club. There is no obligation and no waiting list to join.</p>
+      <ol class="gc-steps">
+        <li><span class="gc-mono">01</span><span>You send this enquiry.</span></li>
+        <li><span class="gc-mono">02</span><span>We call you to talk it through.</span></li>
+        <li><span class="gc-mono">03</span><span>You visit, play a round with a member and decide in your own time.</span></li>
+      </ol>
+    </div>
+    <div class="gc-apply_r">
+      <form class="gc-form" novalidate data-form aria-describedby="form-note">
+        <div class="gc-summary" role="alert" tabindex="-1" hidden data-summary></div>
+        <fieldset class="gc-fs"><legend><span class="gc-mono">01</span>About you</legend>
+          <div class="gc-row2">
+            <div class="gc-field"><label for="f-first">First name <b aria-hidden="true">*</b></label><input class="gc-in" id="f-first" name="first" autocomplete="given-name" required aria-describedby="e-first"><span class="gc-field_line" style="top:4.15rem"></span><span class="gc-err" id="e-first">Please enter your first name.</span></div>
+            <div class="gc-field"><label for="f-last">Last name <b aria-hidden="true">*</b></label><input class="gc-in" id="f-last" name="last" autocomplete="family-name" required aria-describedby="e-last"><span class="gc-field_line" style="top:4.15rem"></span><span class="gc-err" id="e-last">Please enter your last name.</span></div>
+            <div class="gc-field"><label for="f-email">Email <b aria-hidden="true">*</b></label><input class="gc-in" id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="e-email"><span class="gc-field_line" style="top:4.15rem"></span><span class="gc-err" id="e-email">Please enter a valid email address, for example name@domain.de.</span></div>
+            <div class="gc-field"><label for="f-phone">Phone <span class="gc-opt">(optional)</span></label><input class="gc-in" id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="e-phone"><span class="gc-field_line" style="top:4.15rem"></span><span class="gc-err" id="e-phone">Please check the number. Use digits, spaces, + or -.</span></div>
+          </div>
+        </fieldset>
+        <fieldset class="gc-fs" data-group aria-describedby="e-mem"><legend><span class="gc-mono">02</span>Membership of interest <b class="gc-mono" style="color:var(--accent)" aria-hidden="true">*</b></legend>
+          <div class="gc-seg">
+            <label><input type="radio" id="f-mem" name="membership" value="Full Membership" required><span>Full Membership</span></label>
+            <label><input type="radio" name="membership" value="Weekday"><span>Weekday</span></label>
+            <label><input type="radio" name="membership" value="Young Grove"><span>Young Grove</span></label>
+            <label><input type="radio" name="membership" value="First Year"><span>First Year</span></label>
+          </div>
+          <span class="gc-err" id="e-mem">Please choose a membership.</span>
+        </fieldset>
+        <fieldset class="gc-fs"><legend><span class="gc-mono">03</span>Your game</legend>
+          <div class="gc-row2">
+            <div class="gc-field"><label for="f-hcp">Handicap <span class="gc-opt">(optional)</span></label><input class="gc-in" id="f-hcp" name="hcp" inputmode="decimal" placeholder="e.g. 18.4" aria-describedby="h-hcp e-hcp"><span class="gc-field_line" style="top:4.15rem"></span><span class="gc-hint" id="h-hcp">Leave empty if you do not have one yet.</span><span class="gc-err" id="e-hcp">Enter a value between +10 and 54.</span></div>
+            <div class="gc-field"><label for="f-contact">Best way to reach you</label><select class="gc-in" id="f-contact" name="contact"><option>Email</option><option>Phone</option><option>Either</option></select><span class="gc-field_line" style="top:4.15rem"></span></div>
+          </div>
+        </fieldset>
+        <fieldset class="gc-fs"><legend><span class="gc-mono">04</span>Anything else</legend>
+          <div class="gc-field"><label for="f-msg">Message <span class="gc-opt">(optional)</span></label><textarea class="gc-in" id="f-msg" name="msg" maxlength="800" aria-describedby="h-msg"></textarea><span class="gc-hint" id="h-msg"><span data-count-msg>0</span> / 800 characters</span></div>
+          <label class="gc-check" data-check><input type="checkbox" id="f-consent" name="consent" required aria-describedby="e-consent"><span>I agree that The Grove Club may use my details to reply to this enquiry. <a class="gc-link is-under" href="#" style="padding-bottom:0">Privacy notice</a></span><span class="gc-err" id="e-consent">Please confirm so we can reply to you.</span></label>
+        </fieldset>
+        <div class="gc-form_foot">
+          <p class="gc-hint" id="form-note">Design concept: this form checks your entries but does not send them anywhere yet.</p>
+          <button class="gc-btn" type="submit" data-submit><span data-roll>Send enquiry</span><span class="gc-btn_i" aria-hidden="true"><span class="gc-spin"></span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></button>
+        </div>
+      </form>
+      <div class="gc-done" hidden tabindex="-1" data-done>
+        <span class="gc-mono" style="opacity:.6">Concept preview</span>
+        <h3>Thank you, <span data-done-name></span>.</h3>
+        <p>Your entries are complete. Because this site is a design concept, nothing has been sent and no one will contact you. In the finished site, this is where your enquiry would reach the club.</p>
+        <dl data-done-list></dl>
+        <button class="gc-btn is-line" type="button" data-done-reset><span data-roll>Edit entries</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- 10 CTA -->
+<section class="gc-cta" data-sec="Last Putt" data-tone="dark" aria-labelledby="cta-h">
+  <div class="gc-contours" data-contours="field"><canvas></canvas></div>
+  <div class="gc-wrap gc-cta_in">
+    <p class="gc-tag gc-mono" style="color:var(--on-field-soft)" data-scramble><b>10</b>Visit</p>
+    <div>
+      <h2 class="gc-cta_title" id="cta-h" data-chars>Your place <em>at the Grove.</em></h2>
+      <div class="gc-cta_row">
+        <p data-lines>Come for a round, a coffee or a look around. We will show you the course and introduce you to a few members.</p>
+        <a class="gc-btn is-light" href="#apply"><span data-roll>Arrange a visit</span><span class="gc-btn_i" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+      </div>
+      <div class="gc-putt" aria-hidden="true">
+        <span class="gc-putt_lbl gc-mono" data-putt-lbl>4.2 m to the cup</span>
+        <svg viewBox="0 0 1000 80" preserveAspectRatio="none" data-putt>
+          <line class="p-ground" x1="0" y1="60" x2="868" y2="60"/><line class="p-ground" x1="892" y1="60" x2="1000" y2="60"/>
+          <line class="p-line" x1="30" y1="54" x2="880" y2="54"/>
+          <path class="p-cup" d="M868 60 v9 a3 3 0 0 0 3 3 h18 a3 3 0 0 0 3 -3 v-9"/>
+          <line class="p-pole" x1="880" y1="60" x2="880" y2="60" data-putt-pole/>
+          <path class="p-pen" d="M880 4 l26 8 l-26 8 z" opacity="0" data-putt-pen/>
+        </svg>
+        <i class="gc-putt_ball" data-putt-ball></i>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="gc-foot" data-sec="Clubhouse" data-tone="dark">
+  <div class="gc-contours" data-contours="dark"><canvas></canvas></div>
+  <div class="gc-wrap">
+    <div class="gc-g12 gc-foot_grid">
+      <div class="gc-foot_brand">
+        <a class="gc-logo" href="#top"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="21" r="12"/><path d="M6 36 H42"/></svg><span>The Grove Club</span></a>
+        <p>A private golf and country club near Hamburg. Find your own pace.</p>
+      </div>
+      <div class="gc-foot_col is-first"><span class="gc-mono">Explore</span><a class="gc-link" href="#course"><span data-roll>The Course</span></a><a class="gc-link" href="#membership"><span data-roll>Membership</span></a><a class="gc-link" href="#clubhouse"><span data-roll>The 19th Hole</span></a><a class="gc-link" href="#academy"><span data-roll>Academy</span></a></div>
+      <div class="gc-foot_col"><span class="gc-mono">Visit</span><address>Near Hamburg, Germany<br>Address on request</address></div>
+      <div class="gc-foot_col is-wide"><span class="gc-mono">Contact</span><a class="gc-link" href="mailto:hello@thegroveclub.example"><span data-roll>hello@thegroveclub.example</span></a><a class="gc-link" href="#apply"><span data-roll>Membership enquiry</span></a></div>
+    </div>
+    <div class="gc-foot_word" aria-hidden="true" data-foot-word>The Grove <em>Club</em></div>
+    <div class="gc-foot_bot gc-mono">
+      <span>Design concept by Ferch Studio | Fictional club, no real facilities or bookings</span>
+      <span style="display:flex;gap:1.5rem;flex-wrap:wrap"><a class="gc-link" href="#"><span data-roll>Imprint</span></a><a class="gc-link" href="#"><span data-roll>Privacy</span></a><a class="gc-link" href="#top"><span data-roll>Back to the first tee</span> ↑</a></span>
+    </div>
+  </div>
+</footer>
+
+  <div class="gc-cursor gc-mono" aria-hidden="true" data-cursor>View</div>
+  <dialog class="gc-lightbox" aria-label="Image viewer" data-lb>
+    <div class="gc-lightbox_in">
+      <div class="gc-lightbox_top gc-mono"><span data-lb-count>01 / 07</span><button class="gc-round" type="button" data-lb-close aria-label="Close viewer"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 3l10 10M13 3 3 13"/></svg></button></div>
+      <div class="gc-lightbox_stage" data-lb-stage></div>
+      <div class="gc-lightbox_bot"><span class="gc-mono" data-lb-cap></span><div style="display:flex;gap:.6rem"><button class="gc-round" type="button" data-lb-prev aria-label="Previous image"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M10 3 5 8l5 5"/></svg></button><button class="gc-round" type="button" data-lb-next aria-label="Next image"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="m6 3 5 5-5 5"/></svg></button></div></div>
+    </div>
+  </dialog>
+<div class="gc-concept" role="note"><i aria-hidden="true"></i><span>Concept</span><span class="gc-concept_long">| Version D | Yardage book | Heath greens</span></div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/CustomEase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/MotionPathPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrambleTextPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script>
+(() => {
+'use strict';
+const $ = (s, c = document) => c.querySelector(s);
+const $$ = (s, c = document) => [...c.querySelectorAll(s)];
+const root = document.documentElement;
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const HAS = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && typeof SplitText !== 'undefined';
+const ANIM = HAS && !RM;
+if (!ANIM) root.classList.add('gc-static');
+
+/* ================= Plates: real image if present, labelled placeholder otherwise ================= */
+$$('.gc-plate').forEach(p => {
+  const img = $('img', p), id = p.dataset.ph;
+  if (id) p.insertAdjacentHTML('beforeend', `<span class="gc-plate_id">${id}</span>`);
+  if (!img) return;
+  const ok = () => p.classList.add('has-img'), fail = () => img.remove();
+  if (img.complete) img.naturalWidth ? ok() : fail();
+  else { img.addEventListener('load', ok, { once: true }); img.addEventListener('error', fail, { once: true }); }
+});
+const hv = $('[data-hero-video]');
+if (hv) {
+  if (RM || (navigator.connection && navigator.connection.saveData)) hv.remove();
+  else { hv.querySelector('source').addEventListener('error', () => hv.remove()); hv.preload = 'metadata'; hv.load(); hv.addEventListener('canplay', () => hv.play().catch(() => {}), { once: true }); }
+}
+
+/* ================= Roll text (hover): duplicated characters, second copy optionally italic ================= */
+$$('[data-roll]').forEach(el => {
+  const t = el.textContent; const it = el.dataset.roll === 'italic';
+  const chars = [...t].map((c, i) => `<span class="gc-roll_c" style="--i:${i}"><span>${c === ' ' ? ' ' : c}</span><span>${c === ' ' ? ' ' : c}</span></span>`).join('');
+  el.innerHTML = `<span class="gc-sr">${t}</span><span class="gc-roll${it ? ' is-italic' : ''}" aria-hidden="true">${chars}</span>`;
+});
+
+/* ================= Local time + sunrise/sunset for Hamburg (computed, not invented) ================= */
+(function sun() {
+  const lat = 53.55, lng = 9.99, now = new Date();
+  const fmt = d => d ? d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Berlin' }) : '--:--';
+  const rad = Math.PI / 180, day = Math.floor((Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()) - Date.UTC(now.getUTCFullYear(), 0, 0)) / 864e5);
+  const calc = (rise) => {
+    const lngH = lng / 15, t = day + ((rise ? 6 : 18) - lngH) / 24;
+    const M = 0.9856 * t - 3.289;
+    let L = M + 1.916 * Math.sin(M * rad) + 0.020 * Math.sin(2 * M * rad) + 282.634; L = (L + 360) % 360;
+    let RA = Math.atan(0.91764 * Math.tan(L * rad)) / rad; RA = (RA + 360) % 360;
+    RA = (RA + (Math.floor(L / 90) * 90 - Math.floor(RA / 90) * 90)) / 15;
+    const sinDec = 0.39782 * Math.sin(L * rad), cosDec = Math.cos(Math.asin(sinDec));
+    const cosH = (Math.cos(90.833 * rad) - sinDec * Math.sin(lat * rad)) / (cosDec * Math.cos(lat * rad));
+    if (cosH > 1 || cosH < -1) return null;
+    let H = rise ? 360 - Math.acos(cosH) / rad : Math.acos(cosH) / rad; H /= 15;
+    const T = H + RA - 0.06571 * t - 6.622; let UT = (T - lngH) % 24; if (UT < 0) UT += 24;
+    const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())); d.setUTCMinutes(Math.round(UT * 60)); return d;
+  };
+  $$('[data-sunrise]').forEach(e => e.textContent = fmt(calc(true)));
+  $$('[data-sunset]').forEach(e => e.textContent = fmt(calc(false)));
+  const tick = () => $$('[data-clock]').forEach(e => e.textContent = fmt(new Date()));
+  tick(); setInterval(tick, 30000);
+})();
+
+/* ================= Generative contour lines (marching squares on Perlin noise) ================= */
+function perlin(seed) {
+  const p = new Uint8Array(512), perm = [...Array(256).keys()]; let s = seed;
+  for (let i = 255; i > 0; i--) { s = (s * 16807) % 2147483647; const j = s % (i + 1); [perm[i], perm[j]] = [perm[j], perm[i]]; }
+  for (let i = 0; i < 512; i++) p[i] = perm[i & 255];
+  const fade = t => t * t * t * (t * (t * 6 - 15) + 10), lerp = (a, b, t) => a + t * (b - a);
+  const g = (h, x, y, z) => { h &= 15; const u = h < 8 ? x : y, v = h < 4 ? y : (h === 12 || h === 14 ? x : z); return ((h & 1) ? -u : u) + ((h & 2) ? -v : v); };
+  return (x, y, z) => {
+    const X = Math.floor(x) & 255, Y = Math.floor(y) & 255, Z = Math.floor(z) & 255;
+    x -= Math.floor(x); y -= Math.floor(y); z -= Math.floor(z);
+    const u = fade(x), v = fade(y), w = fade(z), A = p[X] + Y, AA = p[A] + Z, AB = p[A + 1] + Z, B = p[X + 1] + Y, BA = p[B] + Z, BB = p[B + 1] + Z;
+    return lerp(lerp(lerp(g(p[AA], x, y, z), g(p[BA], x - 1, y, z), u), lerp(g(p[AB], x, y - 1, z), g(p[BB], x - 1, y - 1, z), u), v),
+      lerp(lerp(g(p[AA + 1], x, y, z - 1), g(p[BA + 1], x - 1, y, z - 1), u), lerp(g(p[AB + 1], x, y - 1, z - 1), g(p[BB + 1], x - 1, y - 1, z - 1), u), v), w);
+  };
+}
+function contourPaths(ctx, w, h, noise, t, cell, scale, levels, ox = 0, oy = 0) {
+  const cols = Math.ceil(w / cell) + 1, rows = Math.ceil(h / cell) + 1, f = new Float32Array(cols * rows);
+  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) { const x = (i * cell + ox) / scale, y = (j * cell + oy) / scale; f[j * cols + i] = noise(x, y, t) + .45 * noise(x * 2.3 + 7, y * 2.3, t * 1.4); }
+  ctx.beginPath();
+  for (let k = 0; k < levels; k++) {
+    const L = -.62 + 1.24 * (k + .5) / levels;
+    for (let j = 0; j < rows - 1; j++) for (let i = 0; i < cols - 1; i++) {
+      const a = f[j * cols + i], b = f[j * cols + i + 1], c = f[(j + 1) * cols + i + 1], d = f[(j + 1) * cols + i];
+      const idx = (a > L ? 8 : 0) | (b > L ? 4 : 0) | (c > L ? 2 : 0) | (d > L ? 1 : 0);
+      if (idx === 0 || idx === 15) continue;
+      const x = i * cell, y = j * cell;
+      const T = () => [x + cell * (L - a) / (b - a), y], R = () => [x + cell, y + cell * (L - b) / (c - b)], Bo = () => [x + cell * (L - d) / (c - d), y + cell], Le = () => [x, y + cell * (L - a) / (d - a)];
+      const sg = (P, Q) => { const p1 = P(), q1 = Q(); ctx.moveTo(p1[0], p1[1]); ctx.lineTo(q1[0], q1[1]); };
+      switch (idx) {
+        case 1: case 14: sg(Le, Bo); break; case 2: case 13: sg(Bo, R); break; case 3: case 12: sg(Le, R); break;
+        case 4: case 11: sg(T, R); break; case 5: sg(Le, Bo); sg(T, R); break; case 6: case 9: sg(T, Bo); break;
+        case 7: case 8: sg(Le, T); break; case 10: sg(Le, T); sg(Bo, R); break;
+      }
+    }
+  }
+  ctx.stroke();
+}
+const NOISE = perlin(1306);
+const contourEls = $$('[data-contours]').map((wrap, n) => {
+  const cv = $('canvas', wrap), ctx = cv.getContext('2d');
+  const o = { wrap, cv, ctx, t: n * 3.1, vis: false, w: 0, h: 0, ox: n * 900, oy: n * 400 };
+  o.draw = () => {
+    const col = getComputedStyle(wrap).getPropertyValue('--c-' + wrap.dataset.contours).trim();
+    ctx.setTransform(o.dpr, 0, 0, o.dpr, 0, 0); ctx.clearRect(0, 0, o.w, o.h);
+    ctx.strokeStyle = col; ctx.lineWidth = 1;
+    contourPaths(ctx, o.w, o.h, NOISE, o.t, 14, Math.max(380, o.w * .32), 11, o.ox, o.oy);
+  };
+  o.size = () => { const r = wrap.getBoundingClientRect(); o.dpr = Math.min(1.5, devicePixelRatio || 1); o.w = r.width; o.h = r.height; cv.width = Math.round(o.w * o.dpr); cv.height = Math.round(o.h * o.dpr); o.draw(); };
+  new ResizeObserver(() => o.size()).observe(wrap);
+  new IntersectionObserver(es => { o.vis = es[0].isIntersecting; }, { rootMargin: '100px' }).observe(wrap);
+  return o;
+});
+if (!RM) {
+  let last = 0;
+  const loop = (now) => {
+    requestAnimationFrame(loop);
+    if (now - last < 66 || document.hidden) return; last = now;
+    contourEls.forEach(o => { if (!o.vis || !o.w) return; o.t += .0032; o.draw(); });
+  };
+  requestAnimationFrame(loop);
+}
+
+/* ================= Without animation library: everything visible, UI still works ================= */
+if (!HAS) { root.classList.remove('gc-loading'); initUI(null); return; }
+
+gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase, ...(typeof MotionPathPlugin !== 'undefined' ? [MotionPathPlugin] : []), ...(typeof ScrambleTextPlugin !== 'undefined' ? [ScrambleTextPlugin] : []));
+CustomEase.create('calm', '0.25, 0.1, 0, 1');
+CustomEase.create('move', '0.65, 0.05, 0, 1');
+CustomEase.create('putt', 'M0,0 C0.11,0.49 0.24,0.82 0.43,0.94 0.62,1.03 0.8,1 1,1');
+
+let lenis = null;
+if (ANIM && typeof Lenis !== 'undefined') {
+  lenis = new Lenis({ lerp: .09, wheelMultiplier: .9, autoRaf: false });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(t => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+}
+const scrollToEl = (el) => { if (lenis) lenis.scrollTo(el, { duration: 1.5, easing: t => 1 - Math.pow(1 - t, 4) }); else el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth' }); };
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href^="#"]'); if (!a) return;
+  const id = a.getAttribute('href'); if (id.length < 2) { e.preventDefault(); return; }
+  const t = $(id); if (!t) return;
+  e.preventDefault(); scrollToEl(t); history.replaceState(null, '', id);
+  if (id !== '#top') { t.setAttribute('tabindex', '-1'); setTimeout(() => t.focus({ preventScroll: true }), RM ? 0 : 1000); }
+});
+
+initUI(lenis);
+
+/* ================= Text animation toolkit ================= */
+// 1. Character reveal: chars rise out of line masks with a slight tilt; italic words arrive later and softer
+function charReveal(el, opts = {}) {
+  const split = SplitText.create(el, { type: 'lines,words,chars', mask: 'lines', charsClass: 'gc-char', autoSplit: true,
+    onSplit(self) {
+      const italics = self.chars.filter(c => c.closest('em'));
+      const plain = self.chars.filter(c => !c.closest('em'));
+      const tl = gsap.timeline({ paused: !!opts.paused, scrollTrigger: opts.paused ? null : { trigger: el, start: opts.start || 'top 85%', once: true } });
+      tl.from(plain, { yPercent: 118, rotate: 7, transformOrigin: '0% 100%', duration: 1.15, ease: 'expo.out', stagger: { each: .022 } }, 0);
+      if (italics.length) tl.from(italics, { yPercent: 118, rotate: -5, opacity: 0, filter: 'blur(6px)', duration: 1.3, ease: 'expo.out', stagger: { each: .03, from: 'start' } }, Math.min(.35, plain.length * .022));
+      return tl;
+    } });
+  return split;
+}
+// 2. Line reveal for body copy
+function lineReveal(el) {
+  SplitText.create(el, { type: 'lines', mask: 'lines', autoSplit: true,
+    onSplit(self) { return gsap.from(self.lines, { yPercent: 100, opacity: 0, duration: 1, ease: 'expo.out', stagger: .07, scrollTrigger: { trigger: el, start: 'top 88%', once: true } }); } });
+}
+// 3. Mono labels scramble in like yardage data
+function scramble(el) {
+  if (typeof ScrambleTextPlugin === 'undefined') return;
+  const nodes = [...el.childNodes].filter(n => n.nodeType === 3 && n.textContent.trim());
+  nodes.forEach(n => {
+    const s = document.createElement('span'); s.textContent = n.textContent; n.replaceWith(s);
+    const txt = s.textContent;
+    gsap.set(s, { opacity: 0 });
+    ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => {
+      gsap.set(s, { opacity: 1 });
+      gsap.to(s, { duration: 1.1, scrambleText: { text: txt, chars: '0123456789|/-', revealDelay: .25, speed: .6 }, ease: 'none' });
+    } });
+  });
+}
+// 4. Scroll-scrubbed word opacity for the statement
+function statement(el) {
+  const s = SplitText.create(el, { type: 'words', wordsClass: 'gc-w' });
+  gsap.fromTo(s.words, { opacity: .14 }, { opacity: 1, ease: 'none', stagger: .06, scrollTrigger: { trigger: el, start: 'top 78%', end: 'bottom 50%', scrub: true } });
+  $$('[data-pill]', el).forEach(p => gsap.fromTo(p, { width: 0, marginLeft: 0, marginRight: 0 }, { width: () => (innerWidth < 768 ? 4 : Math.min(9.5, Math.max(4, innerWidth * .09 / 16))) + 'rem', marginLeft: '.06em', marginRight: '.06em', ease: 'move', scrollTrigger: { trigger: p, start: 'top 82%', end: 'top 55%', scrub: 1 } }));
+}
+// 5. "Own pace": words arrive at different speeds and only align at the centre of the viewport
+function paceWords(el) {
+  const s = SplitText.create(el, { type: 'words', wordsClass: 'gc-pw' });
+  const n = s.words.length;
+  gsap.fromTo(s.words,
+    { x: i => (i % 2 ? 1 : -1) * (6 + ((i * 37) % 23)) + 'vw', y: i => ((i * 13) % 7 - 3) * 6, opacity: .2 },
+    { x: 0, y: 0, opacity: 1, ease: 'power3.out', stagger: { each: .9 / n, from: 'random' },
+      scrollTrigger: { trigger: el, start: 'top 92%', end: 'center 52%', scrub: 1.2 } });
+}
+// 6. Count-ups
+function counts() {
+  $$('[data-count]').forEach(el => { const end = +el.dataset.count, o = { v: 0 };
+    ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: () => gsap.to(o, { v: end, duration: 1.6, ease: 'expo.out', onUpdate: () => el.textContent = Math.round(o.v) }) }); });
+}
+// 7. Grouped fade-ups
+function reveals() {
+  $$('[data-reveal]').forEach(g => { const kids = [...g.children];
+    gsap.set(kids, { y: 40, opacity: 0 });
+    ScrollTrigger.create({ trigger: g, start: 'top 85%', once: true, onEnter: () => gsap.to(kids, { y: 0, opacity: 1, duration: 1.1, ease: 'expo.out', stagger: .1, clearProps: 'transform' }) }); });
+}
+
+/* ================= Loader + hero ================= */
+function intro() {
+  const l1 = SplitText.create('[data-hero-l1]', { type: 'lines,chars', mask: 'lines' });
+  const own = SplitText.create('[data-hero-own]', { type: 'lines,chars', mask: 'lines' });
+  const pace = SplitText.create('[data-hero-pace]', { type: 'lines,chars', mask: 'lines' });
+  const ball = $('[data-hero-ball]');
+  const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+  // loader: a putt rolls in and drops
+  tl.fromTo('.gc-loader .l-ball', { attr: { cx: 8 } }, { attr: { cx: 190 }, duration: 1.05, ease: 'putt' }, .1)
+    .to('.gc-loader .l-ball', { attr: { cy: 66 }, opacity: 0, duration: .25, ease: 'power2.in' }, 1.12)
+    .to('.gc-loader .l-flag', { attr: { y2: 18 }, duration: .45, ease: 'expo.out' }, 1.2)
+    .to('.gc-loader .l-pennant', { opacity: 1, duration: .3 }, 1.4)
+    .to('.gc-loader', { clipPath: 'inset(0 0 100% 0)', duration: 1, ease: 'move' }, 1.6)
+    .call(() => root.classList.remove('gc-loading'))
+    .fromTo('[data-hero-media] .gc-plate', { scale: 1.16 }, { scale: 1, duration: 2.6, ease: 'calm' }, 1.6)
+    .from(l1.chars, { yPercent: 110, duration: 1.1, stagger: .03 }, 1.95)
+    .from(own.chars, { yPercent: 115, rotate: -8, duration: 1.4, stagger: { each: .07, from: 'random' } }, 2.05)
+    .from(pace.chars, { yPercent: 115, duration: 1.1, stagger: { each: .1, from: 'random' }, ease: 'power4.out' }, 2.15)
+    .fromTo(ball, { x: () => innerWidth * .62, rotate: 1080 }, { x: 0, rotate: 0, duration: 2.4, ease: 'putt' }, 2.35)
+    .from('[data-hero-meta] > *', { y: 22, opacity: 0, duration: 1, stagger: .08 }, 2.6)
+    .from('.gc-nav_in > *', { y: -14, opacity: 0, duration: .9, stagger: .07 }, 2.4)
+    .from('[data-rail]', { opacity: 0, x: 12, duration: 1 }, 2.8);
+  // scroll: each word leaves at its own pace
+  const st = { trigger: '.gc-hero', start: 'top top', end: 'bottom top', scrub: true };
+  gsap.to('[data-hero-l1]', { yPercent: -60, opacity: .2, ease: 'none', scrollTrigger: st });
+  gsap.to('[data-hero-own]', { xPercent: -14, yPercent: -10, ease: 'none', scrollTrigger: st });
+  gsap.to('[data-hero-pace]', { xPercent: 9, yPercent: -24, ease: 'none', scrollTrigger: st });
+  gsap.to(ball, { x: () => innerWidth * .08, rotate: 240, ease: 'none', scrollTrigger: st });
+  gsap.to('[data-hero-media]', { yPercent: 16, ease: 'none', scrollTrigger: st });
+}
+
+/* ================= Course: ball flight writes the headline ================= */
+function arc() {
+  const svg = $('[data-arc]'); if (!svg) return;
+  const mask = $('[data-arc-mask]'), ball = $('[data-arc-ball]'), land = $('[data-arc-land]');
+  const sub = SplitText.create('[data-arc-sub]', { type: 'lines,chars', mask: 'lines' });
+  const tl = gsap.timeline({ scrollTrigger: { trigger: svg, start: 'top 82%', end: 'bottom 40%', scrub: 1 } });
+  tl.to(mask, { attr: { 'stroke-dashoffset': 0 }, ease: 'none', duration: 1 }, 0);
+  if (typeof MotionPathPlugin !== 'undefined') tl.to(ball, { motionPath: { path: '#gc-flight', align: '#gc-flight', alignOrigin: [.5, .5] }, ease: 'none', duration: 1 }, 0);
+  tl.fromTo(land, { attr: { rx: 0, ry: 0 }, opacity: 1 }, { attr: { rx: 60, ry: 12 }, opacity: 0, duration: .25, ease: 'power2.out' }, .98)
+    .from(sub.chars, { yPercent: 110, duration: .3, stagger: .015, ease: 'power3.out' }, .9);
+}
+
+/* ================= Course chapters (Osmo sticky-features pattern) with yardage annotations ================= */
+const YARD = [
+  { tee: [70, 280], ctrl: [120, 160], tgt: [235, 70], labels: [[150, 220, '250'], [190, 150, '150'], [215, 110, '100']], note: 'Tee to green 352 m' },
+  { tee: [90, 285], ctrl: [170, 150], tgt: [280, 120], labels: [[200, 200, 'Carry 140'], [262, 160, 'Front 158']], note: 'Water short and left' },
+  { tee: [330, 290], ctrl: [240, 140], tgt: [140, 55], labels: [[300, 230, '300'], [250, 160, '200'], [185, 95, '100']], note: 'Lay up short of the pines' },
+  { tee: [60, 290], ctrl: [190, 220], tgt: [300, 95], labels: [[170, 245, '250'], [250, 170, '150'], [285, 128, '75']], note: 'Clubhouse behind the green' }
+];
+function drawYard(svg, i, animate) {
+  const y = YARD[i]; const [tx, ty] = y.tee, [cx, cy] = y.ctrl, [gx, gy] = y.tgt;
+  let h = `<path class="y-shot" d="M${tx} ${ty} Q${cx} ${cy} ${gx} ${gy}" pathLength="1"/>`;
+  h += `<circle class="y-tee" cx="${tx}" cy="${ty}" r="3.5"/>`;
+  h += `<circle class="y-ring" cx="${gx}" cy="${gy}" r="9"/><circle class="y-ring2" cx="${gx}" cy="${gy}" r="18"/><circle class="y-ring2" cx="${gx}" cy="${gy}" r="28"/>`;
+  y.labels.forEach(([lx, ly, t]) => { const w = t.length * 7 + 12; h += `<g class="y-lbl" transform="translate(${lx} ${ly})"><rect x="${-w / 2}" y="-9" width="${w}" height="16" rx="2"/><text x="0" y="3" text-anchor="middle">${t}</text></g>`; });
+  h += `<g class="y-lbl" transform="translate(${16} ${16})"><rect x="0" y="0" width="${y.note.length * 7 + 16}" height="18" rx="2"/><text x="7" y="12">${y.note.toUpperCase()}</text></g>`;
+  svg.innerHTML = h;
+  if (!animate) return;
+  const shot = $('.y-shot', svg);
+  gsap.fromTo(shot, { strokeDasharray: '1 1', strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.1, ease: 'calm', delay: .25, onComplete: () => { shot.removeAttribute('style'); } });
+  gsap.from($$('.y-ring,.y-ring2', svg), { scale: 0, transformOrigin: `${gx}px ${gy}px`, opacity: 0, duration: .8, ease: 'expo.out', stagger: .08, delay: .9 });
+  gsap.from($$('.y-lbl', svg), { opacity: 0, y: 6, duration: .5, ease: 'calm', stagger: .1, delay: .5 });
+  gsap.from($('.y-tee', svg), { scale: 0, transformOrigin: `${tx}px ${ty}px`, duration: .5, ease: 'back.out(3)', delay: .15 });
+}
+function chapters() {
+  const wrap = $('[data-chap]'); if (!wrap) return;
+  const imgs = $$('[data-chap-img]', wrap), items = $$('[data-chap-item]', wrap), dots = $$('[data-chap-dot]', wrap), yard = $('[data-yard]', wrap);
+  const n = Math.min(imgs.length, items.length), steps = n - 1, ct = el => $$('[data-ct]', el);
+  let cur = 0; drawYard(yard, 0, false);
+  gsap.set(items[0], { autoAlpha: 1 });
+  ScrollTrigger.create({ trigger: wrap, start: 'top 60%', once: true, onEnter: () => drawYard(yard, 0, true) });
+  const go = (a, b) => {
+    if (b > a) gsap.to(imgs[b], { clipPath: 'inset(0 0 0 0% round 0.3rem)', duration: 1, ease: 'move', overwrite: true });
+    else gsap.to(imgs[a], { clipPath: 'inset(0 0 0 100% round 0.3rem)', duration: 1, ease: 'move', overwrite: true });
+    gsap.to(ct(items[a]), { autoAlpha: 0, y: -24, duration: .35, ease: 'power2.in', overwrite: true, onComplete: () => gsap.set(items[a], { autoAlpha: 0 }) });
+    gsap.set(items[b], { autoAlpha: 1 });
+    const num = $('.gc-chap_no b', items[b]);
+    gsap.fromTo(ct(items[b]), { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: .9, ease: 'expo.out', stagger: .07, delay: .15, overwrite: true });
+    gsap.fromTo(num, { yPercent: 40, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 1.1, ease: 'expo.out', delay: .1 });
+    drawYard(yard, b, true);
+  };
+  ScrollTrigger.create({ trigger: wrap, start: 'center center', end: () => `+=${85 * steps}%`, pin: true, scrub: true, invalidateOnRefresh: true,
+    onUpdate: self => {
+      const p = Math.min(self.progress, .94) / .94, i = Math.max(0, Math.min(steps, Math.round(p * steps)));
+      dots.forEach((d, k) => gsap.set(d, { scaleX: gsap.utils.clamp(0, 1, p * steps - k + .5) }));
+      if (i !== cur) { go(cur, i); cur = i; }
+    } });
+}
+
+/* ================= Clubhouse: image grows to full screen, then the 19th hole ================= */
+function club() {
+  const stage = $('[data-club]'), media = $('[data-club-media]'), head = $('[data-club-head]'), over = $('[data-club-over]');
+  const nineteen = SplitText.create('[data-club-19]', { type: 'lines,chars', mask: 'lines' });
+  const tl = gsap.timeline({ scrollTrigger: { trigger: stage, start: 'top top', end: '+=160%', pin: true, scrub: 1, anticipatePin: 1 } });
+  tl.to(media, { clipPath: 'inset(0% 0% 0% 0% round 0rem)', ease: 'none', duration: 1 }, 0)
+    .to(head, { scale: .86, opacity: 0, filter: 'blur(8px)', ease: 'power1.in', duration: .55 }, .05)
+    .fromTo($('.gc-plate', media), { scale: 1.25 }, { scale: 1, ease: 'none', duration: 1 }, 0)
+    .set(over, { visibility: 'visible' }, .62)
+    .from(nineteen.chars, { yPercent: 115, duration: .3, stagger: .02, ease: 'power3.out' }, .64)
+    .from($('p:last-child', over), { opacity: 0, y: 20, duration: .25 }, .75)
+    .to({}, { duration: .25 });
+}
+
+/* ================= Season dial ================= */
+function buildDial(svg) {
+  const R = 210, months = 'JFMAMJJASOND';
+  let h = `<circle class="d-ring" r="${R}"/><circle class="d-ring" r="${R - 34}" opacity=".5"/>`;
+  for (let i = 0; i < 48; i++) { const a = (i / 48) * Math.PI * 2 - Math.PI / 2, q = i % 12 === 0, r1 = R - (q ? 16 : 8);
+    h += `<line class="d-tick${q ? ' is-q' : ''}" x1="${Math.cos(a) * r1}" y1="${Math.sin(a) * r1}" x2="${Math.cos(a) * R}" y2="${Math.sin(a) * R}"/>`; }
+  for (let m = 0; m < 12; m++) { const a = ((m + .5) / 12) * Math.PI * 2 - Math.PI / 2; h += `<text class="d-m" x="${Math.cos(a) * (R + 22)}" y="${Math.sin(a) * (R + 22)}">${months[(m + 2) % 12]}</text>`; }
+  h += `<circle class="d-prog" r="${R}" transform="rotate(-90)" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1" data-dial-prog/>`;
+  h += `<g data-dial-ball><circle class="d-ball" cx="0" cy="${-R}" r="9"/></g>`;
+  svg.innerHTML = h;
+}
+const SEASONS = [['Spring', 'March to May'], ['Summer', 'June to August'], ['Autumn', 'September to November'], ['Winter', 'December to February']];
+function year() {
+  const pin = $('[data-year]'), svg = $('[data-dial]'), items = $$('[data-season]');
+  buildDial(svg);
+  const prog = $('[data-dial-prog]', svg), ball = $('[data-dial-ball]', svg), name = $('[data-dial-name]'), months = $('[data-dial-months]');
+  gsap.set(items[0], { autoAlpha: 1 });
+  let cur = 0;
+  const swap = (a, b) => {
+    gsap.to($$('[data-st]', items[a]), { autoAlpha: 0, y: -20, duration: .3, overwrite: true, onComplete: () => gsap.set(items[a], { autoAlpha: 0 }) });
+    gsap.set(items[b], { autoAlpha: 1 });
+    gsap.fromTo($$('[data-st]', items[b]), { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: .9, ease: 'expo.out', stagger: .08, delay: .12, overwrite: true });
+    gsap.timeline().to(name, { yPercent: -40, opacity: 0, duration: .25, ease: 'power2.in' })
+      .add(() => { name.textContent = SEASONS[b][0]; months.textContent = SEASONS[b][1]; })
+      .fromTo(name, { yPercent: 40, opacity: 0 }, { yPercent: 0, opacity: 1, duration: .6, ease: 'expo.out' });
+  };
+  ScrollTrigger.create({ trigger: pin, start: 'top top', end: '+=260%', pin: true, scrub: true, anticipatePin: 1,
+    onUpdate: s => {
+      const p = s.progress; gsap.set(prog, { attr: { 'stroke-dashoffset': 1 - p } }); gsap.set(ball, { rotate: p * 360, transformOrigin: '0px 0px' });
+      const i = Math.min(3, Math.floor(p * 4 * .999)); if (i !== cur) { swap(cur, i); cur = i; }
+    } });
+}
+
+/* ================= Gallery: horizontal travel, velocity skew, custom cursor ================= */
+function gallery() {
+  const sec = $('[data-gal]'), track = $('[data-gal-track]'), bar = $('[data-gal-bar]'), skews = $$('[data-skew]');
+  const dist = () => Math.max(0, track.scrollWidth - innerWidth);
+  const skewTo = skews.map(s => gsap.quickTo(s, 'skewX', { duration: .5, ease: 'power3' }));
+  gsap.to(track, { x: () => -dist(), ease: 'none', scrollTrigger: { trigger: sec, start: () => sec.offsetHeight > innerHeight ? 'bottom bottom' : 'center center', end: () => '+=' + dist(), pin: true, scrub: .6, invalidateOnRefresh: true, anticipatePin: 1,
+    onUpdate: s => { gsap.set(bar, { scaleX: s.progress }); const v = gsap.utils.clamp(-5, 5, s.getVelocity() / -350); skewTo.forEach(f => f(v)); } } });
+  ScrollTrigger.addEventListener('scrollEnd', () => skewTo.forEach(f => f(0)));
+  const cur = $('[data-cursor]');
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const xTo = gsap.quickTo(cur, 'x', { duration: .45, ease: 'power3' }), yTo = gsap.quickTo(cur, 'y', { duration: .45, ease: 'power3' });
+    track.addEventListener('pointermove', e => { xTo(e.clientX); yTo(e.clientY); });
+    track.addEventListener('pointerenter', e => { gsap.set(cur, { x: e.clientX, y: e.clientY }); gsap.to(cur, { opacity: 1, scale: 1, duration: .45, ease: 'expo.out' }); });
+    track.addEventListener('pointerleave', () => gsap.to(cur, { opacity: 0, scale: .3, duration: .35 }));
+  }
+}
+
+/* ================= Final putt ================= */
+function putt() {
+  const ball = $('[data-putt-ball]'), pole = $('[data-putt-pole]'), pen = $('[data-putt-pen]'), lbl = $('[data-putt-lbl]');
+  const tl = gsap.timeline({ scrollTrigger: { trigger: '.gc-putt', start: 'top 95%', end: 'top 50%', scrub: 1 } });
+  tl.to(ball, { left: '88%', rotate: 720, ease: 'putt', duration: 1 }, 0)
+    .to(lbl, { opacity: 0, duration: .3 }, .55)
+    .to(ball, { y: 12, scale: .55, opacity: 0, duration: .15, ease: 'power2.in' }, 1)
+    .to(pole, { attr: { y1: 4 }, duration: .25, ease: 'expo.out' }, 1.05)
+    .to(pen, { opacity: 1, duration: .1 }, 1.22);
+}
+
+/* ================= Nav, rail ================= */
+function navAndRail() {
+  const nav = $('[data-nav]');
+  ScrollTrigger.create({ start: () => innerHeight * .85, end: 'max',
+    onToggle: s => nav.classList.toggle('is-solid', s.isActive),
+    onUpdate: s => { if (!document.body.classList.contains('gc-menu-open')) nav.classList.toggle('is-hidden', s.direction === 1 && s.scroll() > innerHeight * 1.3); } });
+  const rail = $('[data-rail]'), ticks = $('[data-rail-ticks]'), ballEl = $('[data-rail-ball]'), cnt = $('[data-rail-count]'), nm = $('[data-rail-name]');
+  const secs = $$('[data-sec]'); $('[data-rail-total]').textContent = String(secs.length).padStart(2, '0');
+  ticks.innerHTML = secs.map((s, i) => { if (!s.id) s.id = 'sec-' + i; return `<a href="#${s.id}" style="top:${(i / (secs.length - 1)) * 100}%"><span class="gc-mono">${String(i + 1).padStart(2, '0')} ${s.dataset.sec}</span><b class="gc-sr">Go to ${s.dataset.sec}</b></a>`; }).join('');
+  const links = $$('a', ticks);
+  ScrollTrigger.create({ start: 0, end: 'max', onUpdate: s => gsap.set(ballEl, { top: (s.progress * 100) + '%' }) });
+  secs.forEach((s, i) => ScrollTrigger.create({ trigger: s, start: 'top 50%', end: 'bottom 50%', onToggle: st => {
+    if (!st.isActive) return;
+    links.forEach((l, k) => l.toggleAttribute('aria-current', k === i));
+    rail.classList.toggle('is-on-dark', s.dataset.tone === 'dark');
+    cnt.textContent = String(i + 1).padStart(2, '0'); nm.textContent = s.dataset.sec;
+  } }));
+}
+
+/* ================= Footer wordmark fits its width ================= */
+function fitWord() {
+  const el = $('[data-foot-word]'); if (!el) return;
+  el.style.fontSize = ''; const max = parseFloat(getComputedStyle(el).fontSize);
+  el.style.fontSize = Math.min(360, Math.floor(max * el.clientWidth / el.scrollWidth * .985)) + 'px';
+}
+
+/* ================= Boot ================= */
+const boot = () => {
+  fitWord(); addEventListener('resize', () => { clearTimeout(fitWord.t); fitWord.t = setTimeout(fitWord, 150); });
+  if (!ANIM) { root.classList.remove('gc-loading'); return; }
+  intro();
+  navAndRail();
+  $$('[data-chars]').forEach(el => charReveal(el));
+  $$('[data-lines]').forEach(lineReveal);
+  $$('[data-scramble]').forEach(scramble);
+  $$('[data-statement]').forEach(statement);
+  $$('[data-pace]').forEach(paceWords);
+  counts(); reveals();
+  // image reveals and gentle parallax
+  $$('.gc-rec_img, .gc-day_img').forEach(f => gsap.fromTo(f, { clipPath: 'inset(14% 10% 14% 10% round .3rem)' }, { clipPath: 'inset(0% 0% 0% 0% round .3rem)', duration: 1.4, ease: 'move', scrollTrigger: { trigger: f, start: 'top 88%', once: true } }));
+  gsap.fromTo('[data-foot-word]', { yPercent: 30, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 1.4, ease: 'expo.out', scrollTrigger: { trigger: '[data-foot-word]', start: 'top 98%', once: true } });
+  const mm = gsap.matchMedia();
+  mm.add('(min-width: 768px)', () => { arc(); chapters(); club(); year(); gallery(); });
+  mm.add('(max-width: 767px)', () => { $$('.gc-chap_m').forEach(m => gsap.from(m, { clipPath: 'inset(0 0 0 100%)', duration: 1.2, ease: 'move', scrollTrigger: { trigger: m, start: 'top 85%', once: true } })); });
+  putt();
+  ScrollTrigger.refresh();
+};
+(document.fonts && document.fonts.ready ? Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1500))]) : Promise.resolve()).then(boot);
+addEventListener('load', () => ScrollTrigger.refresh());
+
+/* =====================================================================
+   UI (works with or without the animation library)
+   ===================================================================== */
+function initUI(lenis) {
+  const G = typeof gsap !== 'undefined' && !RM;
+
+  /* magnetic fill origin for buttons */
+  $$('.gc-btn').forEach(b => b.addEventListener('pointerenter', e => { const r = b.getBoundingClientRect(); b.style.setProperty('--mx', (e.clientX - r.left) + 'px'); b.style.setProperty('--my', (e.clientY - r.top) + 'px'); }));
+
+  /* menu */
+  const btn = $('[data-menu-btn]'), menu = $('[data-menu]'), nav = $('[data-nav]');
+  const mImgs = $$('.gc-menu_img .gc-plate', menu);
+  $$('[data-menu-i]', menu).forEach(a => { const f = () => mImgs.forEach((p, k) => p.classList.toggle('is-on', k === +a.dataset.menuI)); a.addEventListener('pointerenter', f); a.addEventListener('focus', f); });
+  const open = (o) => {
+    btn.setAttribute('aria-expanded', o); document.body.classList.toggle('gc-menu-open', o); nav.classList.remove('is-hidden');
+    if (o) {
+      lenis && lenis.stop(); menu.style.visibility = 'visible'; nav.style.color = 'var(--on-deep)';
+      $('.gc-nav_bg').style.opacity = 0;
+      if (G) { gsap.to(menu, { clipPath: 'inset(0 0 0% 0)', duration: .9, ease: 'move' }); gsap.fromTo($$('.gc-menu_list a', menu), { yPercent: 60, opacity: 0 }, { yPercent: 0, opacity: 1, duration: .9, stagger: .05, delay: .25, ease: 'expo.out' }); gsap.fromTo('.gc-menu_side', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1, delay: .4, ease: 'expo.out' }); }
+      else menu.style.clipPath = 'none';
+      setTimeout(() => $('.gc-menu_list a', menu).focus(), G ? 350 : 0);
+    } else {
+      lenis && lenis.start();
+      const done = () => { menu.style.visibility = 'hidden'; nav.style.color = ''; $('.gc-nav_bg').style.opacity = ''; };
+      if (G) gsap.to(menu, { clipPath: 'inset(0 0 100% 0)', duration: .7, ease: 'move', onComplete: done }); else { menu.style.clipPath = ''; done(); }
+    }
+  };
+  btn.addEventListener('click', () => open(btn.getAttribute('aria-expanded') !== 'true'));
+  $$('a', menu).forEach(a => a.addEventListener('click', () => open(false)));
+  document.addEventListener('keydown', e => {
+    if (btn.getAttribute('aria-expanded') !== 'true') return;
+    if (e.key === 'Escape') { open(false); btn.focus(); }
+    if (e.key === 'Tab') { const f = [btn, ...$$('a', menu)], i = f.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); } else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); } }
+  });
+
+  /* odometer numbers */
+  const odo = (el, val) => {
+    val = String(val);
+    if (!G) { el.textContent = val; return; }
+    if (!el._odo || el._odo.length !== val.length) {
+      el.innerHTML = `<span class="gc-sr">${val}</span><span class="gc-odo" aria-hidden="true">${[...val].map((_, i) => `<span class="gc-odo_c" style="--i:${i}">${'0123456789'.split('').map(d => `<span>${d}</span>`).join('')}</span>`).join('')}</span>`;
+      el._odo = $$('.gc-odo_c', el);
+    }
+    $('.gc-sr', el).textContent = val;
+    [...val].forEach((d, i) => el._odo[i].style.transform = `translateY(-${(+d || 0) * 10}%)`);
+  };
+
+  /* scorecard */
+  const HOLES = [
+    [1,'First Light',4,352,9,'Wide and slightly downhill between birches. A friendly start.',{d:0,b:2}],
+    [2,'Long Meadow',5,478,3,'Follows an old field boundary. Three solid shots reach the green.',{d:1,b:3}],
+    [3,'Heather',3,156,15,'Heather to the left, a shallow green tilted towards you.',{d:0,b:2,s:1}],
+    [4,'The Ridge',4,384,1,'Uphill over a moraine ridge. The view opens at the top.',{d:-1,b:1}],
+    [5,'Hollow',4,341,11,'Short, but the green sits in a hollow guarded by two bunkers.',{d:0,b:2}],
+    [6,'The Pond',3,172,13,'A carry over a heath pond. Take the wind seriously.',{d:0,b:1,w:1,s:1}],
+    [7,'Birch Lane',4,365,7,'Dogleg right along a line of birches.',{d:1,b:2}],
+    [8,'Long Way Round',5,502,5,'The longest hole. Patience pays more than power.',{d:-1,b:3}],
+    [9,'The Turn',4,368,17,'Plays back towards the clubhouse. A coffee is never far away.',{d:0,b:2}],
+    [10,'Pines',4,395,4,'A tighter start to the back nine, framed by pines.',{d:-1,b:2}],
+    [11,'Little One',3,141,18,'The shortest hole on the course. Not the easiest.',{d:0,b:3,s:1}],
+    [12,'Into the Pines',5,489,2,'Through tall pines. Three good shots and a little patience.',{d:1,b:2}],
+    [13,'Crossing',4,337,14,'A ditch crosses the fairway. Lay up or carry it.',{d:0,b:1,w:1}],
+    [14,'Windbreak',4,372,8,'Exposed to the west. Take one more club on breezy days.',{d:-1,b:2}],
+    [15,'Clearing',3,183,12,'An open green in a clearing of the woods.',{d:0,b:2,s:1}],
+    [16,'Two Ways',5,466,6,'A split fairway. The bold line saves a shot.',{d:1,b:3,w:1}],
+    [17,'Low Road',4,329,16,'A short par four that rewards the right angle in.',{d:0,b:2}],
+    [18,'Home',4,398,10,'The clubhouse comes into view on the approach.',{d:-1,b:2}]
+  ];
+  const table = $('[data-sc-table]'), map = $('[data-sc-map]');
+  if (table) {
+    const sum = (a, b, k) => HOLES.slice(a, b).reduce((s, h) => s + h[k], 0);
+    const cells = (k, fmt = v => v) => { let r = ''; HOLES.forEach((h, i) => { r += `<td data-col="${i}">${fmt(h[k])}</td>`; if (i === 8) r += `<td class="is-sum">${sum(0, 9, k)}</td>`; }); return r + `<td class="is-sum">${sum(9, 18, k)}</td><td class="is-sum">${sum(0, 18, k)}</td>`; };
+    let head = '<tr><th scope="row">Hole</th>'; HOLES.forEach((h, i) => { head += `<td data-col="${i}"><button type="button" data-hole="${i}" aria-pressed="${i === 0}" tabindex="${i === 0 ? 0 : -1}" aria-label="Hole ${h[0]}, ${h[1]}, par ${h[2]}">${String(h[0]).padStart(2, '0')}</button></td>`; if (i === 8) head += '<td class="is-sum">Out</td>'; }); head += '<td class="is-sum">In</td><td class="is-sum">Total</td></tr>';
+    const si = HOLES.map(h => h[4]); let siRow = '<tr><th scope="row">Stroke index</th>'; HOLES.forEach((h, i) => { siRow += `<td data-col="${i}">${h[4]}</td>`; if (i === 8) siRow += '<td class="is-sum"></td>'; }); siRow += '<td class="is-sum"></td><td class="is-sum"></td></tr>';
+    table.insertAdjacentHTML('beforeend', `<thead>${head}</thead><tbody><tr><th scope="row">Par</th>${cells(2)}</tr><tr><th scope="row">Metres</th>${cells(3)}</tr>${siRow}</tbody>`);
+    const holeBtns = $$('[data-hole]', table);
+    const nameEl = $('[data-sc-name]'), noteEl = $('[data-sc-note]');
+    const drawHole = (h) => {
+      const [n, , par, len, , , o] = h, short = !!o.s, top = short ? 95 : 48 + (520 - len) / 12;
+      const tee = [150, 262], green = [150 + o.d * (short ? 6 : 34), top], mid = [150 + o.d * 60, (tee[1] + green[1]) / 2 + 10], w = short ? 0 : (par === 5 ? 34 : 40);
+      let s = `<rect class="m-rough" width="300" height="300"/>`;
+      const rec = { d: '', moveTo(x, y) { this.d += `M${x.toFixed(1)} ${y.toFixed(1)}`; }, lineTo(x, y) { this.d += `L${x.toFixed(1)} ${y.toFixed(1)}`; }, beginPath() {}, stroke() {} };
+      contourPaths(rec, 300, 300, NOISE, n * .37, 10, 120, 8, n * 300, n * 170);
+      s += `<path class="m-con" d="${rec.d}"/>`;
+      for (let k = 0; k < 16; k++) { const x = (k * 53 + n * 17) % 300, y = (k * 37 + n * 29) % 300; if (Math.abs(x - 150 - o.d * 30) > 74) s += `<circle class="m-tree" cx="${x}" cy="${y}" r="${7 + (k % 4) * 2}"/>`; }
+      if (o.w) s += `<ellipse class="m-water" cx="${short ? 150 : mid[0] - o.d * 10}" cy="${short ? 172 : mid[1] + 22}" rx="${short ? 54 : 30}" ry="${short ? 24 : 13}"/>`;
+      if (w) s += `<path class="m-fair" d="M${tee[0] - 14} ${tee[1] - 22} Q${mid[0] - w} ${mid[1]} ${green[0] - 22} ${green[1] + 30} L${green[0] + 22} ${green[1] + 30} Q${mid[0] + w} ${mid[1]} ${tee[0] + 14} ${tee[1] - 22}Z"/>`;
+      s += `<ellipse class="m-green" cx="${green[0]}" cy="${green[1]}" rx="${short ? 30 : 26}" ry="${short ? 22 : 19}"/>`;
+      for (let k = 0; k < o.b; k++) { const side = k % 2 ? 1 : -1; s += `<ellipse class="m-bunker" cx="${k === 2 ? mid[0] + side * (w || 20) : green[0] + side * (30 + k * 3)}" cy="${k === 2 ? mid[1] - 10 : green[1] + 10 + k * 6}" rx="9" ry="6"/>`; }
+      [100, 150].forEach(d => { if (len > d + 60) { const r = d * (tee[1] - green[1]) / len; s += `<circle class="m-dist" cx="${green[0]}" cy="${green[1]}" r="${r.toFixed(1)}"/><text x="${green[0] + r * .72}" y="${green[1] + r * .72}">${d}</text>`; } });
+      s += `<rect class="m-tee" x="${tee[0] - 8}" y="${tee[1] - 4}" width="16" height="8" rx="1"/>`;
+      s += `<path class="m-line" d="M${tee[0]} ${tee[1] - 6} Q${mid[0]} ${mid[1]} ${green[0]} ${green[1]}"/>`;
+      s += `<line class="m-flag" x1="${green[0]}" y1="${green[1]}" x2="${green[0]}" y2="${green[1] - 22}"/><path class="m-flagc" d="M${green[0]} ${green[1] - 22} l12 4 l-12 4z"/>`;
+      s += `<text x="16" y="24">Hole ${String(n).padStart(2, '0')}</text><text x="284" y="24" text-anchor="end">Par ${par} | ${len} m</text><text x="16" y="286">Tee</text>`;
+      map.innerHTML = s; map.setAttribute('aria-label', `Layout sketch of hole ${n}, par ${par}, ${len} metres`);
+      if (G) {
+        const line = $('.m-line', map), L = line.getTotalLength();
+        gsap.fromTo(line, { strokeDasharray: `${L} ${L}`, strokeDashoffset: L }, { strokeDashoffset: 0, duration: 1.2, ease: 'calm', onComplete: () => line.style.strokeDasharray = '' });
+        gsap.from($$('.m-fair,.m-green,.m-bunker,.m-water', map), { opacity: 0, scale: .92, transformOrigin: '50% 50%', duration: .8, ease: 'expo.out', stagger: .04 });
+        gsap.from($('.m-con', map), { opacity: 0, duration: 1 });
+        gsap.from($$('.m-flag,.m-flagc', map), { opacity: 0, y: 8, duration: .6, delay: .9, ease: 'back.out(2)' });
+      }
+    };
+    let cur = -1;
+    const select = (i, focus) => {
+      i = (i + 18) % 18; if (i === cur) return; cur = i; const h = HOLES[i];
+      holeBtns.forEach((b, k) => { b.setAttribute('aria-pressed', k === i); b.tabIndex = k === i ? 0 : -1; });
+      $$('[data-col]', table).forEach(c => c.classList.toggle('is-sel', +c.dataset.col === i));
+      if (focus) holeBtns[i].focus();
+      odo($('[data-sc-no]'), String(h[0]).padStart(2, '0')); odo($('[data-sc-par]'), h[2]); odo($('[data-sc-len]'), h[3]); odo($('[data-sc-si]'), String(h[4]).padStart(2, '0'));
+      if (G) gsap.timeline().to([nameEl, noteEl], { opacity: 0, y: -10, duration: .2, ease: 'power2.in' }).add(() => { nameEl.textContent = h[1]; noteEl.textContent = h[5]; }).to([nameEl, noteEl], { opacity: 1, y: 0, duration: .6, ease: 'expo.out', stagger: .06 });
+      else { nameEl.textContent = h[1]; noteEl.textContent = h[5]; }
+      drawHole(h);
+    };
+    holeBtns.forEach((b, i) => { b.addEventListener('click', () => select(i)); b.addEventListener('keydown', e => { const m = { ArrowRight: 1, ArrowLeft: -1 }; if (m[e.key]) { e.preventDefault(); select(cur + m[e.key], true); } if (e.key === 'Home') { e.preventDefault(); select(0, true); } if (e.key === 'End') { e.preventDefault(); select(17, true); } }); });
+    $('[data-sc-prev]').addEventListener('click', () => select(cur - 1));
+    $('[data-sc-next]').addEventListener('click', () => select(cur + 1));
+    select(0);
+  }
+
+  /* membership finder */
+  const MEM = {
+    full: ['Full Membership', 'For those who want the whole club, every day of the week. Play when it suits you and bring guests when you like.', ['Unlimited play, seven days a week', 'Priority tee times at weekends', 'Full use of the clubhouse, restaurant and terrace', 'Practice ground and short-game area', 'Guest rounds at member rates']],
+    weekday: ['Weekday', 'For people with full weekends and flexible weekdays. The course is quietest from Monday to Friday, and the clubhouse is yours all week.', ['Unlimited play, Monday to Friday', 'Weekend rounds as the guest of a member', 'Full use of the clubhouse every day', 'Practice ground and short-game area', 'Member events and competitions']],
+    young: ['Young Grove', 'For members under 30 who want the full club and good company. Same course, same clubhouse, a few evenings of your own.', ['Unlimited play, seven days a week', 'Young members’ evenings and team events', 'Full use of the clubhouse', 'Group coaching sessions through the year', 'Easy move to Full Membership at 30']],
+    first: ['First Year', 'For new golfers who want to learn properly and play with confidence by the end of the season. We guide you from the first lesson to your first handicap.', ['First Swing course at the academy', 'Play on the course once you are ready', 'Regular practice sessions with a coach', 'Playing partners for your first rounds', 'Full use of the clubhouse']]
+  };
+  const ORDER = ['full', 'weekday', 'young', 'first'];
+  const finder = $('[data-finder]'), recT = $('[data-rec-title]'), recP = $('[data-rec-text]'), recL = $('[data-rec-list]'), recN = $('[data-rec-n]'), recA = $('[data-rec-apply]'), picks = $$('[data-rec-pick]');
+  const tick = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
+  let memKey = null;
+  const fill = k => { const m = MEM[k]; recT.textContent = m[0]; recP.textContent = m[1]; recL.innerHTML = m[2].map(x => `<li>${tick}<span>${x}</span></li>`).join(''); recN.textContent = `${String(ORDER.indexOf(k) + 1).padStart(2, '0')} / 04`; recA.dataset.mem = m[0]; $('.gc-sr', recA) && ($('.gc-sr', recA).textContent = `Enquire about ${m[0]}`); picks.forEach(p => p.setAttribute('aria-pressed', p.dataset.recPick === k)); };
+  const show = k => {
+    if (k === memKey) return; const first = memKey === null; memKey = k;
+    if (!G || first) { fill(k); return; }
+    const tl = gsap.timeline();
+    tl.to([recT, recP, recL], { opacity: 0, y: -12, duration: .22, ease: 'power2.in' })
+      .add(() => { fill(k); const s = SplitText.create(recT, { type: 'chars', mask: 'chars' }); gsap.set([recT, recP, recL], { opacity: 1, y: 0 }); gsap.from(s.chars, { yPercent: 110, duration: .9, ease: 'expo.out', stagger: .02, onComplete: () => s.revert() }); gsap.from([recP, ...recL.children], { opacity: 0, y: 14, duration: .7, ease: 'expo.out', stagger: .05, delay: .1 }); });
+  };
+  const recommend = () => {
+    const v = n => (finder.querySelector(`input[name="${n}"]:checked`) || {}).value;
+    if (v('exp') === 'new') return 'first';
+    if (v('age') === 'u30') return 'young';
+    if (v('when') === 'weekdays') return 'weekday';
+    return 'full';
+  };
+  finder.addEventListener('change', () => show(recommend()));
+  picks.forEach(p => p.addEventListener('click', () => show(p.dataset.recPick)));
+  show(recommend());
+  recA.addEventListener('click', () => { const r = $(`input[name="membership"][value="${recA.dataset.mem}"]`); if (r) { r.checked = true; validateGroup(); } });
+
+  /* academy preview */
+  const prev = $('[data-acad-prev]');
+  if (prev && G && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const plates = $$('.gc-plate', prev), list = $('[data-acad]');
+    const xTo = gsap.quickTo(prev, 'x', { duration: .7, ease: 'power3' }), yTo = gsap.quickTo(prev, 'y', { duration: .7, ease: 'power3' }), rTo = gsap.quickTo(prev, 'rotate', { duration: .9, ease: 'power3' });
+    let lx = 0;
+    list.addEventListener('pointermove', e => { const w = prev.offsetWidth, h = prev.offsetHeight; xTo(Math.min(innerWidth - w - 16, e.clientX + 30)); yTo(Math.max(16, Math.min(innerHeight - h - 16, e.clientY - h / 2))); rTo(gsap.utils.clamp(-8, 8, (e.clientX - lx) * .6)); lx = e.clientX; });
+    $$('[data-acad-row]').forEach((r, i) => r.addEventListener('pointerenter', () => { plates.forEach((p, k) => p.classList.toggle('is-on', k === i)); gsap.to(prev, { autoAlpha: 1, scale: 1, duration: .5, ease: 'expo.out' }); }));
+    list.addEventListener('pointerleave', () => { gsap.to(prev, { autoAlpha: 0, scale: .9, duration: .35 }); plates.forEach(p => p.classList.remove('is-on')); });
+  }
+
+  /* lightbox */
+  const items = $$('[data-gal-item]'), lb = $('[data-lb]');
+  if (lb && items.length) {
+    const stage = $('[data-lb-stage]', lb), cap = $('[data-lb-cap]', lb), cnt = $('[data-lb-count]', lb); let idx = 0, opener = null;
+    const render = (i, dir = 0) => {
+      idx = (i + items.length) % items.length; const it = items[idx];
+      const src = $('.gc-plate', it).cloneNode(true); const ar = it.offsetWidth / it.offsetHeight || 1.5;
+      const w = Math.min(stage.clientWidth, (stage.clientHeight || innerHeight * .7) * ar); src.style.width = w + 'px'; src.style.height = (w / ar) + 'px'; src.style.inset = 'auto';
+      const im = $('img', src); if (im) im.alt = $('img', it).alt;
+      stage.replaceChildren(src); cap.textContent = $('.gc-gal_cap span', it).textContent;
+      cnt.textContent = `${String(idx + 1).padStart(2, '0')} / ${String(items.length).padStart(2, '0')}`;
+      if (G) gsap.fromTo(src, { opacity: 0, x: dir * 50, scale: .97 }, { opacity: 1, x: 0, scale: 1, duration: .7, ease: 'expo.out' });
+    };
+    items.forEach((it, i) => it.addEventListener('click', () => { opener = it; lb.showModal(); render(i); lenis && lenis.stop(); $('[data-lb-close]', lb).focus(); }));
+    lb.addEventListener('close', () => { lenis && lenis.start(); opener && opener.focus(); });
+    $('[data-lb-close]', lb).addEventListener('click', () => lb.close());
+    $('[data-lb-prev]', lb).addEventListener('click', () => render(idx - 1, -1));
+    $('[data-lb-next]', lb).addEventListener('click', () => render(idx + 1, 1));
+    lb.addEventListener('keydown', e => { if (e.key === 'ArrowRight') render(idx + 1, 1); if (e.key === 'ArrowLeft') render(idx - 1, -1); });
+    lb.addEventListener('click', e => { if (e.target === lb || e.target === stage) lb.close(); });
+    let sx = null; lb.addEventListener('pointerdown', e => sx = e.clientX); lb.addEventListener('pointerup', e => { if (sx === null) return; const d = e.clientX - sx; if (Math.abs(d) > 50) render(idx + (d < 0 ? 1 : -1), d < 0 ? 1 : -1); sx = null; });
+    const track = $('[data-gal-track]'), gbar = $('[data-gal-bar]');
+    track.addEventListener('scroll', () => { const m = track.scrollWidth - track.clientWidth; if (m > 0) gbar.style.transform = `scaleX(${track.scrollLeft / m})`; }, { passive: true });
+  }
+
+  /* enquiry form */
+  const form = $('[data-form]'), summary = $('[data-summary]'), done = $('[data-done]');
+  const rules = {
+    first: v => v.trim().length > 0, last: v => v.trim().length > 0,
+    email: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()),
+    phone: v => !v.trim() || (/^[+\d][\d\s\-/()]{5,}$/.test(v.trim()) && v.replace(/\D/g, '').length >= 6),
+    hcp: v => { if (!v.trim()) return true; const s = v.trim().replace(',', '.'); if (!/^\+?\d{1,2}(\.\d)?$/.test(s)) return false; const n = parseFloat(s); return s.startsWith('+') ? n <= 10 : n <= 54; }
+  };
+  const fieldOf = el => el.closest('.gc-field');
+  const vField = (el, show = true) => { const ok = rules[el.name] ? rules[el.name](el.value) : true; if (show) { fieldOf(el).classList.toggle('is-invalid', !ok); el.setAttribute('aria-invalid', !ok); } return ok; };
+  const group = $('[data-group]', form);
+  function validateGroup(show = true) { const ok = !!$('input[name="membership"]:checked', form); if (show) { group.classList.toggle('is-invalid', !ok); $$('input', group).forEach(i => i.setAttribute('aria-invalid', !ok)); } return ok; }
+  const cw = $('[data-check]', form), consent = $('#f-consent');
+  const vConsent = () => { const ok = consent.checked; cw.classList.toggle('is-invalid', !ok); consent.setAttribute('aria-invalid', !ok); return ok; };
+  $$('input.gc-in', form).forEach(el => {
+    el.addEventListener('blur', () => { if (el.value.trim() || fieldOf(el).classList.contains('is-invalid')) vField(el); });
+    el.addEventListener('input', () => { if (fieldOf(el).classList.contains('is-invalid')) vField(el); });
+  });
+  $$('input[name="membership"]', form).forEach(r => r.addEventListener('change', () => validateGroup()));
+  consent.addEventListener('change', vConsent);
+  const msg = $('#f-msg'), mc = $('[data-count-msg]'); msg.addEventListener('input', () => mc.textContent = msg.value.length);
+  const labels = { first: 'First name', last: 'Last name', email: 'Email', phone: 'Phone', hcp: 'Handicap' };
+  form.addEventListener('submit', e => {
+    e.preventDefault(); const errs = [];
+    $$('input.gc-in', form).forEach(el => { if (!vField(el)) errs.push([el.id, labels[el.name]]); });
+    if (!validateGroup()) errs.push(['f-mem', 'Membership of interest']);
+    if (!vConsent()) errs.push(['f-consent', 'Consent to reply']);
+    if (errs.length) {
+      summary.hidden = false;
+      summary.innerHTML = `<strong>${errs.length === 1 ? 'One field needs' : errs.length + ' fields need'} your attention:</strong><ul>${errs.map(([id, l]) => `<li><a href="#${id}" data-jump="${id}">${l}</a></li>`).join('')}</ul>`;
+      $$('[data-jump]', summary).forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); ev.stopPropagation(); const t = document.getElementById(a.dataset.jump); t.scrollIntoView({ block: 'center', behavior: RM ? 'auto' : 'smooth' }); t.focus({ preventScroll: true }); }));
+      summary.focus(); if (G) gsap.fromTo(summary, { y: -8, opacity: 0 }, { y: 0, opacity: 1, duration: .5, ease: 'expo.out' });
+      return;
+    }
+    summary.hidden = true;
+    const b = $('[data-submit]'); b.classList.add('is-busy'); b.setAttribute('aria-busy', 'true');
+    const d = new FormData(form);
+    setTimeout(() => {
+      b.classList.remove('is-busy'); b.removeAttribute('aria-busy');
+      $('[data-done-name]').textContent = d.get('first').trim();
+      const rows = [['Name', `${d.get('first').trim()} ${d.get('last').trim()}`], ['Email', d.get('email').trim()], ['Phone', d.get('phone').trim() || '–'], ['Membership', d.get('membership')], ['Handicap', d.get('hcp').trim() || 'None yet'], ['Contact by', d.get('contact')]];
+      const dl = $('[data-done-list]'); dl.replaceChildren(); rows.forEach(([k, v]) => { const dt = document.createElement('dt'); dt.textContent = k; const dd = document.createElement('dd'); dd.textContent = v; dl.append(dt, dd); });
+      form.hidden = true; done.hidden = false; done.focus();
+      if (G) gsap.from(done.children, { y: 18, opacity: 0, duration: .8, stagger: .06, ease: 'expo.out' });
+      typeof ScrollTrigger !== 'undefined' && ScrollTrigger.refresh();
+    }, 900);
+  });
+  $('[data-done-reset]').addEventListener('click', () => { done.hidden = true; form.hidden = false; $('#f-first').focus(); typeof ScrollTrigger !== 'undefined' && ScrollTrigger.refresh(); });
+}
+})();
+</script>
+</body>
+</html>
