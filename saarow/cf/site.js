@@ -28,11 +28,14 @@ if (ANIM && window.Lenis) {
   if (html.classList.contains('is-loading')) lenis.stop();
 }
 const scrollToY = y => lenis ? lenis.scrollTo(y, { duration: 1.6 }) : scrollTo({ top: y, behavior: RM ? 'auto' : 'smooth' });
+const yOf = t => { const sp = t.closest('.pin-spacer'); return (sp || t).getBoundingClientRect().top + scrollY; };
+const samePage = a => a.hash && a.pathname.replace(/\/$/, '') === location.pathname.replace(/\/$/, '');
 document.addEventListener('click', e => {
-  const a = e.target.closest('a[href^="#"]'); if (!a || a.hasAttribute('data-course-link')) return;
-  const id = a.getAttribute('href'); const t = id.length > 1 && document.querySelector(id); if (!t) return;
-  e.preventDefault(); const sp = t.closest('.pin-spacer'); scrollToY((sp || t).getBoundingClientRect().top + scrollY); history.replaceState(null, '', id);
+  const a = e.target.closest('a[href]'); if (!a || a.hasAttribute('data-course-link') || !samePage(a)) return;
+  let t; try { t = a.hash.length > 1 && document.querySelector(decodeURIComponent(a.hash)); } catch (_) {} if (!t) return;
+  e.preventDefault(); scrollToY(yOf(t)); history.replaceState(null, '', a.hash);
 });
+if (location.hash.length > 1) addEventListener('load', () => { let t; try { t = document.querySelector(decodeURIComponent(location.hash)); } catch (_) {} if (t) setTimeout(() => { window.ScrollTrigger && ScrollTrigger.refresh(); const y = yOf(t); lenis ? lenis.scrollTo(y, { immediate: true, force: true }) : scrollTo(0, y); }, 400); });
 
 /* navbar: transparent over hero, solid after, hides on scroll down */
 const nav = $('[data-nav]'), toggle = $('[data-menu-toggle]'), menu = $('[data-menu]');
