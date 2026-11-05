@@ -168,3 +168,4 @@ html,body{overflow-x:clip}
 @media (max-width:991px){.consent_component{bottom:3.75rem}html.has-sticky-cta .consent_component{bottom:5.25rem}html.has-wf-badge.has-sticky-cta .consent_component{bottom:8.1rem}.error_top{flex-wrap:wrap}}
 .bs-fill{color:transparent;-webkit-background-clip:text;background-clip:text;background-color:rgb(var(--fc,37 43 40) / var(--a,1))}
 body{font-variant-numeric:lining-nums}
+@media (max-width:991px){.sticky-cta_component:not(.is-visible){transform:translateY(calc(100% + 5rem))}}
