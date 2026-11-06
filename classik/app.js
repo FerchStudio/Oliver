@@ -58,6 +58,8 @@ function initOnceFunctions() {
   onceFunctionsInitialized = true;
 
   initButtons(document);          // Buttons in Nav, Menü, Footer
+  initArrowLinks(document);
+  initTelLinks(document);
   initNav();
   initScrollState();
 }
@@ -70,6 +72,9 @@ function initAfterEnterFunctions(next) {
   nextPage = next || document;
 
   initButtons(nextPage);
+  initArrowLinks(nextPage);
+  initTelLinks(nextPage);
+  if (has("[data-lage]")) initLage(nextPage);
   if (has("[data-split]")) initSplitHeadings(nextPage);
   if (has("[data-reveal-group]")) initContentRevealScroll();
   if (has("[data-img-reveal]")) initImgReveal(nextPage);
@@ -290,6 +295,64 @@ function initButtons(scope) {
   });
 }
 
+/* Pfeil-Links: Text-Pfeil "→" durch animierten SVG-Pfeil ersetzen */
+const LINK_ARROW = '<svg viewBox="0 0 18 12" fill="none" aria-hidden="true"><path d="M0 6h16.5M11.5 1l5 5-5 5" stroke="currentColor" stroke-width="1.2"/></svg>';
+function initArrowLinks(scope) {
+  $$("a:not([data-btn]):not([data-arrow-ready])", scope).forEach(a => {
+    const last = [...a.childNodes].reverse().find(n => n.nodeType === 3 && n.textContent.trim());
+    if (!last || !/\s*→\s*$/.test(last.textContent)) return;
+    last.textContent = last.textContent.replace(/\s*→\s*$/, "");
+    a.insertAdjacentHTML("beforeend", '<span class="link-arrow" aria-hidden="true">' + LINK_ARROW + LINK_ARROW + "</span>");
+    a.classList.add("has-arrow");
+    a.setAttribute("data-arrow-ready", "");
+  });
+}
+
+/* Telefonnummern im Fließtext klickbar machen */
+function initTelLinks(scope) {
+  $$('a[href^="tel:"]', scope).forEach(a => a.classList.add("tel-link"));
+  const re = /(?:\+49|\(?0\d)[\d\s\/()-]{5,}\d/g;
+  const roots = $$(".rt, .acc_body, .feature, .info_item, .footer, .card, .room_body, p, li", scope);
+  const seen = new Set();
+  roots.forEach(root => {
+    if (seen.has(root) || root.closest("a, [data-no-tel], .book")) return;
+    seen.add(root);
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n => (n.parentElement.closest("a, script, style, [data-no-tel]") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) });
+    const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node => {
+      const t = node.textContent; re.lastIndex = 0;
+      if (!re.test(t)) return; re.lastIndex = 0;
+      const frag = document.createDocumentFragment(); let last = 0, m;
+      while ((m = re.exec(t))) {
+        const num = m[0].trim(), digits = num.replace(/\D/g, "");
+        if (digits.length < 8 || /\d\.\d/.test(num)) continue;
+        frag.append(t.slice(last, m.index));
+        const a = document.createElement("a");
+        a.href = "tel:" + (num.startsWith("+") ? "+" + digits : "+49" + digits.replace(/^0/, ""));
+        a.className = "tel-link"; a.textContent = num;
+        frag.append(a); last = m.index + m[0].length;
+      }
+      if (!last) return;
+      frag.append(t.slice(last));
+      node.replaceWith(frag);
+    });
+  });
+}
+
+/* Lage-Grafik: Positionen setzen + Linie zeichnen */
+function initLage(scope) {
+  $$("[data-lage]", scope).forEach(el => {
+    $$("[data-x]", el).forEach(s => s.style.setProperty("--x", s.dataset.x + "%"));
+    if (reducedMotion || el._lage || (!window.__chcEntered && inView(el))) return; el._lage = true;
+    const line = $(".lage_line", el), items = $$(".lage_stop, .lage_hotel", el);
+    gsap.set(line, { "--draw": 0 });
+    gsap.set(items, { autoAlpha: 0, y: (i, t) => (t.classList.contains("is-top") ? 10 : -10) });
+    const tl = gsap.timeline({ scrollTrigger: { trigger: el, start: "top 85%", once: true } });
+    tl.to(line, { "--draw": 1, duration: 1.4, ease: "expo.inOut" })
+      .to(items, { autoAlpha: 1, y: 0, duration: 0.8, ease: "expo.out", stagger: { each: 0.05, from: "center" } }, 0.5);
+  });
+}
+
 /* Nav: zwei Mega-Menüs (Hotels, Mehr) + Mobilmenü */
 function closeMenus() {
   html.classList.remove("menu-open", "mega-open", "mega-hotels", "mega-mehr");
@@ -297,22 +360,9 @@ function closeMenus() {
   if (lenis) lenis.start();
 }
 function initNav() {
-  const header = $("[data-nav]"), burger = $("[data-menu-toggle]");
-  const btns = $$("[data-mega-toggle]");
-  let current = null;
-  const setMega = name => {
-    current = name;
-    html.classList.toggle("mega-open", !!name);
-    btns.forEach(b => { const n = b.dataset.megaToggle; html.classList.toggle("mega-" + n, n === name); b.setAttribute("aria-expanded", n === name); });
-  };
-  btns.forEach(b => {
-    b.addEventListener("click", e => { e.preventDefault(); setMega(current === b.dataset.megaToggle ? null : b.dataset.megaToggle); });
-    if (FINE) b.addEventListener("mouseenter", () => setMega(b.dataset.megaToggle));
-  });
-  if (FINE && header) {
-    header.addEventListener("mouseleave", () => setMega(null));
-    $$(".nav_links > a, .nav_right a", header).forEach(a => a.addEventListener("mouseenter", () => setMega(null)));
-  }
+  const burger = $("[data-menu-toggle]");
+  // Mega-Menüs steuert site.js schon vor dem Laden der Bibliotheken (Hover öffnet sofort)
+  const setMega = name => (window.__chcMega ? window.__chcMega(name) : null);
   const setMenu = open => {
     html.classList.toggle("menu-open", open);
     if (burger) { burger.setAttribute("aria-expanded", open); burger.setAttribute("aria-label", open ? "Menü schließen" : "Menü öffnen"); }
@@ -353,7 +403,7 @@ function initSplitHeadings(scope) {
       if (reducedMotion || (firstRun && inView(el))) { el.style.visibility = "visible"; return; }
       const hero = el.dataset.split === "hero";
       SplitText.create(el, {
-        type: "lines", mask: "lines", autoSplit: true, aria: "auto",
+        type: "lines", mask: "lines", linesClass: "split-line", autoSplit: true, aria: "auto",
         onSplit: self => gsap.from(self.lines, {
           yPercent: 110, duration: hero ? 1.3 : 1.05, ease: "expo.out", stagger: 0.12, delay: hero ? 0.45 : 0,
           scrollTrigger: hero ? null : { trigger: el, start: "top 88%", once: true }

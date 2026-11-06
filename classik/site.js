@@ -16,6 +16,30 @@
   if (window.CLASSIK_MAPBOX_TOKEN && needsGeo) libs.push("https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js");
   libs.push(cdn + "lenis@1.3.4/dist/lenis.min.js", base + "app.js");
   document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest('a[href="#"]'); if (a) e.preventDefault(); });
+
+  // Mega-Menüs sofort bedienbar (Hover öffnet, kurze Verzögerung beim Schließen)
+  var root = document.documentElement, fine = matchMedia("(hover:hover) and (pointer:fine)").matches;
+  var btns = [].slice.call(document.querySelectorAll("[data-mega-toggle]")), header = document.querySelector("[data-nav]"), closeT = null, openT = null;
+  function cur() { var c = null; btns.forEach(function (b) { if (root.classList.contains("mega-" + b.dataset.megaToggle)) c = b.dataset.megaToggle; }); return c; }
+  function setMega(name) {
+    clearTimeout(closeT); clearTimeout(openT);
+    root.classList.toggle("mega-open", !!name);
+    btns.forEach(function (b) { var n = b.dataset.megaToggle; root.classList.toggle("mega-" + n, n === name); b.setAttribute("aria-expanded", n === name); });
+  }
+  window.__chcMega = setMega;
+  [].slice.call(document.querySelectorAll(".mega")).forEach(function (m) { [].slice.call(m.querySelectorAll(".mega_col, .mega_inner > *")).forEach(function (c, i) { c.style.setProperty("--i", i); }); });
+  btns.forEach(function (b) {
+    b.addEventListener("click", function (e) { e.preventDefault(); setMega(cur() === b.dataset.megaToggle ? null : b.dataset.megaToggle); });
+    if (fine) b.addEventListener("mouseenter", function () { clearTimeout(closeT); var n = b.dataset.megaToggle; openT = setTimeout(function () { setMega(n); }, cur() ? 0 : 60); });
+  });
+  if (fine && header) {
+    header.addEventListener("mouseleave", function () { clearTimeout(openT); closeT = setTimeout(function () { setMega(null); }, 220); });
+    header.addEventListener("mouseenter", function () { clearTimeout(closeT); });
+    [].slice.call(header.querySelectorAll(".nav_links > a:not([data-mega-toggle]), .nav_right a")).forEach(function (a) { a.addEventListener("mouseenter", function () { clearTimeout(openT); closeT = setTimeout(function () { setMega(null); }, 120); }); });
+  }
+
+  // Lage-Grafik: Positionen ohne Wartezeit setzen
+  [].slice.call(document.querySelectorAll("[data-lage] [data-x]")).forEach(function (s) { s.style.setProperty("--x", s.getAttribute("data-x") + "%"); });
   var started = false, evs = ["pointerdown", "pointermove", "keydown", "touchstart", "wheel", "scroll"];
   function start() {
     if (started) return; started = true;
