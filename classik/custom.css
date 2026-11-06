@@ -158,3 +158,4 @@ ul.chips{list-style:none;padding:0;margin-bottom:0}
 [data-globe-marker]{cursor:pointer}
 [data-globe-marker][data-active="true"]{outline-color:var(--accent)}
 .reviews_body>.ulink{align-self:flex-start}
+@media (min-width:992px){.hero .hero_content,.hero .img-slider__nav{bottom:12.5rem}}
