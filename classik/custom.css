@@ -43,7 +43,6 @@ summary.acc_btn,summary.menu_sum{list-style:none}summary.acc_btn::marker,summary
 .hero{--edge:max(clamp(1.25rem,4vw,3.5rem),calc((100% - 92rem)/2 + clamp(1.25rem,4vw,3.5rem)))}
 @media (min-width:992px){
   .hero .book{left:var(--edge);right:var(--edge)}
-  .hero .img-slider__nav,.hero .hero_caption{right:var(--edge)}
   .hero .w-embed{position:static}
 }
 
@@ -70,7 +69,8 @@ html.mega-open .mega .mega_col:hover .mega_img img{transform:scale(1.06)}
 .nav_caret{transition:transform .5s var(--ease)}
 
 /* Zimmer-Slider: moderner, sauber beschnitten */
-.sec:has(> [data-radial-slider-init]){overflow:clip;padding-bottom:clamp(3rem,6vw,5rem)}
+.sec:has(> [data-radial-slider-init]){overflow:clip;padding-bottom:clamp(5rem,9vw,8rem)}
+.sec:has(> [data-radial-slider-init]) .sec-head{margin-bottom:clamp(3.5rem,7vw,6.5rem)}
 [data-radial-slider-init] .room-card{width:20em;padding:0;background:none;box-shadow:none;position:relative;border-radius:.9em;overflow:hidden;color:#fff}
 [data-radial-slider-init] .room-card__media{aspect-ratio:3/4;border-radius:.9em}
 [data-radial-slider-init] .room-card__media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(14,19,21,.78));pointer-events:none}
@@ -84,7 +84,7 @@ html.mega-open .mega .mega_col:hover .mega_img img{transform:scale(1.06)}
 .room-card__info{transition:opacity .5s,transform .7s var(--ease)}
 [data-radial-slider-item-status="active"] .room-card{box-shadow:0 40px 80px -30px rgba(0,0,0,.6)}
 [data-radial-slider-item-status="active"] .room-card:hover .room-card__media img{transform:scale(1.05)}
-.radial-gsap-slider__controls{padding-top:2.5em}
+.radial-gsap-slider__controls{padding-top:3.75em}
 .radial-gsap-slider__control-btn{transition:background-color .3s,color .3s,box-shadow .3s}
 .radial-gsap-slider__control-btn.is-outline-light:hover{background:rgba(255,255,255,.08)}
 .radial-gsap-slider__control-btn.is-fill-ivory:hover{background:#fff}
@@ -159,3 +159,47 @@ ul.chips{list-style:none;padding:0;margin-bottom:0}
 [data-globe-marker][data-active="true"]{outline-color:var(--accent)}
 .reviews_body>.ulink{align-self:flex-start}
 @media (min-width:992px){.hero .hero_content,.hero .img-slider__nav{bottom:12.5rem}}
+
+/* Update 06.11. (2): Hero wie Entwurf v2 */
+.book_field label{display:block;margin:0;font-size:.66rem;line-height:1.3;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);font-weight:500}
+.book_field select,.book_field input{height:auto;margin:0;line-height:1.4}
+.hero_eyebrow{display:flex;align-items:center;column-gap:.9rem}
+.hero_eyebrow::before{content:"";flex:none;width:2.25rem;height:1px;background:currentColor;opacity:.7}
+
+/* Zeilen-Masken: Unterlängen (g, p, y) nicht abschneiden */
+[data-split] [class*="-mask"]{padding:.14em 0 .3em;margin:-.14em 0 -.3em}
+
+/* Hotelfinder: Karten mit Hotelbild, Karte mit Popup */
+.store-locator__header{background:var(--ivory);padding-bottom:1.75rem}
+.store-locator__header::after{content:"";position:absolute;left:0;right:0;top:100%;height:2rem;background:linear-gradient(var(--ivory),rgba(245,242,236,0));pointer-events:none}
+.store-locator__list{row-gap:1rem}
+.store-locator__item{display:grid;grid-template-columns:8.5rem minmax(0,1fr);column-gap:1.4rem;align-items:start;padding:1rem 1.25rem 1rem 1rem;transition:border-color .4s,box-shadow .5s var(--ease),transform .5s var(--ease)}
+.store-locator__item>*:not(.store-locator__item-media){grid-column:2}
+.store-locator__item-media{grid-column:1;grid-row:1/span 6;align-self:stretch;min-height:9rem;border-radius:.55rem;background:var(--stone)}
+.store-locator__item-img{position:absolute;inset:0;transition:transform 1.1s var(--ease)}
+.store-locator__item:hover .store-locator__item-img,.store-locator__item[data-active="true"] .store-locator__item-img{transform:scale(1.06)}
+.store-locator__item:hover{border-color:rgba(28,35,38,.28)}
+.store-locator__item-eyebrow{margin-top:.35rem}
+.store-locator__item-heading{font-size:1.35rem;margin:.35rem 0 .6rem}
+.store-locator__item-p{font-size:.88rem}
+.store-locator__item-link{margin-top:.9rem}
+.store-locator__main{background:#F3EFE7}
+.store-locator__marker{cursor:pointer;transition:transform .45s var(--ease),background-color .3s}
+.store-locator__marker:hover{transform:scale(1.1)}
+.locator-popup .maplibregl-popup-content,.locator-popup .mapboxgl-popup-content{padding:0;border-radius:.75rem;overflow:hidden;background:var(--paper);box-shadow:0 30px 60px -25px rgba(28,35,38,.45);font-family:var(--sans)}
+.locator-popup .maplibregl-popup-tip,.locator-popup .mapboxgl-popup-tip{border-top-color:var(--paper);border-bottom-color:var(--paper)}
+.locator-popup .maplibregl-popup-close-button,.locator-popup .mapboxgl-popup-close-button{z-index:2;top:.5rem;right:.5rem;width:1.8rem;height:1.8rem;border-radius:50%;background:rgba(245,242,236,.92);color:var(--ink);font-size:1.1rem;line-height:1}
+.locator-card{width:17.5rem;max-width:100%;animation:chc-pop .6s var(--ease)}
+.locator-card__media{aspect-ratio:16/10;overflow:hidden}
+.locator-card__media img{width:100%;height:100%;object-fit:cover;display:block}
+.locator-card__body{padding:1rem 1.15rem 1.15rem}
+.locator-card__eyebrow{font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin:0}
+.locator-card__name{font-family:var(--serif);font-size:1.3rem;line-height:1.15;margin:.3rem 0 .75rem;color:var(--ink)}
+.locator-card__link{display:inline-flex;align-items:center;column-gap:.45rem;font-size:.9rem;font-weight:500;color:var(--ink)}
+@keyframes chc-pop{from{opacity:0;transform:translateY(.5rem)}to{opacity:1;transform:none}}
+.maplibregl-ctrl-group{background:var(--paper);border-radius:.5rem;box-shadow:0 0 0 1px rgba(28,35,38,.12)}
+.maplibregl-ctrl-attrib{font-size:.65rem;background:rgba(243,239,231,.8)!important}
+.maplibregl-cooperative-gesture-screen{font-family:var(--sans);background:rgba(28,35,38,.55)}
+@media (max-width:991px){.store-locator__item{grid-template-columns:6.5rem minmax(0,1fr)}.store-locator__item-media{min-height:7.5rem}}
+@media (max-width:479px){.store-locator__item{grid-template-columns:1fr}.store-locator__item>*:not(.store-locator__item-media){grid-column:1}.store-locator__item-media{grid-row:auto;aspect-ratio:16/9;min-height:0;margin-bottom:.5rem}}
+.book_guests>span{white-space:nowrap}

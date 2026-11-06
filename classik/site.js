@@ -38,6 +38,14 @@
     [].slice.call(header.querySelectorAll(".nav_links > a:not([data-mega-toggle]), .nav_right a")).forEach(function (a) { a.addEventListener("mouseenter", function () { clearTimeout(openT); closeT = setTimeout(function () { setMega(null); }, 120); }); });
   }
 
+  // Buchungsleiste sofort mit Datum und 1 Erwachsener füllen
+  [].slice.call(document.querySelectorAll("[data-book]")).forEach(function (f) {
+    var iso = function (d) { return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); };
+    var a = f.querySelector("[data-book-in]"), b = f.querySelector("[data-book-out]"), n = f.querySelector("[data-book-adults]");
+    var t = new Date(); if (a && !a.value) { a.value = iso(t); a.min = iso(t); }
+    if (b && !b.value) { t.setDate(t.getDate() + 1); b.value = iso(t); }
+    if (n) { n.textContent = "1"; if (n.nextSibling && n.nextSibling.nodeType === 3) n.nextSibling.textContent = " Erwachsener"; }
+  });
   // Lage-Grafik: Positionen ohne Wartezeit setzen
   [].slice.call(document.querySelectorAll("[data-lage] [data-x]")).forEach(function (s) { s.style.setProperty("--x", s.getAttribute("data-x") + "%"); });
   var started = false, evs = ["pointerdown", "pointermove", "keydown", "touchstart", "wheel", "scroll"];

@@ -642,11 +642,11 @@ function initBooking(scope) {
     const today = iso(new Date());
     inp.min = today; if (!inp.value) inp.value = today;
     if (!out.value) out.value = plus(inp.value, 1);
-    let adults = parseInt(adIn ? adIn.value : 2, 10) || 2;
+    let adults = parseInt(adIn ? adIn.value : 1, 10) || 1;
     const update = () => {
       if (out.value <= inp.value) out.value = plus(inp.value, 1);
       out.min = plus(inp.value, 1);
-      if (ad) ad.textContent = adults; if (adIn) adIn.value = adults;
+      if (ad) { ad.textContent = adults; const w = ad.nextSibling; if (w && w.nodeType === 3) w.textContent = adults === 1 ? " Erwachsener" : " Erwachsene"; } if (adIn) adIn.value = adults;
     };
     [inp, out].forEach(x => x.addEventListener("change", update));
     $$("[data-book-step]", f).forEach(b => b.addEventListener("click", () => { adults = Math.min(6, Math.max(1, adults + +b.dataset.bookStep)); update(); }));
@@ -1360,12 +1360,31 @@ function initLightboxes() {
 
 
 /* ==========================================================
-   Osmo: Store Locator (Mapbox) + Fallback ohne Token
+   Osmo: Store Locator (Mapbox), ohne Token mit MapLibre + OpenFreeMap
    ========================================================== */
+const MAPLIBRE = "https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/";
+let __maplibre = null;
+function loadMapLibre() {
+  if (window.maplibregl) return Promise.resolve(window.maplibregl);
+  if (!__maplibre) __maplibre = new Promise((res, rej) => {
+    const l = document.createElement("link"); l.rel = "stylesheet"; l.href = MAPLIBRE + "maplibre-gl.css"; document.head.appendChild(l);
+    const s = document.createElement("script"); s.src = MAPLIBRE + "maplibre-gl.js"; s.onload = () => res(window.maplibregl); s.onerror = rej; document.head.appendChild(s);
+  });
+  return __maplibre;
+}
+
 function initStoreLocator() {
+  const wrapper = nextPage.querySelector("[data-locator-init]");
+  if (!wrapper || wrapper.dataset.locatorInit) return;
+  wrapper.dataset.locatorInit = "pending";
   const token = window.CLASSIK_MAPBOX_TOKEN;
-  if (typeof mapboxgl !== "undefined" && token) return initStoreLocatorMapbox(token);
-  return initStoreLocatorFallback();
+  const boot = () => {
+    if (typeof mapboxgl !== "undefined" && token) { mapboxgl.accessToken = token; return initStoreLocatorMap(wrapper, mapboxgl, "mapbox://styles/osmo-supply/cmrw4migt00i501scfi19f0pn"); }
+    loadMapLibre().then(gl => initStoreLocatorMap(wrapper, gl, "https://tiles.openfreemap.org/styles/positron")).catch(() => { wrapper.dataset.locatorInit = ""; });
+  };
+  // Karte erst laden, wenn der Hotelfinder in die Nähe kommt
+  const io = new IntersectionObserver((entries) => { if (entries.some(e => e.isIntersecting)) { io.disconnect(); boot(); } }, { rootMargin: "800px 0px" });
+  io.observe(wrapper);
 }
 
 function locatorReadLocations(wrapper) {
@@ -1373,7 +1392,10 @@ function locatorReadLocations(wrapper) {
     const lat = Number.parseFloat(element.getAttribute("data-locator-lat"));
     const lng = Number.parseFloat(element.getAttribute("data-locator-lng"));
     const n = element.querySelector("[data-locator-item-name]");
-    return { id: element.getAttribute("data-locator-id") || `location-${index + 1}`, name: n ? n.textContent.trim() : `Location ${index + 1}`, lat, lng, element };
+    const eb = element.querySelector(".store-locator__item-eyebrow");
+    const img = element.querySelector("img");
+    const link = element.querySelector('.store-locator__item-link a[href^="/"]');
+    return { id: element.getAttribute("data-locator-id") || `location-${index + 1}`, name: n ? n.textContent.trim() : `Location ${index + 1}`, nameHTML: n ? n.innerHTML : "", eyebrow: eb ? eb.textContent.trim() : "", img: img ? (img.currentSrc || img.src) : "", alt: img ? img.alt : "", href: link ? link.getAttribute("href") : "", lat, lng, element };
   }).filter(l => Number.isFinite(l.lat) && Number.isFinite(l.lng));
 }
 function locatorPinEl(wrapper, location) {
@@ -1394,80 +1416,63 @@ function locatorWire(locations, pins, select) {
     location.element.addEventListener("keydown", (event) => { if (event.target !== location.element) return; if (event.key !== "Enter" && event.key !== " ") return; event.preventDefault(); select(index); });
   });
   pins.forEach((pin, index) => {
-    pin.element.addEventListener("click", () => select(index));
+    pin.element.addEventListener("click", (e) => { e.stopPropagation(); select(index); });
     pin.element.addEventListener("keydown", (event) => { if (event.key !== "Enter" && event.key !== " ") return; event.preventDefault(); select(index); });
   });
 }
 function locatorSetActive(locations, pins, index) {
   pins.forEach((pin, i) => { const a = i === index; pin.element.setAttribute("data-active", String(a)); pin.element.setAttribute("aria-pressed", String(a)); locations[i].element.setAttribute("data-active", String(a)); });
 }
+function locatorCard(l) {
+  const el = document.createElement("div"); el.className = "locator-card";
+  el.innerHTML = (l.img ? `<div class="locator-card__media"><img src="${l.img}" alt="${l.alt.replace(/"/g, "&quot;")}" loading="lazy"></div>` : "") +
+    `<div class="locator-card__body"><p class="locator-card__eyebrow">${l.eyebrow}</p><p class="locator-card__name">${l.nameHTML}</p>` +
+    (l.href ? `<a class="locator-card__link has-arrow" href="${l.href}">Zum Hotel <span class="link-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M1 8h13M9 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg><svg viewBox="0 0 16 16"><path d="M1 8h13M9 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></span></a>` : "") + `</div>`;
+  return el;
+}
+// Ruhige Farben passend zum Ivory-Look der Seite (nur für OpenFreeMap)
+function locatorTint(map) {
+  (map.getStyle().layers || []).forEach(ly => {
+    try {
+      if (ly.type === "background") map.setPaintProperty(ly.id, "background-color", "#F3EFE7");
+      else if (ly.type === "fill" && /water/.test(ly.id)) map.setPaintProperty(ly.id, "fill-color", "#D9E2DF");
+      else if (ly.type === "fill" && /park|wood|grass|landcover/.test(ly.id)) map.setPaintProperty(ly.id, "fill-color", "#E6E6D8");
+      else if (ly.type === "line" && /boundary/.test(ly.id)) map.setPaintProperty(ly.id, "line-color", "#B9B1A3");
+      else if (ly.type === "symbol" && /state|country/.test(ly.id)) map.setLayoutProperty(ly.id, "visibility", "none");
+      else if (ly.type === "symbol" && ly.layout && ly.layout["text-field"]) map.setLayoutProperty(ly.id, "text-field", ["coalesce", ["get", "name:de"], ["get", "name"]]);
+    } catch (e) {}
+  });
+}
 
-function initStoreLocatorMapbox(token) {
-  const cfg = { mapboxToken: token, mapStyle: "mapbox://styles/osmo-supply/cmrw4migt00i501scfi19f0pn", projection: "mercator", fallbackCenter: [10.4, 51.1], fallbackZoom: 5, selectedZoom: 14, flyToDuration: 1200, fitPadding: 64, fitMaxZoom: 13 };
-  mapboxgl.accessToken = cfg.mapboxToken;
-  const wrapper = nextPage.querySelector("[data-locator-init]");
-  if (!wrapper || wrapper.dataset.locatorInit === "initialized") return;
+function initStoreLocatorMap(wrapper, gl, style) {
+  const cfg = { projection: "mercator", fallbackCenter: [10.4, 51.1], fallbackZoom: 5, selectedZoom: 14, flyToDuration: 1200, fitPadding: 64, fitMaxZoom: 13 };
   const mapEl = wrapper.querySelector("[data-locator-map]");
   const locations = locatorReadLocations(wrapper);
-  const map = new mapboxgl.Map({ container: mapEl, style: cfg.mapStyle, center: cfg.fallbackCenter, zoom: cfg.fallbackZoom, projection: cfg.projection, pitch: 0, bearing: 0, attributionControl: false, cooperativeGestures: true });
-  map.addControl(new mapboxgl.AttributionControl({ compact: true }));
-  map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), "top-left");
+  const isMapbox = gl === window.mapboxgl;
+  const opts = { container: mapEl, style, center: cfg.fallbackCenter, zoom: cfg.fallbackZoom, pitch: 0, bearing: 0, attributionControl: false, cooperativeGestures: true };
+  if (isMapbox) opts.projection = cfg.projection;
+  else opts.locale = { "CooperativeGesturesHandler.WindowsHelpText": "Strg + Scrollen zum Zoomen", "CooperativeGesturesHandler.MacHelpText": "⌘ + Scrollen zum Zoomen", "CooperativeGesturesHandler.MobileHelpText": "Mit zwei Fingern bewegen" };
+  const map = new gl.Map(opts);
+  map.addControl(new gl.AttributionControl({ compact: true }));
+  map.addControl(new gl.NavigationControl({ showCompass: false }), "top-left");
   map.on("load", () => {
-    const pins = locations.map(location => { const element = locatorPinEl(wrapper, location); const marker = new mapboxgl.Marker({ element, anchor: "center" }).setLngLat([location.lng, location.lat]).addTo(map); return { marker, element, location }; });
+    if (!isMapbox) locatorTint(map);
+    // Nahe beieinander liegende Hotels (Berlin) leicht versetzen, damit beide Pins sichtbar sind
+    const offs = locations.map((l, i) => { const n = locations.findIndex((o, j) => j !== i && Math.abs(o.lat - l.lat) < .05 && Math.abs(o.lng - l.lng) < .05); return n < 0 ? [0, 0] : [i < n ? -15 : 15, 0]; });
+    const pins = locations.map((location, i) => { const element = locatorPinEl(wrapper, location); const marker = new gl.Marker({ element, anchor: "center", offset: offs[i] }).setLngLat([location.lng, location.lat]).addTo(map); return { marker, element, location }; });
+    const popup = new gl.Popup({ closeButton: true, closeOnClick: true, offset: 30, maxWidth: "17.5rem", className: "locator-popup", focusAfterOpen: false });
     const select = (index) => {
       const location = locations[index]; if (!location) return;
       locatorSetActive(locations, pins, index);
-      const camera = { center: [location.lng, location.lat], zoom: cfg.selectedZoom, pitch: 0, bearing: 0 };
+      popup.setLngLat([location.lng, location.lat]).setDOMContent(locatorCard(location)).addTo(map);
+      const camera = { center: [location.lng, location.lat], zoom: cfg.selectedZoom, pitch: 0, bearing: 0, offset: [0, 90] };
       reducedMotion ? map.jumpTo(camera) : map.flyTo({ ...camera, duration: cfg.flyToDuration, essential: false });
     };
     locatorWire(locations, pins, select);
-    const bounds = new mapboxgl.LngLatBounds(); locations.forEach(l => bounds.extend([l.lng, l.lat]));
+    const bounds = new gl.LngLatBounds(); locations.forEach(l => bounds.extend([l.lng, l.lat]));
     map.fitBounds(bounds, { padding: cfg.fitPadding, maxZoom: cfg.fitMaxZoom, duration: reducedMotion ? 0 : 700 });
     wrapper.dataset.locatorInit = "initialized";
   });
   let resizeTimer;
   window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => map.resize(), 150); }, { passive: true });
-}
-
-let __europe = null;
-function loadEurope() { if (!__europe) __europe = fetch(BASE+"geo/europe.json").then(r => r.json()); return __europe; }
-function initStoreLocatorFallback() {
-  const wrapper = nextPage.querySelector("[data-locator-init]");
-  if (!wrapper || wrapper.dataset.locatorInit === "initialized" || typeof d3 === "undefined") return;
-  wrapper.dataset.locatorInit = "initialized";
-  const mapEl = wrapper.querySelector("[data-locator-map]");
-  const locations = locatorReadLocations(wrapper);
-  const box = document.createElement("div"); box.className = "geo-fallback"; box.style.cursor = "default";
-  box.innerHTML = '<svg aria-hidden="true"><rect class="l-sea" width="100%" height="100%" fill="#DCE3E1"/><path class="l-land" fill="#EEE9E0" stroke="#C9C1B3" stroke-width=".7"/><path class="l-de" fill="#FBFAF7" stroke="#9C9384" stroke-width="1"/><g class="l-labels" font-family="Hanken Grotesk, sans-serif" font-size="11" letter-spacing="1.6" fill="#5D6567"></g></svg><div class="geo-markers"></div><div class="globe-zoom" style="border-color:rgba(28,35,38,.15)"><button type="button" aria-label="Hineinzoomen" style="background:#FBFAF7;color:#1C2326">+</button><button type="button" aria-label="Herauszoomen" style="background:#FBFAF7;color:#1C2326;border-top:1px solid rgba(28,35,38,.12)">−</button></div>';
-  mapEl.appendChild(box);
-  const svg = box.querySelector("svg"), mk = box.querySelector(".geo-markers");
-  const pins = locations.map(location => { const element = locatorPinEl(wrapper, location); mk.appendChild(element); return { element, location }; });
-  const proj = d3.geoMercator(), path = d3.geoPath(proj);
-  const CITIES = [["Berlin", 13.405, 52.52], ["Köln", 6.9603, 50.9375], ["München", 11.5755, 48.1374], ["Magdeburg", 11.6276, 52.1205]];
-  let fc = null, de = null;
-  const view = { k: 1, cx: 10.45, cy: 51.15 };
-  const render = () => {
-    const w = box.clientWidth, h = box.clientHeight; if (!de) return;
-    proj.scale(1).translate([0, 0]);
-    const b = path.bounds(de), s = 0.86 / Math.max((b[1][0] - b[0][0]) / w, (b[1][1] - b[0][1]) / h);
-    proj.scale(s * view.k);
-    const c = proj([view.cx, view.cy]);
-    proj.translate([w / 2 - c[0], h / 2 - c[1]]);
-    svg.querySelector(".l-land").setAttribute("d", path(fc));
-    svg.querySelector(".l-de").setAttribute("d", path(de));
-    const lab = svg.querySelector(".l-labels"); lab.innerHTML = "";
-    CITIES.forEach(([n, x, y]) => { const p = proj([x, y]); const t = document.createElementNS("http://www.w3.org/2000/svg", "text"); t.setAttribute("x", p[0] + 18); t.setAttribute("y", p[1] + 26); t.textContent = n.toUpperCase(); lab.appendChild(t); });
-    // Pins, die sich überlagern, leicht auseinanderschieben
-    const pts = pins.map(p => proj([p.location.lng, p.location.lat]));
-    pts.forEach((a, i) => pts.forEach((bb, j) => { if (j <= i) return; const dx = bb[0] - a[0], dy = bb[1] - a[1], d = Math.hypot(dx, dy); if (d < 34) { const push = (34 - d) / 2 + 1; const ux = d ? dx / d : 1, uy = d ? dy / d : 0; a[0] -= ux * push; a[1] -= uy * push; bb[0] += ux * push; bb[1] += uy * push; } }));
-    pins.forEach((p, i) => { p.element.style.transform = `translate(${pts[i][0]}px, ${pts[i][1]}px) translate(-50%, -50%)`; });
-  };
-  loadEurope().then(data => { fc = data; de = { type: "FeatureCollection", features: data.features.filter(f => f.properties.name === "Germany") }; render(); });
-  const go = (cx, cy, k) => gsap.to(view, { cx, cy, k, duration: reducedMotion ? 0 : 1.2, ease: "power3.inOut", onUpdate: render });
-  const select = (index) => { const l = locations[index]; if (!l) return; locatorSetActive(locations, pins, index); go(l.lng, l.lat, 2.6); };
-  locatorWire(locations, pins, select);
-  const [zin, zout] = box.querySelectorAll(".globe-zoom button");
-  zin.addEventListener("click", () => go(view.cx, view.cy, Math.min(8, view.k * 1.5)));
-  zout.addEventListener("click", () => { const k = Math.max(1, view.k / 1.5); go(k === 1 ? 10.45 : view.cx, k === 1 ? 51.15 : view.cy, k); });
-  const ro = new ResizeObserver(render); ro.observe(box);
 }
