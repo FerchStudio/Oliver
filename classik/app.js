@@ -327,6 +327,7 @@ function initNav() {
 function markCurrent() {
   const p = location.pathname.replace(/\/$/, "") || "/";
   $$(".nav a[href], .menu a[href]").forEach(a => {
+    if (a.getAttribute("href") === "#") return;
     let h; try { h = new URL(a.getAttribute("href"), location.href).pathname.replace(/\/$/, "") || "/"; } catch (e) { return; }
     if (h === p) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
   });
@@ -1293,7 +1294,14 @@ function createLightbox(container, { onStart, onOpen, onClose, onCloseComplete }
     }
   });
 }
+function buildLightboxMarkup(wrapper) {
+  if (wrapper.querySelector('[data-lightbox="wrapper"]')) return;
+  const imgs = [...wrapper.querySelectorAll('[data-lightbox="trigger"] img')];
+  const items = imgs.map(i => `<div data-lightbox="item" class="lightbox-img__item"><img src="${i.currentSrc || i.src}" alt="${(i.alt || "").replace(/"/g, "&quot;")}" class="lightbox-img" loading="lazy"></div>`).join("");
+  wrapper.insertAdjacentHTML("beforeend", `<div aria-modal="true" data-lightbox="wrapper" role="dialog" aria-label="Bildergalerie" class="lightbox-wrap"><div class="lightbox-img__wrap"><div class="lightbox-img__list">${items}</div></div><div class="lightbox-nav"><div data-lightbox="nav" class="lightbox-nav__col"><p class="lightbox-nav__text"><span data-lightbox="counter-current">1</span> / <span data-lightbox="counter-total">${imgs.length}</span></p></div><div data-lightbox="nav" class="lightbox-nav__col is-center"><button type="button" data-lightbox="prev" class="lightbox-nav__button"><div class="lightbox-nav__dot"></div><span class="lightbox-nav__text">zurück</span></button><button type="button" data-lightbox="next" class="lightbox-nav__button"><span class="lightbox-nav__text">weiter</span><div class="lightbox-nav__dot"></div></button></div><div data-lightbox="nav" class="lightbox-nav__col is-end"><button type="button" data-lightbox="close" class="lightbox-nav__button"><span class="lightbox-nav__text">schließen</span></button></div></div></div>`);
+}
 function initLightboxes() {
+  nextPage.querySelectorAll("[data-gallery]").forEach(buildLightboxMarkup);
   nextPage.querySelectorAll("[data-gallery]").forEach(wrapper => createLightbox(wrapper, {
     onStart: () => lenis && lenis.stop(),
     onClose: () => lenis && lenis.start()

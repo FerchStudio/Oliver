@@ -15,6 +15,7 @@
   if (needsGeo) libs.push(cdn + "d3-array@3.2.4/dist/d3-array.min.js", cdn + "d3-geo@3.1.1/dist/d3-geo.min.js", cdn + "topojson-client@3.1.0/dist/topojson-client.min.js");
   if (window.CLASSIK_MAPBOX_TOKEN && needsGeo) libs.push("https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js");
   libs.push(cdn + "lenis@1.3.4/dist/lenis.min.js", base + "app.js");
+  document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest('a[href="#"]'); if (a) e.preventDefault(); });
   var started = false, evs = ["pointerdown", "pointermove", "keydown", "touchstart", "wheel", "scroll"];
   function start() {
     if (started) return; started = true;
