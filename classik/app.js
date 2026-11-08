@@ -1521,6 +1521,8 @@ function initStoreLocatorMap(wrapper, gl, style) {
   map.addControl(new gl.AttributionControl({ compact: true }));
   map.addControl(new gl.NavigationControl({ showCompass: false }), "top-left");
   map.on("load", () => {
+    const at = wrapper.querySelector(".maplibregl-ctrl-attrib"); if (at) at.classList.remove("maplibregl-compact-show");
+    wrapper.querySelectorAll(".store-locator__item img").forEach(i => { i.loading = "eager"; });
     if (!isMapbox) { locatorTint(map); try { map.getStyle().layers.forEach(l => { if (l.type === "symbol" && l.layout && l.layout["text-field"]) map.setLayoutProperty(l.id, "text-field", ["coalesce", ["get", "name:de"], ["get", "name"]]); }); } catch (e) {} }
     // Nahe beieinander liegende Hotels (Berlin) leicht versetzen, damit beide Pins sichtbar sind
     const offs = locations.map((l, i) => { const n = locations.findIndex((o, j) => j !== i && Math.abs(o.lat - l.lat) < .05 && Math.abs(o.lng - l.lng) < .05); return n < 0 ? [0, 0] : [i < n ? -15 : 15, 0]; });
