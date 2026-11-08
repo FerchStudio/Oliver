@@ -361,3 +361,25 @@ html{background-color:var(--ivory)}
 :root{--_classik---accent:#467D75;--_classik---accent-d:#3B6A63}
 .is-dark .mute,.is-dark .sec-head .mute{color:rgba(245,242,236,.66)}
 html.lb-open .book-dock,html.lb-open .badge-concept{opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s}
+/* Mobil-Optimierung 08.11. */
+.intro>*,.split>*,.split_body>*{min-width:0}
+@media (max-width:991px){
+.intro{grid-template-columns:minmax(0,1fr)}
+.book,.book.is-page{grid-template-columns:1fr 1fr}
+.book>.book_field:has([data-book-hotel]){grid-column:1/-1;border-right:0}
+.book>.book_field:has([data-book-pick="out"]){border-right:0}
+.book>.book_submit{grid-column:1/-1;padding:.6rem}
+.book>.book_submit .btn{width:100%;justify-content:center}
+}
+@media (max-width:767px){
+.btn{white-space:normal;height:auto;min-height:3.25rem;padding-top:.75rem;padding-bottom:.75rem;text-align:center;max-width:100%;line-height:1.3}
+.btn.is-small{min-height:2.9rem}
+.book_field{padding:.85rem 1.1rem}
+.book_input,.book_date{font-size:1rem}
+.badge-concept{position:absolute;top:5.25rem;bottom:auto;left:1.25rem}
+html:has(.w-webflow-badge) .sticky-book{bottom:3.4rem}
+}
+@media (hover:none),(max-width:767px){.btn_text span{text-shadow:none}.btn:hover .btn_text span{transform:none}}
+.btn_text span.w{display:inline-block;white-space:nowrap;text-shadow:none;transform:none!important;transition:none}
+@media (max-width:767px){html:has(.w-webflow-badge) .sticky-book{transform:translateY(calc(100% + 4.5rem))}html:has(.w-webflow-badge).show-sticky .sticky-book{transform:none}}
+@media (max-width:767px){.hero .img-slider,.hero .hero_content{height:62svh;min-height:26rem}.hero .hero_content{padding-bottom:5.5rem}.hero .img-slider__nav{bottom:2rem}.hero>.book,.hero .book:not(.is-dock){margin-top:-1rem}}

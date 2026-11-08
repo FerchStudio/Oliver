@@ -302,7 +302,13 @@ function initButtons(scope) {
     const t = b.textContent.trim();
     b.textContent = "";
     const w = document.createElement("span"); w.className = "btn_text";
-    [...t].forEach((c, i) => { const s = document.createElement("span"); s.textContent = c; s.style.transitionDelay = (i * 0.012) + "s"; w.appendChild(s); });
+    let i = 0;
+    t.split(" ").forEach((word, wi) => {
+      if (wi) w.appendChild(document.createTextNode(" "));
+      const ws = document.createElement("span"); ws.className = "w";
+      [...word].forEach(c => { const s = document.createElement("span"); s.textContent = c; s.style.transitionDelay = (i++ * 0.012) + "s"; ws.appendChild(s); });
+      w.appendChild(ws);
+    });
     b.appendChild(w);
     b.insertAdjacentHTML("beforeend", ARROW);
     b.setAttribute("aria-label", b.getAttribute("aria-label") || t);
@@ -404,7 +410,7 @@ function initScrollState() {
     html.classList.toggle("nav-solid", y > 40);
     if (y > 400 && y > lastY + 4) { html.classList.add("nav-hide"); html.classList.remove("mega-open"); }
     if (y < lastY - 4) html.classList.remove("nav-hide");
-    html.classList.toggle("show-sticky", y > 700 && y + innerHeight < document.body.scrollHeight - 600);
+    const ft = document.querySelector(".footer"); html.classList.toggle("show-sticky", y > 700 && !(ft && ft.getBoundingClientRect().top < innerHeight - 40));
     lastY = y;
   };
   addEventListener("scroll", onScroll, { passive: true }); onScroll();
@@ -1515,7 +1521,7 @@ function initStoreLocatorMap(wrapper, gl, style) {
   map.addControl(new gl.AttributionControl({ compact: true }));
   map.addControl(new gl.NavigationControl({ showCompass: false }), "top-left");
   map.on("load", () => {
-    if (!isMapbox) locatorTint(map);
+    if (!isMapbox) { locatorTint(map); try { map.getStyle().layers.forEach(l => { if (l.type === "symbol" && l.layout && l.layout["text-field"]) map.setLayoutProperty(l.id, "text-field", ["coalesce", ["get", "name:de"], ["get", "name"]]); }); } catch (e) {} }
     // Nahe beieinander liegende Hotels (Berlin) leicht versetzen, damit beide Pins sichtbar sind
     const offs = locations.map((l, i) => { const n = locations.findIndex((o, j) => j !== i && Math.abs(o.lat - l.lat) < .05 && Math.abs(o.lng - l.lng) < .05); return n < 0 ? [0, 0] : [i < n ? -15 : 15, 0]; });
     const pins = locations.map((location, i) => { const element = locatorPinEl(wrapper, location); const marker = new gl.Marker({ element, anchor: "center", offset: offs[i] }).setLngLat([location.lng, location.lat]).addTo(map); return { marker, element, location }; });
