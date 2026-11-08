@@ -53,7 +53,7 @@
   document.addEventListener("change", function (e) { var f = e.target.closest && e.target.closest("[data-book]"); if (f) bookRender(f); }, true);
 
   var cal = null, calForm = null, calStep = "in", calView = null, calA = "", calB = "", calHover = "";
-  function calClose() { if (cal) { cal.remove(); cal = null; } if (calForm) calForm.classList.remove("is-picking"); calForm = null; document.removeEventListener("keydown", calKey); }
+  function calClose() { root.classList.remove("cal-open"); if (cal) { cal.remove(); cal = null; } if (calForm) calForm.classList.remove("is-picking"); calForm = null; document.removeEventListener("keydown", calKey); }
   function calKey(e) { if (e.key === "Escape") calClose(); }
   function setVal(f, k, v) { var inp = f.querySelector("[data-book-" + k + "]"); if (inp && inp.value !== v) { inp.value = v; inp.dispatchEvent(new Event("change", { bubbles: true })); } }
   function calApply() {
@@ -98,7 +98,10 @@
     calView = new Date(base.getFullYear(), base.getMonth(), 1);
     var today = new Date(); if (calView < new Date(today.getFullYear(), today.getMonth(), 1)) calView = new Date(today.getFullYear(), today.getMonth(), 1);
     cal = document.createElement("div"); cal.className = "cal"; cal.setAttribute("role", "dialog"); cal.setAttribute("aria-label", "Reisezeitraum wählen");
-    f.classList.add("is-picking"); f.appendChild(cal); calDraw();
+    var sheet = innerWidth < 768;
+    f.classList.add("is-picking"); if (sheet) { cal.classList.add("is-sheet"); document.body.appendChild(cal); root.classList.add("cal-open"); } else f.appendChild(cal);
+    calDraw();
+    if (sheet) { document.addEventListener("keydown", calKey); requestAnimationFrame(function () { cal && cal.classList.add("is-open"); }); return; }
     // Position: an der Leiste, nach oben öffnen wenn unten zu wenig Platz ist
     var fr = f.getBoundingClientRect(), r = field.getBoundingClientRect(), h = cal.offsetHeight, w = cal.offsetWidth;
     var up = fr.bottom + h + 16 > innerHeight && fr.top - h - 16 > 0;

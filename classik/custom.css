@@ -350,3 +350,8 @@ html.intro-reveal .img-slider__thumb:nth-child(5){transition-delay:.54s}
 .crisp.is-focus::before,.crisp.is-focus::after{opacity:0;transition:opacity .6s}
 @media (max-width:767px){.crisp{--s:24vw}}
 @media (prefers-reduced-motion:reduce){.crisp{display:none}}
+/* Kalender mobil als Bottom-Sheet */
+.cal.is-sheet{position:fixed;left:0!important;right:0;top:auto;bottom:0;width:100%;max-width:none;max-height:88svh;overflow:auto;border-radius:1.1rem 1.1rem 0 0;padding:1.2rem 1.1rem calc(1rem + env(safe-area-inset-bottom));z-index:1000;transform:translateY(100%);opacity:1;box-shadow:0 -20px 60px -20px rgba(28,35,38,.45)}
+.cal.is-sheet.is-open{transform:none}
+html.cal-open body::after{content:"";position:fixed;inset:0;z-index:999;background:rgba(28,35,38,.4)}
+html.cal-open,html.cal-open body{overflow:hidden}
