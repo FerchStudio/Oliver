@@ -16,6 +16,21 @@
   if (window.CLASSIK_MAPBOX_TOKEN && needsGeo) libs.push("https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js");
   libs.push(cdn + "lenis@1.3.4/dist/lenis.min.js", base + "app.js");
   document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest('a[href="#"]'); if (a) e.preventDefault(); });
+  // Buchungsleisten: Hotel, Daten und Gäste an Guestline übergeben (funktioniert auch vor app.js und nach Seitenwechseln)
+  function bookUrl(f) {
+    var iso = function (d) { return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); };
+    var h = f.querySelector("[data-book-hotel]"), i = f.querySelector("[data-book-in]"), o = f.querySelector("[data-book-out]"), n = f.querySelector("[data-book-adults]");
+    var t = new Date(), arr = (i && i.value) || iso(t); t = new Date(arr); t.setDate(t.getDate() + 1);
+    var dep = (o && o.value > arr) ? o.value : iso(t);
+    var q = (h && h.value ? "hotel=" + h.value + "&" : "") + "lng=de&arrival=" + arr + "&departure=" + dep + "&adults=" + ((n && parseInt(n.textContent, 10)) || 1) + "&children=0";
+    return "https://booking.eu.guestline.app/CHC?" + q;
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("[data-book-go]"); if (!a) return;
+    var f = a.closest("[data-book]"); if (!f) return;
+    e.preventDefault(); e.stopPropagation();
+    window.open(bookUrl(f), "_blank", "noopener");
+  }, true);
 
   // Mega-Menüs sofort bedienbar (Hover öffnet, kurze Verzögerung beim Schließen)
   var root = document.documentElement, fine = matchMedia("(hover:hover) and (pointer:fine)").matches;

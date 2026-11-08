@@ -245,3 +245,10 @@ ul.chips{list-style:none;padding:0;margin-bottom:0}
 .faq:has(.form){grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}
 @media (max-width:991px){.faq:has(.form){grid-template-columns:1fr}}
 @media (max-width:767px){.form form{grid-template-columns:1fr}}
+
+/* Buchungsleiste im Seitenkopf (Hotelübersicht + Hotelseiten) */
+.book.is-page{position:relative;left:auto;right:auto;bottom:auto;margin:2.25rem 0 0;max-width:none;width:100%;z-index:3}
+.phero.is-plain .book.is-page{box-shadow:0 0 0 1px var(--line),0 24px 50px -32px rgba(28,35,38,.35)}
+.phero_content .w-embed:has(.book){width:100%}
+@media (max-width:991px){.book.is-page{grid-template-columns:1fr 1fr;margin-top:1.75rem}.book.is-page .book_field{border-bottom:1px solid var(--line)}.book.is-page .book_submit{grid-column:1/-1}.book.is-page .book_submit .btn{width:100%;justify-content:center}}
+@media (max-width:479px){.book.is-page{grid-template-columns:1fr}}

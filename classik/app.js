@@ -411,8 +411,9 @@ function initSplitHeadings(scope) {
   const firstRun = !window.__chcEntered;
   document.fonts.ready.then(() => {
     $$("[data-split]", scope).forEach(el => {
-      if (reducedMotion || (firstRun && inView(el))) { el.style.visibility = "visible"; return; }
-      const hero = el.dataset.split === "hero";
+      // Hero-Headlines animiert nur der Seitenwechsel (runPageEnterAnimation), nie ein zweites Mal
+      if (reducedMotion || (firstRun && inView(el)) || el.dataset.split === "hero" || el.closest(".phero, .hero")) { el.style.visibility = "visible"; return; }
+      const hero = false;
       SplitText.create(el, {
         type: "lines", mask: "lines", linesClass: "split-line", autoSplit: true, aria: "auto",
         onSplit: self => gsap.from(self.lines, {
