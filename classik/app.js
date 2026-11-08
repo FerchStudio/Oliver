@@ -652,6 +652,7 @@ function initBookDock(scope) {
   const dock = src.cloneNode(true); src._dock = dock;
   dock.classList.remove("is-page"); dock.classList.add("is-dock"); dock.setAttribute("aria-label", "Zimmer buchen");
   dock.querySelectorAll("[id]").forEach(e => { e.id = "dock-" + e.id; });
+  dock.querySelectorAll(".cal").forEach(e => e.remove()); dock.classList.remove("is-picking");
   dock.querySelectorAll("label[for]").forEach(l => { l.htmlFor = "dock-" + l.htmlFor; });
   dock.querySelectorAll("[aria-labelledby]").forEach(e => e.setAttribute("aria-labelledby", "dock-" + e.getAttribute("aria-labelledby")));
   const wrap = document.createElement("div"); wrap.className = "book-dock"; wrap.appendChild(dock); scope.appendChild(wrap);
@@ -662,10 +663,6 @@ function initBookDock(scope) {
     const link = (x, y) => x.addEventListener("change", () => { if (y.value !== x.value) { y.value = x.value; y.dispatchEvent(new Event("change")); } });
     b.value = a.value; link(a, b); link(b, a);
   });
-  let mirroring = false;
-  const sa = $$("[data-book-step]", src), sb = $$("[data-book-step]", dock);
-  const mirror = (from, to) => from.forEach((btn, i) => btn.addEventListener("click", () => { if (mirroring) return; mirroring = true; to[i] && to[i].click(); mirroring = false; }));
-  mirror(sa, sb); mirror(sb, sa);
   const footer = document.querySelector(".footer");
   const onScroll = () => {
     if (!document.contains(src)) { removeEventListener("scroll", onScroll); html.classList.remove("show-dock"); return; }
@@ -676,30 +673,22 @@ function initBookDock(scope) {
   addEventListener("scroll", onScroll, { passive: true }); onScroll();
 }
 
-/* Buchungsleiste: Formular mit Ziel Guestline (funktioniert auch ohne JS) */
+/* Buchungsleiste: Werte vorbelegen und Abreise immer nach Anreise halten (Kalender + Übergabe: site.js) */
 function initBooking(scope) {
   $$("[data-book]", scope).forEach(f => {
-    const hotel = $("[data-book-hotel]", f), inp = $("[data-book-in]", f), out = $("[data-book-out]", f), ad = $("[data-book-adults]", f), adIn = $("[data-book-adults-input]", f);
+    const inp = $("[data-book-in]", f), out = $("[data-book-out]", f);
+    if (!inp || !out) return;
     const iso = d => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
     const plus = (v, n) => { const d = new Date(v); d.setDate(d.getDate() + n); return iso(d); };
     const today = iso(new Date());
-    inp.min = today; if (!inp.value) inp.value = today;
+    if (!inp.value || inp.value < today) inp.value = today;
     if (!out.value) out.value = plus(inp.value, 1);
-    let adults = parseInt(adIn ? adIn.value : 1, 10) || 1;
     const update = () => {
       if (out.value <= inp.value) out.value = plus(inp.value, 1);
-      out.min = plus(inp.value, 1);
-      if (ad) { ad.textContent = adults; const w = ad.nextSibling; if (w && w.nodeType === 3) w.textContent = adults === 1 ? " Erwachsener" : " Erwachsene"; } if (adIn) adIn.value = adults;
+      if (window.__bookRender) window.__bookRender(f);
     };
     [inp, out].forEach(x => x.addEventListener("change", update));
-    $$("[data-book-step]", f).forEach(b => b.addEventListener("click", () => { adults = Math.min(6, Math.max(1, adults + +b.dataset.bookStep)); update(); }));
-    f.addEventListener("submit", e => {
-      e.preventDefault(); update();
-      const p = new URLSearchParams();
-      if (hotel && hotel.value) p.set("hotel", hotel.value);
-      p.set("lng", "de"); p.set("arrival", inp.value); p.set("departure", out.value); p.set("adults", adults); p.set("children", 0);
-      window.open("https://booking.eu.guestline.app/CHC?" + p.toString().replace(/%3B/g, ";"), "_blank", "noopener");
-    });
+    f.addEventListener("submit", e => { e.preventDefault(); const go = $("[data-book-go]", f); if (go) go.click(); });
     update();
   });
 }
