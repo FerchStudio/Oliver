@@ -406,3 +406,14 @@ html:has(.w-webflow-badge) .sticky-book{bottom:3.4rem}
 .store-locator__main{order:2}
 .store-locator__side>div:not(.store-locator__header){order:3;margin-top:1.25rem}
 }
+
+/* Angebote (CMS) */
+.w-dyn-empty{padding:0;background:none}
+.w-dyn-items:has(.offer){display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,20rem),1fr));gap:1.25rem}
+.w-dyn-item:has(.offer){height:100%}
+.offer{transition:box-shadow .4s,transform .6s var(--ease)}
+.offer:hover{box-shadow:inset 0 0 0 1px rgba(28,35,38,.35);transform:translateY(-2px)}
+.offer_plus{transition:transform .5s var(--ease)}
+.offer:hover .offer_plus{transform:rotate(90deg)}
+.offer_old:empty,.offer_unit:empty,.offer_room:empty,.offer_meta:empty{display:none}
+.offer{font-family:var(--sans);font-size:1rem;line-height:1.5}.offer .offer_title,.offer .offer_now,.offer .offer_cur{font-family:var(--serif)}
