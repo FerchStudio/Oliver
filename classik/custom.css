@@ -460,3 +460,6 @@ html:has(.w-webflow-badge) .sticky-book{bottom:3.4rem}
 .hmap_pin svg{width:1.2rem;height:1.2rem}
 .hmap .maplibregl-ctrl-attrib{font-size:.65rem}
 @media (max-width:767px){.hmap{height:auto;display:flex;flex-direction:column}.hmap_canvas{position:relative;inset:auto;height:20rem}.hmap_card{position:relative;right:auto;bottom:auto;width:auto;border-radius:0}}
+.hmap .hmap_canvas{position:absolute;inset:0}
+@media (max-width:767px){.hmap .hmap_canvas{position:relative;inset:auto;height:20rem}}
+@media (min-width:768px){.hmap .hmap_card{right:auto;left:1.25rem}.hmap .maplibregl-ctrl-top-left{left:auto;right:0}}

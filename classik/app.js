@@ -1447,7 +1447,7 @@ function initHotelMap(scope) {
     const canvas = wrap.querySelector("[data-hotel-map-canvas]");
     if (!canvas || !isFinite(lat) || !isFinite(lng)) return;
     const boot = () => loadMapLibre().then(gl => {
-      const map = new gl.Map({ container: canvas, style: "https://tiles.openfreemap.org/styles/positron", center: [lng, lat], zoom: 14.2, attributionControl: false, cooperativeGestures: true,
+      const map = new gl.Map({ container: canvas, style: "https://tiles.openfreemap.org/styles/positron", center: [lng, lat], zoom: 13.4, attributionControl: false, cooperativeGestures: true,
         locale: { "CooperativeGesturesHandler.WindowsHelpText": "Strg + Scrollen zum Zoomen", "CooperativeGesturesHandler.MacHelpText": "⌘ + Scrollen zum Zoomen", "CooperativeGesturesHandler.MobileHelpText": "Mit zwei Fingern bewegen" } });
       map.addControl(new gl.AttributionControl({ compact: true }));
       map.addControl(new gl.NavigationControl({ showCompass: false }), "top-left");
@@ -1530,7 +1530,7 @@ function locatorTint(map) {
       else if (ly.type === "fill" && /park|wood|grass|landcover/.test(ly.id)) map.setPaintProperty(ly.id, "fill-color", "#E6E6D8");
       else if (ly.type === "line" && /boundary/.test(ly.id)) map.setPaintProperty(ly.id, "line-color", "#B9B1A3");
       else if (ly.type === "symbol" && /state|country/.test(ly.id)) map.setLayoutProperty(ly.id, "visibility", "none");
-      else if (ly.type === "symbol" && ly.layout && ly.layout["text-field"]) map.setLayoutProperty(ly.id, "text-field", ["coalesce", ["get", "name:de"], ["get", "name"]]);
+      else if (ly.type === "symbol" && !/shield/.test(ly.id) && ly.layout && ly.layout["text-field"]) map.setLayoutProperty(ly.id, "text-field", ["coalesce", ["get", "name:de"], ["get", "name"]]);
     } catch (e) {}
   });
 }
