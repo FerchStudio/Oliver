@@ -417,3 +417,33 @@ html:has(.w-webflow-badge) .sticky-book{bottom:3.4rem}
 .offer:hover .offer_plus{transform:rotate(90deg)}
 .offer_old:empty,.offer_unit:empty,.offer_room:empty,.offer_meta:empty{display:none}
 .offer{font-family:var(--sans);font-size:1rem;line-height:1.5}.offer .offer_title,.offer .offer_now,.offer .offer_cur{font-family:var(--serif)}
+
+/* Hotelseiten: Editorial-Aufbau (inspiriert von Sir Hotels) – Titel zentriert, Bildcollage, Text daneben */
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]){--ed-gap:clamp(1rem,2vw,2rem)}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip){display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--ed-gap);row-gap:clamp(1.5rem,2.5vw,2.5rem);align-items:start}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip)>:is(.intro,[data-gallery]),
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip)>[data-gallery]>.strip{display:contents}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip) .intro_sticky{grid-column:1/-1;grid-row:1;position:static;text-align:center;margin-bottom:clamp(1rem,3vw,2.5rem)}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip) .intro_sticky .h2{font-size:clamp(2.6rem,6.2vw,5.75rem);line-height:1.02;max-width:17ch;margin-left:auto;margin-right:auto}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip) .strip_item{aspect-ratio:4/3;margin:0;grid-row:auto}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip) .split_body{align-self:start}
+@media (min-width:992px){
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip) .strip_item:nth-child(1){grid-column:1/8;grid-row:2/span 3;aspect-ratio:4/5}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip) .strip_item:nth-child(2){grid-column:9/13;grid-row:2}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip) .split_body{grid-column:9/13;grid-row:3}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip) .strip_item:nth-child(3){grid-column:9/12;grid-row:4;aspect-ratio:1/1;align-self:end}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec:nth-child(even of .sec:has(.strip))>.wrap .strip_item:nth-child(1){grid-column:6/13}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec:nth-child(even of .sec:has(.strip))>.wrap :is(.strip_item:nth-child(2),.split_body){grid-column:1/5}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec:nth-child(even of .sec:has(.strip))>.wrap .strip_item:nth-child(3){grid-column:2/5}
+}
+@media (max-width:991px){
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip){grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip) :is(.strip_item:nth-child(1),.split_body){grid-column:1/-1}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip) .strip_item:nth-child(1){aspect-ratio:3/2}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip) .split_body{order:1}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip) .strip_item:nth-child(n+2){order:2}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip) .intro_sticky{text-align:left}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip) .intro_sticky .h2{margin-left:0;font-size:clamp(2.4rem,9vw,3.6rem)}
+}
+:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .statement{text-align:center;margin-left:auto;margin-right:auto}
+@media (min-width:992px){:is([data-barba-namespace="ap"],[data-barba-namespace="hm"],[data-barba-namespace="mm"],[data-barba-namespace="an"],[data-barba-namespace="md"]) .sec>.wrap:has(>[data-gallery] .strip) .strip_item:nth-child(1){position:sticky;top:7rem}}
