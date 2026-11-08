@@ -13,7 +13,8 @@ window.CLASSIK_MAPBOX_TOKEN = window.CLASSIK_MAPBOX_TOKEN || "";
 const BASE = window.CLASSIK_BASE || "";
 // Erstaufruf: Bibliotheken laden verzögert. Inhalte im sichtbaren Bereich bleiben stehen, animiert wird nur, was noch kommt.
 const LATE = true;
-const inView = el => el.getBoundingClientRect().top < innerHeight * 0.92;
+// Sichtbar = irgendein Teil ist im Viewport (dann beim Erstaufruf nicht nachträglich animieren)
+const inView = el => { const r = el.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; };
 
 // -----------------------------------------
 // OSMO PAGE TRANSITION BOILERPLATE
@@ -414,14 +415,21 @@ function initSplitHeadings(scope) {
   document.fonts.ready.then(() => {
     $$("[data-split]", scope).forEach(el => {
       // Hero-Headlines animiert nur der Seitenwechsel (runPageEnterAnimation), nie ein zweites Mal
-      if (reducedMotion || (firstRun && inView(el)) || el.dataset.split === "hero" || el.closest(".phero, .hero")) { el.style.visibility = "visible"; return; }
+      // Was beim Laden/Seitenwechsel schon im Bild ist, bleibt stehen (die Seite blendet ja als Ganzes ein)
+      if (reducedMotion || inView(el) || el.dataset.split === "hero" || el.closest(".phero, .hero")) { el.style.visibility = "visible"; return; }
       const hero = false;
+      const vis = inView(el);   // nach Seitenwechsel sichtbar: sofort animieren, nicht erst beim Scrollen
       SplitText.create(el, {
         type: "lines", mask: "lines", linesClass: "split-line", autoSplit: true, aria: "auto",
-        onSplit: self => gsap.from(self.lines, {
-          yPercent: 110, duration: hero ? 1.3 : 1.05, ease: "expo.out", stagger: 0.12, delay: hero ? 0.45 : 0,
-          scrollTrigger: hero ? null : { trigger: el, start: "top 88%", once: true }
-        })
+        // autoSplit teilt bei Breitenänderung neu (z. B. nach dem Seitenwechsel) – die Animation darf nur beim ersten Mal laufen
+        onSplit: self => {
+          if (el._splitAnimated) return;
+          el._splitAnimated = true;
+          return gsap.from(self.lines, {
+            yPercent: 110, duration: 1.05, ease: "expo.out", stagger: 0.12, delay: vis ? 0.3 : 0,
+            scrollTrigger: vis ? null : { trigger: el, start: "top 96%", once: true }
+          });
+        }
       });
       gsap.set(el, { visibility: "visible" });
     });
@@ -436,11 +444,12 @@ function initContentRevealScroll() {
     nextPage.querySelectorAll('[data-reveal-group]').forEach((groupEl) => {
       const groupStaggerSec = (parseFloat(groupEl.getAttribute('data-stagger')) || 100) / 1000;
       const groupDistance = groupEl.getAttribute('data-distance') || '2em';
-      const triggerStart = groupEl.getAttribute('data-start') || 'top 80%';
+      // Nach Seitenwechsel: sichtbare Inhalte sofort animieren, nicht erst beim Scrollen
+      const triggerStart = inView(groupEl) ? 'top bottom' : (groupEl.getAttribute('data-start') || 'top 90%');
       const animDuration = 0.8;
       const animEase = 'power4.inOut';
 
-      if (prefersReduced || (!window.__chcEntered && inView(groupEl))) {
+      if (prefersReduced || inView(groupEl)) {
         gsap.set(groupEl, { clearProps: 'all', y: 0, autoAlpha: 1 });
         return;
       }
@@ -481,9 +490,7 @@ function initContentRevealScroll() {
         }
       });
 
-      ScrollTrigger.create({
-        trigger: groupEl, start: triggerStart, once: true,
-        onEnter: () => {
+      const reveal = () => {
           const tl = gsap.timeline();
           slots.forEach((slot, slotIndex) => {
             const slotTime = slotIndex * groupStaggerSec;
@@ -498,8 +505,10 @@ function initContentRevealScroll() {
               });
             }
           });
-        }
-      });
+      };
+      // Bereits sichtbar (nach Seitenwechsel): direkt animieren statt auf Scrollen zu warten
+      if (inView(groupEl)) gsap.delayedCall(0.3, reveal);
+      else ScrollTrigger.create({ trigger: groupEl, start: triggerStart, once: true, onEnter: reveal });
     });
   });
 
