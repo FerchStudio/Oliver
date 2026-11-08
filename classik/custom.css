@@ -131,18 +131,20 @@ a.lage_hotel:hover{transform:translate(-50%,-50%) scale(1.04)}
 
 /* Bewertungen */
 .reviews{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(2rem,6vw,6rem);align-items:start}
-.reviews_score{position:relative;display:grid;grid-template-columns:auto 1fr;column-gap:1.5rem;align-items:end;margin-top:2.5rem;padding:2rem 2.2rem;border-radius:.9rem;background:var(--night);color:var(--on-dark);overflow:hidden}
-.reviews_score::after{content:"";position:absolute;right:-30%;top:-60%;width:80%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(79,138,130,.35),transparent 65%);pointer-events:none}
-.reviews_num{font-family:var(--serif);font-size:clamp(4rem,7vw,6.5rem);line-height:.85;letter-spacing:-.03em}
-.reviews_of{font-size:.85rem;color:var(--on-dark-mute);padding-bottom:.4rem}
-.reviews_label{grid-column:1/-1;margin-top:1.4rem;padding-top:1rem;border-top:1px solid var(--line-dark);font-size:.82rem;color:var(--on-dark-mute)}
-.reviews_label strong{color:var(--on-dark);font-weight:500}
+.reviews_score{display:grid;grid-template-columns:auto auto 1fr;column-gap:1.75rem;align-items:center;margin-top:2.75rem;padding-top:2rem;border-top:1px solid var(--line)}
+.reviews_award{grid-row:1/span 2;width:6.5rem;height:auto;border-radius:.4rem}
+.reviews_num{font-family:var(--serif);font-size:clamp(3.6rem,6vw,5.5rem);line-height:.9;letter-spacing:-.02em;color:var(--ink)}
+.reviews_of{font-size:.85rem;line-height:1.35;color:var(--mute);align-self:end;padding-bottom:.5rem}
+.reviews_label{grid-column:2/-1;margin:.6rem 0 0;font-size:.85rem;color:var(--mute)}
+.reviews_label strong{color:var(--ink);font-weight:500}
 .reviews_body{display:flex;flex-direction:column;row-gap:1.75rem}
-.reviews_body .chips{margin:.6rem 0 0;padding:0;list-style:none}
+.reviews_body .chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:2rem;margin:.9rem 0 0;padding:0;list-style:none}
 ul.chips{list-style:none;padding:0;margin-bottom:0}
-.reviews_body .chip{background:transparent}
+.reviews_body .chip{display:block;background:none;border:0;border-top:1px solid var(--line);border-radius:0;padding:.85rem 0;font-size:.95rem;color:var(--ink)}
+.reviews_body .chip:last-child:nth-child(odd){grid-column:1/-1}
 .reviews_tags-title{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:500;color:var(--mute)}
 @media (max-width:991px){.reviews{grid-template-columns:1fr}}
+@media (max-width:479px){.reviews_score{grid-template-columns:auto 1fr;column-gap:1.25rem}.reviews_award{width:5rem}.reviews_of{grid-column:2}.reviews_label{grid-column:1/-1}.reviews_body .chips{grid-template-columns:1fr}}
 
 /* Auszeichnungen & Partner */
 .logos{display:flex;flex-direction:column;row-gap:1.5rem;border-top:1px solid var(--line);padding-top:clamp(2rem,4vw,3rem)}
@@ -203,3 +205,14 @@ ul.chips{list-style:none;padding:0;margin-bottom:0}
 @media (max-width:991px){.store-locator__item{grid-template-columns:6.5rem minmax(0,1fr)}.store-locator__item-media{min-height:7.5rem}}
 @media (max-width:479px){.store-locator__item{grid-template-columns:1fr}.store-locator__item>*:not(.store-locator__item-media){grid-column:1}.store-locator__item-media{grid-row:auto;aspect-ratio:16/9;min-height:0;margin-bottom:.5rem}}
 .book_guests>span{white-space:nowrap}
+
+/* Update 08.11.: alle unterstrichenen Text-Links mit Linien-Animation */
+[data-barba="container"] a:not([class]),.rt a,.footer a[href^="mailto:"]:not([class]){text-decoration:none;background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat;padding-bottom:.08em;transition:color .3s}
+[data-barba="container"] a:not([class]):hover,.rt a:hover,.footer a[href^="mailto:"]:not([class]):hover,a.tel-link:hover{color:var(--accent);animation:chc-tel .8s var(--ease) both}
+
+/* Hero: Text und Bild-Thumbnails etwas tiefer, wie im Code-Entwurf */
+@media (min-width:992px){.hero .hero_content,.hero .img-slider__nav{bottom:10.75rem}}
+
+/* Self-Check-in: Hochformat-Video */
+.media[data-video="portrait"]{aspect-ratio:9/16;max-width:24rem;background:var(--night)}
+.media[data-video="portrait"] video{width:100%;height:100%;object-fit:cover}

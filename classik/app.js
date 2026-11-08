@@ -119,13 +119,16 @@ function runPageLeaveAnimation(current, next) {
   });
 
   if (reducedMotion) {
-    return tl.set(current, { autoAlpha: 0 });
+    return tl.set([current, ".footer"], { autoAlpha: 0 });
   }
 
+  // Alte Seite und Footer (liegt außerhalb des Barba-Containers) schnell ausblenden,
+  // damit nichts davon über der neuen Seite sichtbar bleibt
+  tl.to(".footer", { autoAlpha: 0, ease: "power2.in", duration: 0.25 }, 0);
   tl.to(current, {
     autoAlpha: 0,
-    ease: "power1.in",
-    duration: 0.5,
+    ease: "power2.in",
+    duration: 0.3,
   }, 0);
 
   return tl;
@@ -141,14 +144,14 @@ function runPageEnterAnimation(next) {
     return new Promise(resolve => tl.call(resolve, null, "pageReady"));
   }
 
-  tl.add("startEnter", 0);
+  tl.add("startEnter", 0.3);
 
   tl.fromTo(next, {
     autoAlpha: 0,
   }, {
     autoAlpha: 1,
-    ease: "power1.inOut",
-    duration: 0.75,
+    ease: "power1.out",
+    duration: 0.6,
   }, "startEnter");
 
   const h1 = next.querySelector("h1");
@@ -179,7 +182,7 @@ function runPageEnterAnimation(next) {
 // -----------------------------------------
 
 barba.hooks.beforeEnter(data => {
-  if (data.current && data.current.container) gsap.set(data.next.container, { position: "fixed", top: 0, left: 0, right: 0 });
+  if (data.current && data.current.container) gsap.set(data.next.container, { position: "fixed", top: 0, left: 0, right: 0, autoAlpha: 0 });
   if (lenis && typeof lenis.stop === "function") lenis.stop();
   closeMenus();
   initBeforeEnterFunctions(data.next.container);
@@ -249,6 +252,7 @@ function initLenis() {
 function resetPage(container) {
   window.scrollTo(0, 0);
   gsap.set(container, { clearProps: "position,top,left,right" });
+  gsap.set(".footer", { autoAlpha: 1 });
   if (lenis) { lenis.resize(); lenis.start(); }
 }
 
@@ -1460,16 +1464,25 @@ function initStoreLocatorMap(wrapper, gl, style) {
     // Nahe beieinander liegende Hotels (Berlin) leicht versetzen, damit beide Pins sichtbar sind
     const offs = locations.map((l, i) => { const n = locations.findIndex((o, j) => j !== i && Math.abs(o.lat - l.lat) < .05 && Math.abs(o.lng - l.lng) < .05); return n < 0 ? [0, 0] : [i < n ? -15 : 15, 0]; });
     const pins = locations.map((location, i) => { const element = locatorPinEl(wrapper, location); const marker = new gl.Marker({ element, anchor: "center", offset: offs[i] }).setLngLat([location.lng, location.lat]).addTo(map); return { marker, element, location }; });
+    const bounds = new gl.LngLatBounds(); locations.forEach(l => bounds.extend([l.lng, l.lat]));
+    let quiet = false;
     const popup = new gl.Popup({ closeButton: true, closeOnClick: true, offset: 30, maxWidth: "17.5rem", className: "locator-popup", focusAfterOpen: false });
     const select = (index) => {
       const location = locations[index]; if (!location) return;
+      if (popup.isOpen()) { quiet = true; popup.remove(); quiet = false; }
       locatorSetActive(locations, pins, index);
       popup.setLngLat([location.lng, location.lat]).setDOMContent(locatorCard(location)).addTo(map);
       const camera = { center: [location.lng, location.lat], zoom: cfg.selectedZoom, pitch: 0, bearing: 0, offset: [0, 90] };
       reducedMotion ? map.jumpTo(camera) : map.flyTo({ ...camera, duration: cfg.flyToDuration, essential: false });
     };
     locatorWire(locations, pins, select);
-    const bounds = new gl.LngLatBounds(); locations.forEach(l => bounds.extend([l.lng, l.lat]));
+    // Popup schließen: zurück zur Gesamtansicht aller Hotels
+    popup.on("close", () => {
+      if (quiet) return;
+      locatorSetActive(locations, pins, -1);
+      map.fitBounds(bounds, { padding: cfg.fitPadding, maxZoom: cfg.fitMaxZoom, duration: reducedMotion ? 0 : 1200 });
+    });
+
     map.fitBounds(bounds, { padding: cfg.fitPadding, maxZoom: cfg.fitMaxZoom, duration: reducedMotion ? 0 : 700 });
     wrapper.dataset.locatorInit = "initialized";
   });
