@@ -230,3 +230,5 @@
   evs.forEach(function (e) { addEventListener(e, start, { passive: true }); });
   addEventListener("load", function () { setTimeout(start, 6000); });
 })();
+/* Datumsformat Blog (sofort, ohne auf app.js zu warten) */
+(function(){var M=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];function f(){document.querySelectorAll("[data-de-date]").forEach(function(el){if(el.dataset.deDone)return;var d=new Date(el.textContent.trim());if(isNaN(d))return;el.textContent=d.getDate()+". "+M[d.getMonth()]+" "+d.getFullYear();el.dataset.deDone="1"})}if(document.readyState!=="loading")f();else document.addEventListener("DOMContentLoaded",f)})();

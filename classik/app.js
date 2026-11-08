@@ -75,6 +75,17 @@ function initFormPlaceholders(scope) {
   Object.keys(ph).forEach(id => { const el = scope.querySelector("#" + id); if (el) el.placeholder = ph[id]; });
 }
 
+function initDeDates(scope) {
+  const M = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+  (scope || document).querySelectorAll("[data-de-date]").forEach((el) => {
+    if (el.dataset.deDone) return;
+    const d = new Date(el.textContent.trim());
+    if (isNaN(d)) return;
+    el.textContent = d.getDate() + ". " + M[d.getMonth()] + " " + d.getFullYear();
+    el.dataset.deDone = "1";
+  });
+}
+
 function initAfterEnterFunctions(next) {
   nextPage = next || document;
 
@@ -97,6 +108,7 @@ function initAfterEnterFunctions(next) {
   if (has("[data-locator-init]")) initStoreLocator();
   if (has("[data-hotel-map]")) initHotelMap(nextPage);
   initFooterWord();
+  initDeDates(nextPage);
 
   if (hasLenis) lenis.resize();
   if (hasScrollTrigger) ScrollTrigger.refresh();
