@@ -88,6 +88,7 @@ function initAfterEnterFunctions(next) {
   if (has("[data-parallax]")) initParallax(nextPage);
   if (has('[data-slideshow="wrap"]')) initParallaxImageGalleryThumbnails();
   if (has("[data-book]")) initBooking(nextPage);
+  if (has(".book.is-page")) initBookDock(nextPage);
   if (has("[data-globe-init]")) initInteractiveGlobe();
   if (has("[data-cascading-slider-wrap]")) initCascadingSlider();
   if (has("[data-radial-slider-init]")) initRadialCardsSlider();
@@ -644,6 +645,36 @@ function initParallaxImageGalleryThumbnails() {
   wrappers.forEach(wrap => initSlideShow(wrap));
 }
 
+
+/* Hotelseiten: kompakte Buchungsleiste unten, sobald die Leiste im Seitenkopf aus dem Bild ist */
+function initBookDock(scope) {
+  const src = scope.querySelector(".book.is-page"); if (!src || src._dock) return;
+  const dock = src.cloneNode(true); src._dock = dock;
+  dock.classList.remove("is-page"); dock.classList.add("is-dock"); dock.setAttribute("aria-label", "Zimmer buchen");
+  dock.querySelectorAll("[id]").forEach(e => { e.id = "dock-" + e.id; });
+  dock.querySelectorAll("label[for]").forEach(l => { l.htmlFor = "dock-" + l.htmlFor; });
+  dock.querySelectorAll("[aria-labelledby]").forEach(e => e.setAttribute("aria-labelledby", "dock-" + e.getAttribute("aria-labelledby")));
+  const wrap = document.createElement("div"); wrap.className = "book-dock"; wrap.appendChild(dock); scope.appendChild(wrap);
+  initBooking(wrap);
+  // Werte in beide Richtungen spiegeln
+  ["[data-book-hotel]", "[data-book-in]", "[data-book-out]"].forEach(sel => {
+    const a = $(sel, src), b = $(sel, dock); if (!a || !b) return;
+    const link = (x, y) => x.addEventListener("change", () => { if (y.value !== x.value) { y.value = x.value; y.dispatchEvent(new Event("change")); } });
+    b.value = a.value; link(a, b); link(b, a);
+  });
+  let mirroring = false;
+  const sa = $$("[data-book-step]", src), sb = $$("[data-book-step]", dock);
+  const mirror = (from, to) => from.forEach((btn, i) => btn.addEventListener("click", () => { if (mirroring) return; mirroring = true; to[i] && to[i].click(); mirroring = false; }));
+  mirror(sa, sb); mirror(sb, sa);
+  const footer = document.querySelector(".footer");
+  const onScroll = () => {
+    if (!document.contains(src)) { removeEventListener("scroll", onScroll); html.classList.remove("show-dock"); return; }
+    const r = src.getBoundingClientRect();
+    const nearEnd = footer && footer.getBoundingClientRect().top < innerHeight - 40;
+    html.classList.toggle("show-dock", r.bottom < -innerHeight * 0.6 && !nearEnd);
+  };
+  addEventListener("scroll", onScroll, { passive: true }); onScroll();
+}
 
 /* Buchungsleiste: Formular mit Ziel Guestline (funktioniert auch ohne JS) */
 function initBooking(scope) {

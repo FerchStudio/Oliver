@@ -26,8 +26,9 @@
     return "https://booking.eu.guestline.app/CHC?" + q;
   }
   document.addEventListener("click", function (e) {
-    var a = e.target.closest && e.target.closest("[data-book-go]"); if (!a) return;
-    var f = a.closest("[data-book]"); if (!f) return;
+    var a = e.target.closest && e.target.closest("[data-book-go], .sticky-book_btn"); if (!a) return;
+    // Mobile Sticky-Button nutzt die Buchungsleiste der aktuellen Seite (vorausgewähltes Hotel, Daten)
+    var f = a.closest("[data-book]") || document.querySelector("[data-barba='container'] [data-book]"); if (!f) return;
     e.preventDefault(); e.stopPropagation();
     window.open(bookUrl(f), "_blank", "noopener");
   }, true);

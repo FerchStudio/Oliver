@@ -252,3 +252,17 @@ ul.chips{list-style:none;padding:0;margin-bottom:0}
 .phero_content .w-embed:has(.book){width:100%}
 @media (max-width:991px){.book.is-page{grid-template-columns:1fr 1fr;margin-top:1.75rem}.book.is-page .book_field{border-bottom:1px solid var(--line)}.book.is-page .book_submit{grid-column:1/-1}.book.is-page .book_submit .btn{width:100%;justify-content:center}}
 @media (max-width:479px){.book.is-page{grid-template-columns:1fr}}
+
+/* Hotelseiten: kompakte Buchungsleiste unten (Desktop) */
+.book-dock{position:fixed;left:0;right:0;bottom:1.25rem;z-index:40;display:flex;justify-content:center;pointer-events:none}
+.book.is-dock{position:relative;left:auto;right:auto;bottom:auto;margin:0;width:min(58rem,calc(100% - 26rem));max-width:none;grid-template-columns:1.5fr 1fr 1fr 1.1fr auto;pointer-events:auto;box-shadow:0 0 0 1px rgba(28,35,38,.08),0 24px 48px -20px rgba(28,35,38,.45);transform:translateY(calc(100% + 2rem));opacity:0;transition:transform .7s var(--ease),opacity .4s}
+html.show-dock .book.is-dock{transform:none;opacity:1}
+html.menu-open .book.is-dock,html.mega-open .book.is-dock{transform:translateY(calc(100% + 2rem));opacity:0}
+.book.is-dock .book_field{padding:.55rem 1.1rem;gap:.15rem}
+.book.is-dock .book_field label,.book.is-dock .book_lbl{font-size:.58rem}
+.book.is-dock .book_input,.book.is-dock .book_guests{font-size:.92rem}
+.book.is-dock .book_step{flex:none;width:1.5rem;min-width:1.5rem;height:1.5rem;padding:0}
+.book.is-dock .book_submit{padding:.4rem}
+.book.is-dock .book_submit .btn{height:2.75rem;padding-left:1.2rem;padding-right:1.2rem;font-size:.9rem;white-space:nowrap}
+@media (max-width:1180px){.book.is-dock{width:calc(100% - 26rem);grid-template-columns:1fr 1fr 1fr auto}.book.is-dock .book_field:first-child{display:none}}
+@media (max-width:991px){.book-dock{display:none}}
