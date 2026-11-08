@@ -1374,9 +1374,6 @@ function createLightbox(container, { onStart, onOpen, onClose, onCloseComplete }
       const targetItem = elements.items[index];
       const lightboxImage = targetItem.querySelector('img');
       if (lightboxImage) lightboxImage.style.display = 'none';
-      elements.triggerParents.forEach(otherTrigger => {
-        if (otherTrigger !== trigger.parentElement) gsap.to(otherTrigger, { autoAlpha: 0, duration: 0.4, stagger: 0.02, overwrite: true });
-      });
       if (!targetItem.contains(img)) {
         targetItem.appendChild(img);
         tl.add(Flip.from(state, { targets: img, absolute: true, duration: 0.6, ease: "power2.inOut" }), 0);
