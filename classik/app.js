@@ -95,6 +95,7 @@ function initAfterEnterFunctions(next) {
   if (has("[data-radial-slider-init]")) initRadialCardsSlider();
   if (has("[data-gallery]")) initLightboxes();
   if (has("[data-locator-init]")) initStoreLocator();
+  if (has("[data-hotel-map]")) initHotelMap(nextPage);
   initFooterWord();
 
   if (hasLenis) lenis.resize();
@@ -1436,6 +1437,31 @@ function loadMapLibre() {
     const s = document.createElement("script"); s.src = MAPLIBRE + "maplibre-gl.js"; s.onload = () => res(window.maplibregl); s.onerror = rej; document.head.appendChild(s);
   });
   return __maplibre;
+}
+
+/* Anfahrt: Karte mit Hotel-Pin */
+function initHotelMap(scope) {
+  scope.querySelectorAll("[data-hotel-map]:not([data-ready])").forEach(wrap => {
+    wrap.setAttribute("data-ready", "");
+    const lat = parseFloat(wrap.dataset.lat), lng = parseFloat(wrap.dataset.lng);
+    const canvas = wrap.querySelector("[data-hotel-map-canvas]");
+    if (!canvas || !isFinite(lat) || !isFinite(lng)) return;
+    const boot = () => loadMapLibre().then(gl => {
+      const map = new gl.Map({ container: canvas, style: "https://tiles.openfreemap.org/styles/positron", center: [lng, lat], zoom: 14.2, attributionControl: false, cooperativeGestures: true,
+        locale: { "CooperativeGesturesHandler.WindowsHelpText": "Strg + Scrollen zum Zoomen", "CooperativeGesturesHandler.MacHelpText": "⌘ + Scrollen zum Zoomen", "CooperativeGesturesHandler.MobileHelpText": "Mit zwei Fingern bewegen" } });
+      map.addControl(new gl.AttributionControl({ compact: true }));
+      map.addControl(new gl.NavigationControl({ showCompass: false }), "top-left");
+      map.on("load", () => {
+        locatorTint(map);
+        const at = wrap.querySelector(".maplibregl-ctrl-attrib"); if (at) at.classList.remove("maplibregl-compact-show");
+        const pin = document.createElement("div"); pin.className = "hmap_pin";
+        pin.innerHTML = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="10" r="2.3" stroke="currentColor" stroke-width="1.4"/></svg>';
+        new gl.Marker({ element: pin, anchor: "center" }).setLngLat([lng, lat]).addTo(map);
+      });
+    }).catch(() => {});
+    const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); boot(); } }, { rootMargin: "600px 0px" });
+    io.observe(wrap);
+  });
 }
 
 function initStoreLocator() {
