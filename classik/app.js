@@ -550,7 +550,11 @@ function initParallax(scope) {
   if (reducedMotion) return;
   $$("[data-parallax]", scope).forEach(m => {
     const img = $("img", m);
-    gsap.fromTo(img, { yPercent: -7 }, { yPercent: 7, ease: "none", scrollTrigger: { trigger: m, start: "top bottom", end: "bottom top", scrub: true } });
+    // Hero ganz oben: Start bei "top top", sonst entsteht nach Seitenwechseln oben ein Spalt
+    const atTop = m.closest(".phero, .hero") || m.getBoundingClientRect().top + window.scrollY < window.innerHeight * 0.5;
+    const over = img.offsetHeight > m.offsetHeight ? (img.offsetHeight - m.offsetHeight) / img.offsetHeight * 100 : 0;
+    if (atTop) gsap.fromTo(img, { yPercent: -Math.min(over, 12) }, { yPercent: 0, ease: "none", scrollTrigger: { trigger: m, start: "top top", end: "bottom top", scrub: true } });
+    else gsap.fromTo(img, { yPercent: -7 }, { yPercent: 7, ease: "none", scrollTrigger: { trigger: m, start: "top bottom", end: "bottom top", scrub: true } });
   });
 }
 function initFooterWord() {
