@@ -666,8 +666,8 @@ function bookDockMarkup() {
   return `<form class="book is-dock" data-book aria-label="Zimmer buchen"><div class="book_field"><label for="dock-hotel">Hotel</label><select id="dock-hotel" class="book_input" data-book-hotel>${opts}</select></div>${date("in", "Anreise")}${date("out", "Abreise")}<div class="book_submit"><a class="btn is-accent" href="https://booking.eu.guestline.app/CHC?lng=de" data-book-go data-btn>Verfügbarkeit prüfen</a></div></form>`;
 }
 
-/* Alle Seiten: kompakte Buchungsleiste unten, sobald man ein Stück gescrollt hat
-   (gibt es oben eine Buchungsleiste, erscheint sie erst, wenn diese aus dem Bild ist, und übernimmt deren Werte) */
+/* Alle Seiten: kompakte Buchungsleiste unten, sobald der Seitenkopf (Hero) aus dem Bild ist
+   (gibt es oben eine Buchungsleiste, übernimmt sie deren Werte) */
 function initBookDock(scope) {
   if (scope.querySelector(".book-dock")) return;
   const src = scope.querySelector("[data-book]:not(.is-dock)");
@@ -690,9 +690,11 @@ function initBookDock(scope) {
     if (window.__bookRender) window.__bookRender(dock);
   });
   const footer = document.querySelector(".footer");
+  const hero = scope.querySelector(".hero, .phero");
   const onScroll = () => {
     if (!document.contains(wrap)) { removeEventListener("scroll", onScroll); html.classList.remove("show-dock"); return; }
-    const past = src ? src.getBoundingClientRect().bottom < -innerHeight * 0.6 : scrollY > innerHeight * 0.9;
+    const heroOut = hero ? hero.getBoundingClientRect().bottom <= 0 : scrollY > innerHeight * 0.9;
+    const past = heroOut && (!src || hero && hero.contains(src) || src.getBoundingClientRect().bottom < 0);
     const nearEnd = footer && footer.getBoundingClientRect().top < innerHeight - 40;
     html.classList.toggle("show-dock", past && !nearEnd);
   };
@@ -1353,7 +1355,8 @@ function createLightbox(container, { onStart, onOpen, onClose, onCloseComplete }
   }
 
   elements.triggers.forEach((trigger, index) => {
-    trigger.addEventListener('click', () => {
+    trigger.addEventListener('click', (e) => {
+      e.preventDefault();
       onStart?.();
       mainTimeline.clear();
       gsap.killTweensOf([elements.wrapper, elements.nav, elements.triggerParents]);
@@ -1411,8 +1414,8 @@ function buildLightboxMarkup(wrapper) {
 function initLightboxes() {
   nextPage.querySelectorAll("[data-gallery]").forEach(buildLightboxMarkup);
   nextPage.querySelectorAll("[data-gallery]").forEach(wrapper => createLightbox(wrapper, {
-    onStart: () => lenis && lenis.stop(),
-    onClose: () => lenis && lenis.start()
+    onStart: () => { wrapper._y = window.scrollY; lenis && lenis.stop(); },
+    onClose: () => { const y = wrapper._y; lenis && lenis.start(); if (typeof y === "number" && Math.abs(window.scrollY - y) > 2) { lenis ? lenis.scrollTo(y, { immediate: true, force: true }) : window.scrollTo(0, y); } }
   }));
 }
 
