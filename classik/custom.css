@@ -355,3 +355,4 @@ html.intro-reveal .img-slider__thumb:nth-child(5){transition-delay:.54s}
 .cal.is-sheet.is-open{transform:none}
 html.cal-open body::after{content:"";position:fixed;inset:0;z-index:999;background:rgba(28,35,38,.4)}
 html.cal-open,html.cal-open body{overflow:hidden}
+html{background-color:var(--ivory)}

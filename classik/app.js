@@ -88,7 +88,7 @@ function initAfterEnterFunctions(next) {
   if (has("[data-parallax]")) initParallax(nextPage);
   if (has('[data-slideshow="wrap"]')) initParallaxImageGalleryThumbnails();
   if (has("[data-book]")) initBooking(nextPage);
-  if (has(".book.is-page")) initBookDock(nextPage);
+  initBookDock(nextPage);
   if (has("[data-globe-init]")) initInteractiveGlobe();
   if (has("[data-cascading-slider-wrap]")) initCascadingSlider();
   if (has("[data-radial-slider-init]")) initRadialCardsSlider();
@@ -133,10 +133,11 @@ function runPageLeaveAnimation(current, next) {
   // Alte Seite und Footer (liegt außerhalb des Barba-Containers) schnell ausblenden,
   // damit nichts davon über der neuen Seite sichtbar bleibt
   tl.to(".footer", { autoAlpha: 0, ease: "power2.in", duration: 0.25 }, 0);
+  // Weiche Überblendung: alte Seite blendet aus, während die neue darüber einblendet (kein leerer Moment)
   tl.to(current, {
     autoAlpha: 0,
-    ease: "power2.in",
-    duration: 0.3,
+    ease: "power1.inOut",
+    duration: 0.55,
   }, 0);
 
   return tl;
@@ -152,13 +153,13 @@ function runPageEnterAnimation(next) {
     return new Promise(resolve => tl.call(resolve, null, "pageReady"));
   }
 
-  tl.add("startEnter", 0.3);
+  tl.add("startEnter", 0.08);
 
   tl.fromTo(next, {
     autoAlpha: 0,
   }, {
     autoAlpha: 1,
-    ease: "power1.out",
+    ease: "power2.out",
     duration: 0.6,
   }, "startEnter");
 
@@ -647,28 +648,44 @@ function initParallaxImageGalleryThumbnails() {
 
 
 /* Hotelseiten: kompakte Buchungsleiste unten, sobald die Leiste im Seitenkopf aus dem Bild ist */
+function bookDockMarkup() {
+  const p = location.pathname;
+  const sel = /^\/alexander-plaza/.test(p) ? "CHCBAP" : /^\/hackescher-markt/.test(p) ? "CHCBHM" : /^\/martinshof/.test(p) ? "CHCMMA" : /^\/antonius/.test(p) ? "CHCKAND" : /^\/magdeburg/.test(p) ? "CHCMCH" : /berlin/.test(p) ? "CHCBAP;CHCBHM" : "";
+  const opts = [["", "Alle Hotels"], ["CHCBAP;CHCBHM", "Berlin, beide Hotels"], ["CHCBAP", "Alexander Plaza, Berlin-Mitte"], ["CHCBHM", "Hackescher Markt, Berlin-Mitte"], ["CHCMMA", "Martinshof, Messe München"], ["CHCKAND", "Antonius, Köln Innenstadt"], ["CHCMCH", "Magdeburg, Magdeburg"]]
+    .map(([v, t]) => `<option value="${v}"${v === sel ? " selected" : ""}>${t}</option>`).join("");
+  const date = (k, l) => `<div class="book_field"><label for="dock-${k}">${l}</label><button type="button" id="dock-${k}" class="book_input book_date" data-book-pick="${k}"><span data-book-show="${k}">Datum wählen</span></button><input type="hidden" data-book-${k}></div>`;
+  return `<form class="book is-dock" data-book aria-label="Zimmer buchen"><div class="book_field"><label for="dock-hotel">Hotel</label><select id="dock-hotel" class="book_input" data-book-hotel>${opts}</select></div>${date("in", "Anreise")}${date("out", "Abreise")}<div class="book_submit"><a class="btn is-accent" href="https://booking.eu.guestline.app/CHC?lng=de" data-book-go data-btn>Verfügbarkeit prüfen</a></div></form>`;
+}
+
+/* Alle Seiten: kompakte Buchungsleiste unten, sobald man ein Stück gescrollt hat
+   (gibt es oben eine Buchungsleiste, erscheint sie erst, wenn diese aus dem Bild ist, und übernimmt deren Werte) */
 function initBookDock(scope) {
-  const src = scope.querySelector(".book.is-page"); if (!src || src._dock) return;
-  const dock = src.cloneNode(true); src._dock = dock;
-  dock.classList.remove("is-page"); dock.classList.add("is-dock"); dock.setAttribute("aria-label", "Zimmer buchen");
-  dock.querySelectorAll("[id]").forEach(e => { e.id = "dock-" + e.id; });
-  dock.querySelectorAll(".cal").forEach(e => e.remove()); dock.classList.remove("is-picking");
-  dock.querySelectorAll("label[for]").forEach(l => { l.htmlFor = "dock-" + l.htmlFor; });
-  dock.querySelectorAll("[aria-labelledby]").forEach(e => e.setAttribute("aria-labelledby", "dock-" + e.getAttribute("aria-labelledby")));
+  if (scope.querySelector(".book-dock")) return;
+  const src = scope.querySelector("[data-book]:not(.is-dock)");
+  let dock;
+  if (src) {
+    dock = src.cloneNode(true);
+    dock.classList.remove("is-page"); dock.classList.add("is-dock"); dock.removeAttribute("data-hero-fade"); dock.removeAttribute("style");
+    dock.querySelectorAll(".cal, .book_note").forEach(e => e.remove()); dock.classList.remove("is-picking");
+    dock.querySelectorAll("[id]").forEach(e => { e.id = "dock-" + e.id; });
+    dock.querySelectorAll("label[for]").forEach(l => { l.htmlFor = "dock-" + l.htmlFor; });
+  } else {
+    const t = document.createElement("div"); t.innerHTML = bookDockMarkup(); dock = t.firstElementChild;
+  }
   const wrap = document.createElement("div"); wrap.className = "book-dock"; wrap.appendChild(dock); scope.appendChild(wrap);
   initBooking(wrap);
-  // Werte in beide Richtungen spiegeln
-  ["[data-book-hotel]", "[data-book-in]", "[data-book-out]"].forEach(sel => {
+  if (src) ["[data-book-hotel]", "[data-book-in]", "[data-book-out]"].forEach(sel => {
     const a = $(sel, src), b = $(sel, dock); if (!a || !b) return;
     const link = (x, y) => x.addEventListener("change", () => { if (y.value !== x.value) { y.value = x.value; y.dispatchEvent(new Event("change")); } });
     b.value = a.value; link(a, b); link(b, a);
+    if (window.__bookRender) window.__bookRender(dock);
   });
   const footer = document.querySelector(".footer");
   const onScroll = () => {
-    if (!document.contains(src)) { removeEventListener("scroll", onScroll); html.classList.remove("show-dock"); return; }
-    const r = src.getBoundingClientRect();
+    if (!document.contains(wrap)) { removeEventListener("scroll", onScroll); html.classList.remove("show-dock"); return; }
+    const past = src ? src.getBoundingClientRect().bottom < -innerHeight * 0.6 : scrollY > innerHeight * 0.9;
     const nearEnd = footer && footer.getBoundingClientRect().top < innerHeight - 40;
-    html.classList.toggle("show-dock", r.bottom < -innerHeight * 0.6 && !nearEnd);
+    html.classList.toggle("show-dock", past && !nearEnd);
   };
   addEventListener("scroll", onScroll, { passive: true }); onScroll();
 }
