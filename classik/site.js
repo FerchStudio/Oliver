@@ -208,6 +208,13 @@
     bookRender(f);
   });
   crispIntro();
+  // Bilder: "sizes" an die tatsächliche Darstellungsbreite anpassen (Webflow setzt oft 100vw), spart Datenvolumen
+  [].slice.call(document.querySelectorAll('img[loading="lazy"][srcset]')).forEach(function (img) {
+    var w = img.getBoundingClientRect().width;
+    if (w > 0 && w < innerWidth * 0.75) img.sizes = Math.ceil(w) + "px";
+  });
+  // Barrierefreiheit: Slider-Punkte ohne Text bekommen ein Label
+  [].slice.call(document.querySelectorAll("[data-radial-slider-control]")).forEach(function (a, i) { if (!a.getAttribute("aria-label")) a.setAttribute("aria-label", "Zimmer " + (i + 1) + " anzeigen"); });
   // Kontaktformular: deutsche Platzhalter (Webflow setzt sonst "Example text")
   var ph = { "k-vorname": "Max", "k-nachname": "Mustermann", "k-firma": "Optional", "k-email": "name@beispiel.de", "k-msg": "Wie können wir Ihnen helfen?" };
   Object.keys(ph).forEach(function (id) { var el = document.getElementById(id); if (el) el.placeholder = ph[id]; });
