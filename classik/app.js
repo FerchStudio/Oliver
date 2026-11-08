@@ -84,6 +84,10 @@ function initDeDates(scope) {
     el.textContent = d.getDate() + ". " + M[d.getMonth()] + " " + d.getFullYear();
     el.dataset.deDone = "1";
   });
+  (scope || document).querySelectorAll("[data-slug]").forEach((c) => {
+    const s = c.getAttribute("data-slug");
+    if (s) c.querySelectorAll("[data-post-link]").forEach((a) => a.setAttribute("href", "/blog/" + s));
+  });
 }
 
 function initAfterEnterFunctions(next) {
