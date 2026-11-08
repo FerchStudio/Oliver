@@ -219,3 +219,29 @@ ul.chips{list-style:none;padding:0;margin-bottom:0}
 
 /* Unterstrichene Links nie breiter als ihr Text (z. B. in Karten mit Flex-Spalten) */
 .ulink{width:fit-content;max-width:100%;align-self:flex-start;justify-self:start}
+
+/* Footer: Telefon wie die anderen Footer-Links (kein Dauer-Unterstrich) */
+.footer .tel-link{background:none;padding-bottom:0}
+.footer .tel-link:hover{animation:none;color:inherit}
+
+/* Kontaktformular aufgeräumt */
+.form.w-form{display:block}
+.form form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem 1.25rem;margin:0}
+.form form>*:not(.form_field),.form .form_field.is-full{grid-column:1/-1}
+.form .form_field{display:flex;flex-direction:column;row-gap:.6rem;margin:0}
+.form .fld_label{margin:0;line-height:1.2}
+.form .fld_input{margin:0;width:100%;height:3.25rem;padding:0 1rem;font-size:1rem;line-height:1.4;border:1px solid var(--line);border-radius:.55rem;background-color:var(--paper);color:var(--ink);transition:border-color .3s,box-shadow .3s}
+.form .fld_input::placeholder{color:var(--mute);opacity:.7}
+.form .fld_input:hover{border-color:rgba(28,35,38,.3)}
+.form .fld_input:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(79,138,130,.18)}
+.form .fld_input.is-area{height:auto;min-height:10rem;padding:.9rem 1rem;resize:vertical}
+.form select.fld_input{-webkit-appearance:none;appearance:none;padding-right:2.75rem;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%231C2326' stroke-width='1.4'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;background-size:1rem;text-overflow:ellipsis}
+.form .form_check{display:block;margin:0;font-size:.9rem;line-height:1.55;color:var(--mute)}
+.form .form_check a{display:inline;color:var(--ink)}
+.form .form_check a .link-arrow{display:inline-flex;vertical-align:middle;margin-left:.35em}
+.form .form_check strong{font-weight:500;color:var(--ink)}
+.form form .btn{width:auto;justify-self:start;margin-top:.25rem;padding-left:2rem;padding-right:2rem}
+.form .form_field:has(> .btn){display:block}
+.faq:has(.form){grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}
+@media (max-width:991px){.faq:has(.form){grid-template-columns:1fr}}
+@media (max-width:767px){.form form{grid-template-columns:1fr}}

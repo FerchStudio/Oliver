@@ -46,6 +46,9 @@
     if (b && !b.value) { t.setDate(t.getDate() + 1); b.value = iso(t); }
     if (n) { n.textContent = "1"; if (n.nextSibling && n.nextSibling.nodeType === 3) n.nextSibling.textContent = " Erwachsener"; }
   });
+  // Kontaktformular: deutsche Platzhalter (Webflow setzt sonst "Example text")
+  var ph = { "k-vorname": "Max", "k-nachname": "Mustermann", "k-firma": "Optional", "k-email": "name@beispiel.de", "k-msg": "Wie können wir Ihnen helfen?" };
+  Object.keys(ph).forEach(function (id) { var el = document.getElementById(id); if (el) el.placeholder = ph[id]; });
   // Lage-Grafik: Positionen ohne Wartezeit setzen
   [].slice.call(document.querySelectorAll("[data-lage] [data-x]")).forEach(function (s) { s.style.setProperty("--x", s.getAttribute("data-x") + "%"); });
   var started = false, evs = ["pointerdown", "pointermove", "keydown", "touchstart", "wheel", "scroll"];

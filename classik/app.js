@@ -68,12 +68,19 @@ function initBeforeEnterFunctions(next) {
   nextPage = next || document;
 }
 
+// Kontaktformular: deutsche Platzhalter statt Webflow-Standard "Example text"
+function initFormPlaceholders(scope) {
+  const ph = { "k-vorname": "Max", "k-nachname": "Mustermann", "k-firma": "Optional", "k-email": "name@beispiel.de", "k-msg": "Wie können wir Ihnen helfen?" };
+  Object.keys(ph).forEach(id => { const el = scope.querySelector("#" + id); if (el) el.placeholder = ph[id]; });
+}
+
 function initAfterEnterFunctions(next) {
   nextPage = next || document;
 
   initButtons(nextPage);
   initArrowLinks(nextPage);
   initTelLinks(nextPage);
+  initFormPlaceholders(nextPage);
   if (has("[data-lage]")) initLage(nextPage);
   if (has("[data-split]")) initSplitHeadings(nextPage);
   if (has("[data-reveal-group]")) initContentRevealScroll();
