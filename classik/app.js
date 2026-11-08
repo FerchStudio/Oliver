@@ -260,6 +260,7 @@ function initLenis() {
 }
 
 function resetPage(container) {
+  html.classList.remove("lb-open");
   window.scrollTo(0, 0);
   gsap.set(container, { clearProps: "position,top,left,right" });
   gsap.set(".footer", { autoAlpha: 1 });
@@ -1414,8 +1415,8 @@ function buildLightboxMarkup(wrapper) {
 function initLightboxes() {
   nextPage.querySelectorAll("[data-gallery]").forEach(buildLightboxMarkup);
   nextPage.querySelectorAll("[data-gallery]").forEach(wrapper => createLightbox(wrapper, {
-    onStart: () => { wrapper._y = window.scrollY; lenis && lenis.stop(); },
-    onClose: () => { const y = wrapper._y; lenis && lenis.start(); if (typeof y === "number" && Math.abs(window.scrollY - y) > 2) { lenis ? lenis.scrollTo(y, { immediate: true, force: true }) : window.scrollTo(0, y); } }
+    onStart: () => { wrapper._y = window.scrollY; html.classList.add("lb-open"); lenis && lenis.stop(); },
+    onClose: () => { const y = wrapper._y; html.classList.remove("lb-open"); lenis && lenis.start(); if (typeof y === "number" && Math.abs(window.scrollY - y) > 2) { lenis ? lenis.scrollTo(y, { immediate: true, force: true }) : window.scrollTo(0, y); } }
   }));
 }
 

@@ -360,3 +360,4 @@ html{background-color:var(--ivory)}
 /* Lighthouse: Kontraste (optisch kaum sichtbar) */
 :root{--_classik---accent:#467D75;--_classik---accent-d:#3B6A63}
 .is-dark .mute,.is-dark .sec-head .mute{color:rgba(245,242,236,.66)}
+html.lb-open .book-dock,html.lb-open .badge-concept{opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s}
